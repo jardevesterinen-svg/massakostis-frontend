@@ -1,14 +1,13 @@
 async function sendToServer(payload) {
     try {
-
         // ✅ Lähetä JSON-data Railway-backendille
-        await fetch("https://massakostis-backend-production.up.railway.app/upload-data", {
+        await fetch("https://massakostis-backend-production-9111.up.railway.app/upload-data", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload.data)
         });
 
-        // ✅ Lähetä kuva Railway-backendille (ja sieltä R2:een)
+        // ✅ Lähetä kuva Railway-backendille (ja R2:een)
         if (payload.kuva) {
             const blob = await (await fetch(payload.kuva)).blob();
             const form = new FormData();
@@ -17,7 +16,7 @@ async function sendToServer(payload) {
                 `huoneistot/${payload.data.huoneisto}/${payload.kuvanimi}`
             );
 
-            await fetch("https://massakostis-backend-production.up.railway.app/upload-image", {
+            await fetch("https://massakostis-backend-production-9111.up.railway.app/upload-image", {
                 method: "POST",
                 body: form
             });
