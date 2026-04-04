@@ -1,0 +1,138 @@
+{
+  "seinien_kosteus_havainnot": [
+    "Kosteutta seinien suihkuvesien roiskealueella.",
+    "Kosteutta suihkusekoittajan ympärillä.",
+    "Kosteutta suihkuvesien roiskealueella seinien alaosissa.",
+    "Muu"
+  ],
+  "seinien_kosteus_toimenpiteet": [
+    "Laatoitetuissa seinäpinnoissa esiintyy kosteudentunnistimella havainnoitaessa kosteutta tavanomaisesti, mikäli pinnat ovat säännöllisesti roiskevedelle alttiina. Kyseiset kosteushavainnot eivät välttämättä tarkoita rakenteissa olevan kosteusvauriota. Mikäli laatoituksen alla on toimiva kosteuden- tai vedeneriste, saattaa kosteus olla pelkästään laattojen ja eristeen välissä, mikä on laatoitukselle ominaista. Märkätilojen veden- tai kosteudeneristeiden olemassaoloa ja kuntoa ei voida yleensä pintapuolisesti selvittää.",
+    "Seinäpinnoitteiden saneeraus ja kastuneiden rakenteiden koneellinen kuivaus.",
+    "Seinärakenteen kunto suositellaan selvitettävän rakennetta avaamalla. Rakenteen avaus tulee tehdä niin että rakenteelle muodostuu mahdollisimman vähän vaurioita eikä itse avaus aiheuta rakenteen uusimistarvetta.",
+    "Muu"
+  ],
+
+  "läpiviennit_havainnot": [
+    "Avoimia läpivientejä suihkun roiskevesialueella.",
+    "Putkiläpivientejä lattiassa.",
+    "Seinäläpivientejä suihkun roiskevesialueella.",
+    "Suihkusekoittajan läpiviennistä puuttuu silikonitiivistys.",
+    "Suihkusekoittajan putkiläpiviennit on puutteellisesti tiivistetty.",
+    "Muu"
+  ],
+  "läpiviennit_toimenpiteet": [
+    "Lattiassa ei tulisi olla muita läpivientejä kuin välttämättämät viemäröinnit. Suositellaan tehtävät tarvittavat muutokset seuraavan remontin yhteydessä.",
+    "Läpivientien tiivistäminen suihkun roiskevesialueella.",
+    "Putkiläpiviennin epätiiveyden vuoksi vettä saattaa päästä rakenteen sisään. Läpivienti tulee tiivistää vesitiiviiksi.",
+    "Seinän vedeneristyksen läpivientejä tulee välttää roiskeveden vaikutusalueella. Suositellaan tehtävät tarvittavat muutokset seuraavan remontin yhteydessä.",
+    "Muu"
+  ],
+
+  "pinnat_havainnot": [
+    "Kopolaattoja lattiassa.",
+    "Kopolaattoja seinissä ja lattiassa.",
+    "Kopolaattoja seinissä.",
+    "Laattasaumoissa puutteita.",
+    "Laattoja on irti alustastaan.",
+    "Mikrobikasvustoa silikonin ja/tai laattasaumojen pinnoilla.",
+    "Muovimatto irti lattiakaivon ympäriltä.",
+    "Muovimatto osittain irti alustastaan.",
+    "Pinnat yleisesti likaantuneita.",
+    "Silikonisaumaus on auki tai huonossa kunnossa suihkun roiskevesialueella.",
+    "Muu"
+  ],
+  "pinnat_toimenpiteet": [
+    "Irtonaisten laattojen paikkakorjaus.",
+    "Laatoituksen huono kiinnitys alustaan ei aiheuta välttämätöntä korjaustarvetta, elleivät saumat vaurioidu tai laatat irtoa kokonaan. Tilannetta tulee seurata ja korjata laatoitus tarvittaessa.",
+    "Laatoituksen saumoissa olevat puutteet eivät ole yleensä rakenteellisesti merkittäviä, mikäli laatoituksen alla on toimiva vedeneriste. Vedeneristeen olemassaoloa ei voida pinnoilta arvioida.",
+    "Muovimatto on irti alustastaan tai sen alle on päässyt kosteutta. Matto tulee uusia ja kuivata kastunut lattia koneellisesti.",
+    "Muovimatto on irti alustastaan tai sen alle on päässyt kosteutta. Matto tulee uusia ja selvittää alusrakenteiden kuivatustarve.",
+    "Silikonisaumausten uusiminen.",
+    "Muu"
+  ],
+  
+  "vesikalusteet_havainnot": [
+    "Bideesuihku vuotaa hanaa käytettäessä.",
+    "Keittiön sekoittajan juoksuputki vuotaa.",
+    "Kylpyammeen pohjaventtiili vuotaa.",
+    "Käsienpesualtaan hajulukko on tukossa tai vetää huonosti.",
+    "Käsienpesualtaan hana vuotaa.",
+    "Käyttövesiputkien kannakoinnissa puutteita.",
+    "Pesukoneen hana tulppaamatta.",
+    "Pyykinpesukoneen poistoputki ei ole kiinteästi liitetty viemäröintiin.",
+    "Rättipatterin liitos vuotaa.",
+    "Suihkusekoittaja vuotaa.",
+    "WC-istuin on huonosti kiinnitetty.",
+    "WC-istuimen pohjaventtiili vuotaa.",
+    "Muu"
+  ],
+  "vesikalusteet_toimenpiteet": [
+    "Bideesuihkun korjaaminen.",
+    "Hajulukon / viemäröinnin puhdistaminen",
+    "Käsienpesualtaan hanan korjaaminen.",
+    "Rättipatterin liitoksen vuodon korjaaminen.",
+    "Vesikalustevikojen korjaus. Vesikalusteet kuuluvat yleensä taloyhtiön korjausvastuulle. Suositellaan korjausvastuun selvittämistä ja kalusteiden korjaamista / korjauttamista.",
+    "Vuotavan suihkusekoittajan korjaaminen.",
+    "WC-istuimen kiinnityksen korjaaminen.",
+    "WC-istuimen pohjaventtiilin korjaaminen.",
+    "Muu"
+  ],
+
+  "ilmanvaihto_havainnot": [
+    "Oven ja kynnyksen välissä ei ole riittävää ilmarakoa.",
+    "Poistoventtiili on likainen.",
+    "Poistoventtiili puuttuu tai väärän tyyppinen.",
+    "Muu"
+  ],
+  "ilmanvaihto_toimenpiteet": [
+    "Ilmanvaihdon poistoventtiilin uusiminen.",
+    "Ilmanvaihdossa on havaittu puutteita. Ilmanvaihdon puutteellisuus hidastaa pesuhuoneen pintojen kuivumista suihkun jälkeen. Pitkään pinnoilla oleva kosteus saattaa aiheuttaa pinnoille mikrobikasvustoa.1",
+    "Korvausilman saannin parantaminen esim. lyhentämällä ovea tai tekemällä korvausilma-aukko oven alaosaan.",
+    "Poistoventtiilin puhdistaminen.",
+    "Muu"
+  ],
+
+  "ovikynnys_havainnot": [
+    "Ovikynnys on liian matala.",
+    "Ovikynnys on tiivistämättä tai puutteellisesti tiivistetty.",
+    "Ovikynnys puuttuu.",
+    "Muu"
+  ],
+  "ovikynnys_toimenpiteet": [
+    "Ovikynnyksen asentaminen.",
+    "Ovikynnyksen korottaminen.",
+    "Ovikynnyksen tiivistäminen.",
+    "Muu"
+  ],
+
+  "lattiakaivo_havainnot": [
+    "Kaivo on likainen ja padottaa.",
+    "Kaivon ja korokerenkaan liitos silmämääräisesti epätiivis.",
+    "Lattiakaivon laattakansi on asennettu niin, että se estää/haittaa hajulukon puhdistamisen.",
+    "Lattiakaivon rassausaukon tulppa puuttuu.",
+    "Lattian vedeneristyksestä tehtiin havainto lattiakaivossa.",
+    "Muovikaivo + muovinen korokerengas.",
+    "Muovikaivo.",
+    "Valurautakaivo + kuparinen korokerengas.",
+    "Valurautakaivo + muovinen korokerengas.",
+    "Valurautakaivo.",
+    "Muu"
+  ],
+  "lattiakaivo_toimenpiteet": [
+    "Lattiakaivon vesitiiveydessä on havaittu puutteita tai epäilyksiä puutteista. Mikäli lattiakaivo on epätiivis, voi vettä päästä rakenteisiin erityisesti kaivon tulviessa. Tulvimista aiheuttaa yleensä mm. pesukoneen poistoviemärin yhdistäminen lattiakaivoon, runsas suihkun käyttö, lattiakaivon puhdistamattomuus, yms. Lattiakaivon tiiveys tulisi varmistaa jatkotutkimuksin tai korjata lattiakaivo vesitiiviiksi.",
+    "Lattiakaivon puhdistaminen.",
+    "Lattiakaivon vaakaviemärin puhdistaminen.",
+    "Muu"
+  ],
+
+  "lattiakallistukset_havainnot": [
+    "Lattian kallistukset ovat puutteellisia kaivon ympäristössä.",
+    "Lattian kallistukset ovat silmämääräisesti arvioituna puutteellisia.",
+    "Muu"
+  ],
+  "lattiakallistukset_toimenpiteet": [
+    "Havaitut puutteet lattiakallistuksissa eivät aiheuta toimenpiteitä.",
+    "Lattian kallistuksen puutteet saattavat aiheuttaa veden kerääntymistä lattiapinnoille. Lattiat tulee kuivata lastalla aina veden käytön jälkeen. Mikäli vettä kerääntyy alueelle missä vedeneristeissä on puutteita, voi vettä päästä haitallisesti myös rakenteisiin.",
+    "Muu"
+  ]
+}
