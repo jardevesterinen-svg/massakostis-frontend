@@ -2,16 +2,16 @@
     GLOBAALIT TILAMUUTTUJAT
 ========================================================== */
 
-let kohdeId = null;                 // esim: "asoy-merikotka-2026-04-05"
-let rappuLista = [];                // [{ rappu:"Talo A", alku:1, loppu:24 }]
-let huoneistoLista = [];            // ["Talo A1","Talo A2",...]
-let currentApartmentIndex = 0;      // nykyinen huoneisto navigointiin
+let kohdeId = null;
+let rappuLista = [];
+let huoneistoLista = [];
+let currentApartmentIndex = 0;
 
-let LAUSELISTA = {};                // lauseet.json sisältö
-let kaikkiKohteet = [];             // list-kohteet-endpointin tulokset
+let LAUSELISTA = {};
+let kaikkiKohteet = [];
 
 /* ==========================================================
-    LAUSEET (HAVAINNOT + TOIMENPITEET)
+    LAUSELISTAN LATAUS
 ========================================================== */
 
 async function loadLauseet() {
@@ -35,11 +35,11 @@ function slugify(text) {
 function showStatus(msg, id = "status") {
     const el = document.getElementById(id);
     el.textContent = msg;
-    setTimeout(() => el.textContent = "", 3000);
+    setTimeout(() => el.textContent = "", 2500);
 }
 
 /* ==========================================================
-    TABS (Perustiedot / Huoneistot)
+    TABS
 ========================================================== */
 
 document.getElementById("tabPerustiedot").addEventListener("click", () => {
@@ -71,14 +71,16 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
 
 async function haeKohteet() {
     try {
-        const res = await fetch("https://massakostis-backend-production-9111.up.railway.app/list-kohteet");
+        const res = await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/list-kohteet"
+        );
         const data = await res.json();
 
         kaikkiKohteet = data.kohteet;
         renderKohdeLista(kaikkiKohteet);
 
     } catch (e) {
-        console.error("kohteiden haku epäonnistui:", e);
+        console.error("Kohteiden haku epäonnistui:", e);
     }
 }
 
@@ -111,10 +113,12 @@ document.getElementById("kohde_haku").addEventListener("input", () => {
 async function lataaKohde(id) {
     kohdeId = id;
 
-    const res = await fetch(`https://massakostis-backend-production-9111.up.railway.app/get-metadata/${id}`);
+    const res = await fetch(
+        `https://massakostis-backend-production-9111.up.railway.app/get-metadata/${id}`
+    );
     const meta = await res.json();
 
-    // Kohdetiedot
+    // Kohde- ja tilaajatiedot
     document.getElementById("kohde_nimi").value = meta.kohde.nimi;
     document.getElementById("kohde_osoite").value = meta.kohde.osoite;
     document.getElementById("kohde_postinumero").value = meta.kohde.postinumero;
@@ -122,13 +126,12 @@ async function lataaKohde(id) {
     document.getElementById("kohde_paiva").value = meta.kohde.paiva;
     document.getElementById("kohde_tarkastaja").value = meta.kohde.tarkastaja;
 
-    // Tilaaja
-    Object.entries(meta.tilaaja).forEach(([k,v])=>{
+    Object.entries(meta.tilaaja).forEach(([k,v]) => {
         const f = document.getElementById("tilaaja_"+k);
         if (f) f.value = v;
     });
 
-    // Raput
+    // Raput ja huoneistot
     rappuLista = meta.raput;
     renderRappuLista();
     regenerateApartments();
@@ -137,7 +140,7 @@ async function lataaKohde(id) {
 }
 
 /* ==========================================================
-    KOHTEEN ID (nimi + päivämäärä)
+    KOHTEEN ID
 ========================================================== */
 
 function updateKohdeId() {
@@ -182,19 +185,24 @@ async function saveMetadata() {
     };
 
     try {
-        await fetch("https://massakostis-backend-production-9111.up.railway.app/save-metadata", {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({ kohde_id: kohdeId, metadata })
-        });
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/save-metadata",
+            {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({ kohde_id: kohdeId, metadata })
+            }
+        );
+
         showStatus("Tallennettu ✅");
+
     } catch {
         showStatus("Ei yhteyttä – tallennetaan myöhemmin");
     }
 }
 
 /* ==========================================================
-    RAPUT + HUONEISTOLOGIIKKA
+    RAPUT + HUONEISTOT
 ========================================================== */
 
 function regenerateApartments() {
@@ -219,7 +227,7 @@ function renderRappuLista() {
         row.className = "rappu-row";
 
         row.innerHTML = `
-            <div style="flex: 1;">
+            <div style="flex:1;">
                 <strong>${r.rappu}</strong> (${r.alku}–${r.loppu})
             </div>
             <button class="btn" style="background:#8e44ad" onclick="editRappu(${idx})">Muokkaa</button>
@@ -346,24 +354,25 @@ function buildApartmentForm() {
 
     const osiot = Object.keys(LAUSELISTA)
         .map(k => k.replace("_havainnot", "").replace("_toimenpiteet", ""))
-        .filter((v, i, a) => a.indexOf(v) === i);
+        .filter((v,i,a)=>a.indexOf(v)===i);
 
     osiot.forEach(osio => {
+
         let sec = document.createElement("div");
-        sec.innerHTML = `<h3>${osio.replace(/_/g, " ").toUpperCase()}</h3>`;
+        sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
 
         // ✅ Kuntoluokka
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
-        const sel = document.createElement("select");
-        sel.id = `${osio}_kuntoluokka`;
-        ["★","★★","★★★","★★★★"].forEach(t => {
+        const kuntoSel = document.createElement("select");
+        kuntoSel.id = `${osio}_kuntoluokka`;
+        ["★","★★","★★★","★★★★"].forEach(t=>{
             let o = document.createElement("option");
-            o.value = t;
-            o.textContent = t;
-            sel.appendChild(o);
+            o.value=t;
+            o.textContent=t;
+            kuntoSel.appendChild(o);
         });
-        sel.addEventListener("change", autosave);
-        sec.appendChild(sel);
+        kuntoSel.addEventListener("change", autosave);
+        sec.appendChild(kuntoSel);
 
         // ✅ Huomiovaatimus
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
@@ -386,7 +395,7 @@ function buildApartmentForm() {
 }
 
 /* ==========================================================
-    HUONEISTON LATAUS R2:sta
+    HUONEISTON LATAUS
 ========================================================== */
 
 async function loadApartment(i) {
@@ -404,15 +413,37 @@ async function loadApartment(i) {
 
         if (res.status === 404) {
             clearApartmentForm();
-            return;
+        } else {
+            fillApartmentForm(await res.json());
         }
-
-        const data = await res.json();
-        fillApartmentForm(data);
 
     } catch {
         showStatus("Ei yhteyttä", "status_kartoitus");
     }
+
+    // ✅ Nollaa file‑kentät
+    document.getElementById("kuva1").value = "";
+    document.getElementById("kuva2").value = "";
+
+    // ✅ Päivitä esikatselut R2:sta
+    loadImagePreview(slug);
+}
+
+function loadImagePreview(slug) {
+
+    // HUOM: Sano minulle mikä on bucketin "public URL", niin korjaan tämän valmiiksi
+    // Näytän tässä geneerisen muodon:
+
+    const base = `https://pub-${kohdeId}.r2.cloudflarestorage.com/kohteet/${kohdeId}/huoneistot/${slug}`;
+
+    const p1 = document.getElementById("preview1");
+    const p2 = document.getElementById("preview2");
+
+    p1.src = base + "/kuva1.jpg";
+    p1.style.display = "block";
+
+    p2.src = base + "/kuva2.jpg";
+    p2.style.display = "block";
 }
 
 function fillApartmentForm(data) {
@@ -428,7 +459,10 @@ function fillApartmentForm(data) {
 }
 
 function clearApartmentForm() {
-    const fields = document.querySelectorAll("#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select");
+    const fields = document.querySelectorAll(
+        "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
+    );
+
     fields.forEach(el => {
         if (el.type === "radio") {
             if (el.value === "Ei") el.checked = true;
@@ -436,10 +470,13 @@ function clearApartmentForm() {
             el.value = "";
         }
     });
+
+    document.getElementById("preview1").style.display = "none";
+    document.getElementById("preview2").style.display = "none";
 }
 
 /* ==========================================================
-    AUTOSAVE = TALLENNA JOKA MUUTOKSESTA
+    AUTOSAVE (TALLENNA JOKA MUUTOKSESTA)
 ========================================================== */
 
 function autosave() {
@@ -473,15 +510,18 @@ async function saveApartmentData() {
     data.huoneisto = aptLabel;
 
     try {
-        await fetch("https://massakostis-backend-production-9111.up.railway.app/upload-data", {
-            method: "POST",
-            headers: { "Content-Type":"application/json" },
-            body: JSON.stringify({
-                kohde_id: kohdeId,
-                huoneisto_slug: slug,
-                data
-            })
-        });
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+            {
+                method: "POST",
+                headers: { "Content-Type":"application/json" },
+                body: JSON.stringify({
+                    kohde_id: kohdeId,
+                    huoneisto_slug: slug,
+                    data
+                })
+            }
+        );
 
         showStatus("Tallennettu ✅", "status_kartoitus");
 
@@ -517,9 +557,11 @@ document.getElementById("currentAptInput").addEventListener("change", () => {
         loadApartment(idx);
     }
 });
+
 /* ==========================================================
-    KUVIEN LATAUSLOGIIKKA
+    KUVAESIKATSELU + KUVAN TALLENNUS
 ========================================================== */
+
 function previewSelectedImage(fileInputId, previewId) {
     const fileInput = document.getElementById(fileInputId);
     const preview = document.getElementById(previewId);
@@ -535,7 +577,9 @@ function previewSelectedImage(fileInputId, previewId) {
     preview.src = url;
     preview.style.display = "block";
 }
+
 async function uploadApartmentImage(index) {
+
     if (!kohdeId) {
         alert("Täytä perustiedot ensin.");
         return;
@@ -550,12 +594,12 @@ async function uploadApartmentImage(index) {
 
     const fileInput = document.getElementById(`kuva${index}`);
     const file = fileInput.files[0];
-    if (!file) return; // ei kuvaa → ei toimintaa
+    if (!file) return;
 
     const form = new FormData();
     form.append("kohde_id", kohdeId);
     form.append("huoneisto_slug", slug);
-    form.append("index", index);      // "1" tai "2"
+    form.append("index", index);
     form.append("file", file);
 
     try {
@@ -566,21 +610,24 @@ async function uploadApartmentImage(index) {
                 body: form
             }
         );
-
         showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
 
     } catch (err) {
         console.error(err);
-        showStatus("Kuvan tallennus epäonnistui (ei yhteyttä)", "status_kartoitus");
+        showStatus("Kuvan tallennus epäonnistui", "status_kartoitus");
     }
 }
-    document.getElementById("kuva1").addEventListener("change", () => {
-        uploadApartmentImage(1);
-    });
-    
-    document.getElementById("kuva2").addEventListener("change", () => {
-        uploadApartmentImage(2);
-    });
+
+document.getElementById("kuva1").addEventListener("change", () => {
+    previewSelectedImage("kuva1", "preview1");
+    uploadApartmentImage(1);
+});
+
+document.getElementById("kuva2").addEventListener("change", () => {
+    previewSelectedImage("kuva2", "preview2");
+    uploadApartmentImage(2);
+});
+
 /* ==========================================================
     LATAA KOHDELISTA SIVUN LADATESSA
 ========================================================== */
