@@ -559,7 +559,13 @@ async function uploadApartmentImage(index) {
         showStatus("Kuvan tallennus epäonnistui (ei yhteyttä)", "status_kartoitus");
     }
 }
-
+    document.getElementById("kuva1").addEventListener("change", () => {
+        uploadApartmentImage(1);
+    });
+    
+    document.getElementById("kuva2").addEventListener("change", () => {
+        uploadApartmentImage(2);
+    });
 /* ==========================================================
     LATAA KOHDELISTA SIVUN LADATESSA
 ========================================================== */
