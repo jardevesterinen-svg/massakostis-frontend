@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kosteuskartoitus – Uusi kohde</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kosteuskartoitus</title>
 
     <style>
         body {
@@ -12,7 +12,7 @@
             background: #f2f2f2;
         }
 
-        /* Ylävälilehdet */
+        /* TABIT */
         .tabs {
             display: flex;
             background: #2c3e50;
@@ -30,16 +30,11 @@
             font-weight: bold;
         }
 
-    <div class="section-title">Hae aiempi kohde</div>
-    <input type="text" id="kohde_haku" placeholder="Kirjoita kohteen nimi...">
-    <div id="kohdeHakulista"></div>
-
-        /* Perustiedot + huoneistot -osio */
         .content {
             padding: 20px;
         }
 
-        /* Kenttien ryhmittely */
+        /* Osiot */
         .section-title {
             margin-top: 30px;
             font-size: 20px;
@@ -73,15 +68,11 @@
             margin-top: 10px;
         }
 
-        /* Rapun lisääminen */
         .rappu-row {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
-        }
-
-        .rappu-row input {
-            flex: 1;
+            margin-bottom: 10px;
+            align-items: center;
         }
 
         .btn {
@@ -98,9 +89,7 @@
             background: #2980b9;
         }
 
-        /* Luotu huoneistot-lista */
         #huoneistoLista {
-            margin-top: 10px;
             background: white;
             padding: 10px;
             border-radius: 4px;
@@ -109,12 +98,7 @@
             border: 1px solid #ddd;
         }
 
-        /* Kartoitus välilehti */
-        #kartoitusTab {
-            display: none;
-        }
-
-        /* Navigointipalkki */
+        /* Huoneistonavigointi */
         .apt-nav {
             display: flex;
             align-items: center;
@@ -139,7 +123,6 @@
             text-align: center;
         }
 
-        /* Dynaamiset osiot */
         #dynaamiset_osiot {
             background: white;
             padding: 15px;
@@ -147,24 +130,25 @@
             border: 1px solid #ddd;
         }
 
-        /* Statusilmoitus */
-        #status {
-            margin-top: 15px;
+        #status, #status_kartoitus {
+            margin-top: 10px;
             font-weight: bold;
             color: green;
         }
     </style>
-
 </head>
+
 <body>
 
-    <!-- Tabs -->
+    <!-- TABIT -->
     <div class="tabs">
         <div class="tab active" id="tabPerustiedot">Perustiedot</div>
         <div class="tab" id="tabKartoitus">Huoneistot</div>
     </div>
 
-    <!-- PERUSTIEDOT -->
+    <!-- ========================= -->
+    <!--     PERUSTIEDOT-TABI     -->
+    <!-- ========================= -->
     <div class="content" id="perustiedotTab">
 
         <div class="section-title">Tilaajan tiedot</div>
@@ -192,7 +176,7 @@
         <div class="section-title">Kohteen kansikuva</div>
         <input type="file" id="kansikuva" accept="image/*">
 
-        <div class="section-title">Raput ja huoneistot</div>
+        <div class="section-title">Rappujen syöttö</div>
 
         <div class="rappu-row">
             <input type="text" id="rappu_nimi" placeholder="Rappu (esim. 'Talo A')">
@@ -203,15 +187,17 @@
 
         <div class="section-title">Lisätyt raput</div>
         <div id="rappuListaContainer"></div>
-        
+
         <div class="section-title">Luodut huoneistot</div>
         <div id="huoneistoLista"></div>
 
         <div id="status"></div>
     </div>
 
-    <!-- KARTOITUS -->
-    <div class="content" id="kartoitusTab">
+    <!-- ========================= -->
+    <!--     HUONEISTOT-TABI      -->
+    <!-- ========================= -->
+    <div class="content" id="kartoitusTab" style="display:none;">
 
         <div class="apt-nav">
             <button id="prevApt">⬅️</button>
@@ -219,7 +205,9 @@
             <button id="nextApt">➡️</button>
         </div>
 
-        <div id="dynaamiset_osiot">Kartoituslomake tulee tänne (app.js generoi).</div>
+        <div id="dynaamiset_osiot">
+            <!-- app.js luo tänne kartoitusalueen -->
+        </div>
 
         <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
         <input type="file" id="kuva1" accept="image/*">
@@ -228,6 +216,9 @@
         <div id="status_kartoitus"></div>
     </div>
 
+    <!-- ========================================================= -->
+    <!--                   App.js sisällytys                       -->
+    <!-- ========================================================= -->
     <script src="app.js"></script>
 
 </body>
