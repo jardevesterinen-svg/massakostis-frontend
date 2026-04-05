@@ -1,77 +1,226 @@
 <!DOCTYPE html>
 <html lang="fi">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kosteuskartoitus – Offline</title>
+    <title>Kosteuskartoitus – Uusi kohde</title>
 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        /* Ylävälilehdet */
+        .tabs {
+            display: flex;
+            background: #2c3e50;
+            color: white;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-right: 1px solid #1b2a36;
+        }
+
+        .tab.active {
+            background: #34495e;
+            font-weight: bold;
+        }
+
+        /* Perustiedot + huoneistot -osio */
+        .content {
+            padding: 20px;
+        }
+
+        /* Kenttien ryhmittely */
+        .section-title {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 2px solid #555;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            margin-top: 10px;
+        }
+
+        /* Rapun lisääminen */
+        .rappu-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .rappu-row input {
+            flex: 1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        /* Luotu huoneistot-lista */
+        #huoneistoLista {
+            margin-top: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        /* Kartoitus välilehti */
+        #kartoitusTab {
+            display: none;
+        }
+
+        /* Navigointipalkki */
+        .apt-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .apt-nav button {
+            padding: 8px 14px;
+            background: #34495e;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .apt-nav input {
+            padding: 10px;
+            width: 120px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Dynaamiset osiot */
+        #dynaamiset_osiot {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* Statusilmoitus */
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+
 </head>
-
 <body>
 
-<h2>Kosteuskartoitus – Offline lomake</h2>
-
-<form id="form">
-
-    <h3>Perustiedot</h3>
-
-    <label>Huoneisto</label>
-    <input type="text" id="huoneisto" required>
-
-    <label>Päivämäärä</label>
-    <input type="date" id="pvm" required>
-
-    <label>Valokuva</label>
-    <input type="file" id="kuva" accept="image/*" capture="environment">
-
-    <h3>Varaaja</h3>
-    <div id="varaaja_wrapper">
-        <input type="text" id="varaaja" placeholder="Varaajan tyyppi / huomio">
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" id="tabPerustiedot">Perustiedot</div>
+        <div class="tab" id="tabKartoitus">Huoneistot</div>
     </div>
-    <button type="button" id="varaaja_toggle_btn" onclick="toggleVaraaja()">
-        Piilota varaaja
-    </button>
 
-    <!-- ✅ tänne dynaamiset osiot -->
-    <div id="dynaamiset_osiot"></div>
+    <!-- PERUSTIEDOT -->
+    <div class="content" id="perustiedotTab">
 
-    <button type="submit">Tallenna</button>
-</form>
+        <div class="section-title">Tilaajan tiedot</div>
+        <div class="form-grid">
+            <input type="text" id="tilaaja_etunimi" placeholder="Etunimi">
+            <input type="text" id="tilaaja_sukunimi" placeholder="Sukunimi">
+            <input type="text" id="tilaaja_yritys" placeholder="Yritys">
+            <input type="email" id="tilaaja_email" placeholder="Sähköposti">
+            <input type="tel" id="tilaaja_puhelin" placeholder="Puhelin">
+            <input type="text" id="tilaaja_osoite" placeholder="Osoite">
+            <input type="text" id="tilaaja_postinumero" placeholder="Postinumero">
+            <input type="text" id="tilaaja_postitoimipaikka" placeholder="Postitoimipaikka">
+        </div>
 
-<p id="status"></p>
+        <div class="section-title">Kohteen tiedot</div>
+        <div class="form-grid">
+            <input type="text" id="kohde_nimi" placeholder="Kohteen nimi">
+            <input type="text" id="kohde_osoite" placeholder="Osoite">
+            <input type="text" id="kohde_postinumero" placeholder="Postinumero">
+            <input type="text" id="kohde_postitoimipaikka" placeholder="Postitoimipaikka">
+            <input type="date" id="kohde_paiva" placeholder="Tarkastuspäivä">
+            <input type="text" id="kohde_tarkastaja" placeholder="Tarkastajan nimi">
+        </div>
 
-<script src="db.js"></script>
-<script src="app.js"></script>
+        <div class="section-title">Kohteen kansikuva</div>
+        <input type="file" id="kansikuva" accept="image/*">
 
-<script>
-let varaajaPiilotettu = false;
+        <div class="section-title">Raput ja huoneistot</div>
 
-function toggleVaraaja() {
-    const wrapper = document.getElementById("varaaja_wrapper");
-    const input = document.getElementById("varaaja");
-    const btn = document.getElementById("varaaja_toggle_btn");
+        <div class="rappu-row">
+            <input type="text" id="rappu_nimi" placeholder="Rappu (esim. 'Talo A')">
+            <input type="number" id="rappu_alku" placeholder="Alku nro">
+            <input type="number" id="rappu_loppu" placeholder="Loppu nro">
+            <button class="btn" id="btnLisaRappu">Lisää rappu</button>
+        </div>
 
-    if (!varaajaPiilotettu) {
-        wrapper.style.display = "none";
-        input.value = "";
-        varaajaPiilotettu = true;
-        btn.textContent = "Tuo takaisin";
-    } else {
-        wrapper.style.display = "block";
-        varaajaPiilotettu = false;
-        btn.textContent = "Piilota varaaja";
-    }
-}
+        <div id="huoneistoLista"></div>
 
-document.getElementById("pvm").value = new Date().toISOString().split("T")[0];
+        <div id="status"></div>
+    </div>
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("sw.js");
-}
-</script>
+    <!-- KARTOITUS -->
+    <div class="content" id="kartoitusTab">
+
+        <div class="apt-nav">
+            <button id="prevApt">⬅️</button>
+            <input type="text" id="currentAptInput" placeholder="A12">
+            <button id="nextApt">➡️</button>
+        </div>
+
+        <div id="dynaamiset_osiot">Kartoituslomake tulee tänne (app.js generoi).</div>
+
+        <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
+        <input type="file" id="kuva1" accept="image/*">
+        <input type="file" id="kuva2" accept="image/*">
+
+        <div id="status_kartoitus"></div>
+    </div>
+
+    <script src="app.js"></script>
 
 </body>
 </html>
