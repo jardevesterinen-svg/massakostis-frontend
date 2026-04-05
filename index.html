@@ -220,9 +220,19 @@
             <!-- app.js luo tänne kartoitusalueen -->
         </div>
 
-        <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
-        <input type="file" id="kuva1" accept="image/*">
-        <input type="file" id="kuva2" accept="image/*">
+<div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
+
+<div>
+    <input type="file" id="kuva1" accept="image/*">
+    <br>
+    <img id="preview1" style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
+</div>
+
+<div style="margin-top:15px;">
+    <input type="file" id="kuva2" accept="image/*">
+    <br>
+    <img id="preview2" style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
+</div>
 
         <div id="status_kartoitus"></div>
     </div>
