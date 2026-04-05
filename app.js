@@ -520,6 +520,21 @@ document.getElementById("currentAptInput").addEventListener("change", () => {
 /* ==========================================================
     KUVIEN LATAUSLOGIIKKA
 ========================================================== */
+function previewSelectedImage(fileInputId, previewId) {
+    const fileInput = document.getElementById(fileInputId);
+    const preview = document.getElementById(previewId);
+
+    const file = fileInput.files[0];
+    if (!file) {
+        preview.style.display = "none";
+        preview.src = "";
+        return;
+    }
+
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.style.display = "block";
+}
 async function uploadApartmentImage(index) {
     if (!kohdeId) {
         alert("Täytä perustiedot ensin.");
