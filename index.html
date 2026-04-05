@@ -150,7 +150,18 @@
     <!--     PERUSTIEDOT-TABI     -->
     <!-- ========================= -->
     <div class="content" id="perustiedotTab">
+<div class="section-title">Hae aiempi kohde</div>
 
+<input 
+    type="text" 
+    id="kohde_haku" 
+    placeholder="Kirjoita kohteen nimi..." 
+    style="width: 100%; padding: 10px; margin-bottom: 10px;"
+>
+
+<div id="kohdeHakulista" 
+     style="background: white; border:1px solid #ddd; padding:10px; border-radius:4px; max-height:200px; overflow-y:auto;">
+</div>
         <div class="section-title">Tilaajan tiedot</div>
         <div class="form-grid">
             <input type="text" id="tilaaja_etunimi" placeholder="Etunimi">
