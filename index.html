@@ -150,18 +150,20 @@
     <!--     PERUSTIEDOT-TABI     -->
     <!-- ========================= -->
     <div class="content" id="perustiedotTab">
-<div class="section-title">Hae aiempi kohde</div>
 
-<input 
-    type="text" 
-    id="kohde_haku" 
-    placeholder="Kirjoita kohteen nimi..." 
-    style="width: 100%; padding: 10px; margin-bottom: 10px;"
->
+        <!-- ✅ KOHDEHAKU -->
+        <div class="section-title">Hae aiempi kohde</div>
+        <input 
+            type="text" 
+            id="kohde_haku" 
+            placeholder="Kirjoita kohteen nimi..." 
+            style="width:100%; padding:10px; margin-bottom:10px;"
+        >
+        <div id="kohdeHakulista" 
+             style="background:white; border:1px solid #ddd; padding:10px; border-radius:4px; max-height:200px; overflow-y:auto;">
+        </div>
 
-<div id="kohdeHakulista" 
-     style="background: white; border:1px solid #ddd; padding:10px; border-radius:4px; max-height:200px; overflow-y:auto;">
-</div>
+        <!-- ✅ TILAAJA -->
         <div class="section-title">Tilaajan tiedot</div>
         <div class="form-grid">
             <input type="text" id="tilaaja_etunimi" placeholder="Etunimi">
@@ -174,6 +176,7 @@
             <input type="text" id="tilaaja_postitoimipaikka" placeholder="Postitoimipaikka">
         </div>
 
+        <!-- ✅ KOHDE -->
         <div class="section-title">Kohteen tiedot</div>
         <div class="form-grid">
             <input type="text" id="kohde_nimi" placeholder="Kohteen nimi">
@@ -184,9 +187,16 @@
             <input type="text" id="kohde_tarkastaja" placeholder="Tarkastajan nimi">
         </div>
 
+        <!-- ✅ KANSIKUVA + ESIKATSELU -->
         <div class="section-title">Kohteen kansikuva</div>
-        <input type="file" id="kansikuva" accept="image/*">
+        <div>
+            <input type="file" id="kansikuva" accept="image/*">
+            <br>
+            <img id="kansiPreview" 
+                 style="max-width:250px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
 
+        <!-- ✅ RAPUT -->
         <div class="section-title">Rappujen syöttö</div>
 
         <div class="rappu-row">
@@ -196,9 +206,11 @@
             <button class="btn" id="btnLisaRappu">Lisää rappu</button>
         </div>
 
+        <!-- ✅ RAPPUJEN LISTA -->
         <div class="section-title">Lisätyt raput</div>
         <div id="rappuListaContainer"></div>
 
+        <!-- ✅ HUONEISTOJEN LISTA -->
         <div class="section-title">Luodut huoneistot</div>
         <div id="huoneistoLista"></div>
 
@@ -210,29 +222,33 @@
     <!-- ========================= -->
     <div class="content" id="kartoitusTab" style="display:none;">
 
+        <!-- ✅ NAVIGOINTI -->
         <div class="apt-nav">
             <button id="prevApt">⬅️</button>
             <input type="text" id="currentAptInput" placeholder="A12">
             <button id="nextApt">➡️</button>
         </div>
 
+        <!-- ✅ Dynaaminen kartoituslomake -->
         <div id="dynaamiset_osiot">
-            <!-- app.js luo tänne kartoitusalueen -->
         </div>
 
-<div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
+        <!-- ✅ HUONEISTOKUVAT + ESIKATSELU -->
+        <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
 
-<div>
-    <input type="file" id="kuva1" accept="image/*">
-    <br>
-    <img id="preview1" style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
-</div>
+        <div>
+            <input type="file" id="kuva1" accept="image/*">
+            <br>
+            <img id="preview1" 
+                 style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
 
-<div style="margin-top:15px;">
-    <input type="file" id="kuva2" accept="image/*">
-    <br>
-    <img id="preview2" style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
-</div>
+        <div style="margin-top:15px;">
+            <input type="file" id="kuva2" accept="image/*">
+            <br>
+            <img id="preview2" 
+                 style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
 
         <div id="status_kartoitus"></div>
     </div>
@@ -240,7 +256,7 @@
     <!-- ========================================================= -->
     <!--                   App.js sisällytys                       -->
     <!-- ========================================================= -->
-    <script src="app.js"></script>
+    app.js
 
 </body>
 </html>
