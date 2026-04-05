@@ -113,8 +113,42 @@ async function saveMetadata() {
 }
 
 /* ----------------------------------------------------------
-   RAPPUJEN LISÄYS JA HUONEISTOJEN GENEROINTI
+   RAPPUJEN LISÄYS, MUOKKAUS JA POISTO
 -----------------------------------------------------------*/
+
+function renderRappuLista() {
+    const container = document.getElementById("rappuListaContainer");
+    container.innerHTML = "";
+
+    rappuLista.forEach((r, index) => {
+        const row = document.createElement("div");
+        row.className = "rappu-row";
+        row.style.marginBottom = "5px";
+
+        row.innerHTML = `
+            <div style="flex: 1;">
+                <strong>${r.rappu}</strong> (${r.alku} – ${r.loppu})
+            </div>
+            <button class="btn" style="background:#8e44ad" onclick="editRappu(${index})">Muokkaa</button>
+            <button class="btn" style="background:#c0392b" onclick="deleteRappu(${index})">Poista</button>
+        `;
+
+        container.appendChild(row);
+    });
+}
+
+function regenerateApartments() {
+    huoneistoLista = [];
+
+    rappuLista.forEach(r => {
+        for (let i = r.alku; i <= r.loppu; i++) {
+            huoneistoLista.push(`${r.rappu}${i}`);
+        }
+    });
+
+    document.getElementById("huoneistoLista").textContent =
+        huoneistoLista.join(", ");
+}
 
 document.getElementById("btnLisaRappu").addEventListener("click", () => {
     const rappu = document.getElementById("rappu_nimi").value.trim();
@@ -127,19 +161,46 @@ document.getElementById("btnLisaRappu").addEventListener("click", () => {
     }
 
     rappuLista.push({ rappu, alku, loppu });
-
-    // Generoi huoneistot
-    for (let i = alku; i <= loppu; i++) {
-        const label = `${rappu}${i}`;
-        huoneistoLista.push(label);
-    }
-
-    // Näytä käyttäjälle lista
-    document.getElementById("huoneistoLista").textContent =
-        huoneistoLista.join(", ");
-
+    regenerateApartments();
+    renderRappuLista();
     saveMetadata();
 });
+
+/* ----------------------------------------------------------
+   RAPPUJEN MUOKKAUS
+-----------------------------------------------------------*/
+
+function editRappu(index) {
+    const r = rappuLista[index];
+
+    const newName = prompt("Rappu (esim. Talo A):", r.rappu);
+    if (!newName) return;
+
+    const newStart = parseInt(prompt("Huoneiston alku:", r.alku));
+    const newEnd = parseInt(prompt("Huoneiston loppu:", r.loppu));
+    if (isNaN(newStart) || isNaN(newEnd) || newStart > newEnd) {
+        alert("Virhe alku/loppu arvoissa.");
+        return;
+    }
+
+    rappuLista[index] = { rappu: newName.trim(), alku: newStart, loppu: newEnd };
+    regenerateApartments();
+    renderRappuLista();
+    saveMetadata();
+}
+
+/* ----------------------------------------------------------
+   RAPPUJEN POISTO
+-----------------------------------------------------------*/
+
+function deleteRappu(index) {
+    if (!confirm("Poistetaanko tämä rappu?")) return;
+
+    rappuLista.splice(index, 1);
+    regenerateApartments();
+    renderRappuLista();
+    saveMetadata();
+}
 
 /* ----------------------------------------------------------
    APARTMENT NAVIGATION
