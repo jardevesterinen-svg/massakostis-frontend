@@ -517,6 +517,48 @@ document.getElementById("currentAptInput").addEventListener("change", () => {
         loadApartment(idx);
     }
 });
+/* ==========================================================
+    KUVIEN LATAUSLOGIIKKA
+========================================================== */
+async function uploadApartmentImage(index) {
+    if (!kohdeId) {
+        alert("Täytä perustiedot ensin.");
+        return;
+    }
+    if (huoneistoLista.length === 0) {
+        alert("Lisää rappu ja huoneistot ensin.");
+        return;
+    }
+
+    const aptLabel = huoneistoLista[currentApartmentIndex];
+    const slug = slugify(aptLabel);
+
+    const fileInput = document.getElementById(`kuva${index}`);
+    const file = fileInput.files[0];
+    if (!file) return; // ei kuvaa → ei toimintaa
+
+    const form = new FormData();
+    form.append("kohde_id", kohdeId);
+    form.append("huoneisto_slug", slug);
+    form.append("index", index);      // "1" tai "2"
+    form.append("file", file);
+
+    try {
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-image",
+            {
+                method: "POST",
+                body: form
+            }
+        );
+
+        showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
+
+    } catch (err) {
+        console.error(err);
+        showStatus("Kuvan tallennus epäonnistui (ei yhteyttä)", "status_kartoitus");
+    }
+}
 
 /* ==========================================================
     LATAA KOHDELISTA SIVUN LADATESSA
