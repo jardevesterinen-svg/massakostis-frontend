@@ -1,4 +1,10 @@
 /* ==========================================================
+    ASETUKSET — PUBLIC R2 URL
+========================================================== */
+
+const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
+
+/* ==========================================================
     GLOBAALI TILA
 ========================================================== */
 
@@ -10,7 +16,7 @@ let LAUSELISTA = {};
 let kaikkiKohteet = [];
 
 /* ==========================================================
-    LAUSELISTAN LATAUS
+    LAUSELISTA
 ========================================================== */
 
 async function loadLauseet() {
@@ -38,7 +44,7 @@ function showStatus(msg, id = "status") {
 }
 
 /* ==========================================================
-    TABS
+    TABIT
 ========================================================== */
 
 document.getElementById("tabPerustiedot").addEventListener("click", () => {
@@ -73,7 +79,6 @@ async function haeKohteet() {
             "https://massakostis-backend-production-9111.up.railway.app/list-kohteet"
         );
         const data = await res.json();
-
         kaikkiKohteet = data.kohteet;
         renderKohdeLista(kaikkiKohteet);
     } catch (e) {
@@ -86,18 +91,18 @@ function renderKohdeLista(lista) {
     div.innerHTML = "";
 
     if (!lista || lista.length === 0) {
-        div.innerHTML = "<em>Ei kohteita löytynyt.</em>";
+        div.innerHTML = "<em>Ei kohteita.</em>";
         return;
     }
 
     lista.forEach(id => {
-        const btn = document.createElement("button");
-        btn.className = "btn";
-        btn.textContent = id;
-        btn.style.width = "100%";
-        btn.style.marginBottom = "5px";
-        btn.onclick = () => lataaKohde(id);
-        div.appendChild(btn);
+        const b = document.createElement("button");
+        b.className = "btn";
+        b.textContent = id;
+        b.style.width = "100%";
+        b.style.marginBottom = "5px";
+        b.onclick = () => lataaKohde(id);
+        div.appendChild(b);
     });
 }
 
@@ -120,7 +125,7 @@ function updateKohdeId() {
 }
 
 /* ==========================================================
-    KOHTEEN LATAUS
+    LATAA KOKO KOHDE (metadata + rappu + huoneistot + kansikuva)
 ========================================================== */
 
 async function lataaKohde(id) {
@@ -147,15 +152,16 @@ async function lataaKohde(id) {
     renderRappuLista();
     regenerateApartments();
 
-    const prev = document.getElementById("kansiPreview");
-    prev.src = `https://pub-${id}.r2.cloudflarestorage.com/kohteet/${id}/kansikuva.jpg`;
-    prev.style.display = "block";
+    // ✅ Näytä kansikuva
+    const kp = document.getElementById("kansiPreview");
+    kp.src = `${PUBLIC_URL}/kohteet/${id}/kansikuva.jpg`;
+    kp.style.display = "block";
 
     alert("Kohde ladattu!");
 }
 
 /* ==========================================================
-    PERUSTIETOJEN AUTOSAVE
+    PERUSTIETOJEN TALLENNUS
 ========================================================== */
 
 async function saveMetadata() {
@@ -194,6 +200,7 @@ async function saveMetadata() {
                 body: JSON.stringify({ kohde_id: kohdeId, metadata })
             }
         );
+
         showStatus("Tallennettu ✅");
     } catch {
         showStatus("Ei yhteyttä – tallennetaan myöhemmin");
@@ -206,22 +213,22 @@ async function saveMetadata() {
 
 function previewKansikuva() {
     const input = document.getElementById("kansikuva");
-    const preview = document.getElementById("kansiPreview");
+    const prev = document.getElementById("kansiPreview");
 
     const file = input.files[0];
     if (!file) {
-        preview.style.display = "none";
-        preview.src = "";
+        prev.style.display = "none";
+        prev.src = "";
         return;
     }
 
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
+    prev.src = URL.createObjectURL(file);
+    prev.style.display = "block";
 }
 
 async function uploadKansikuva() {
     if (!kohdeId) {
-        alert("Täytä kohteen nimi ja päivämäärä ensin.");
+        alert("Täytä ensin kohteen nimi ja tarkastuspäivä.");
         return;
     }
 
@@ -233,15 +240,12 @@ async function uploadKansikuva() {
     form.append("kohde_id", kohdeId);
     form.append("file", file);
 
-    try {
-        await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/upload-kansikuva",
-            { method: "POST", body: form }
-        );
-        showStatus("Kansikuva tallennettu ✅");
-    } catch {
-        showStatus("Kansikuvan tallennus epäonnistui ❌");
-    }
+    await fetch(
+        "https://massakostis-backend-production-9111.up.railway.app/upload-kansikuva",
+        { method: "POST", body: form }
+    );
+
+    showStatus("Kansikuva tallennettu ✅");
 }
 
 document.getElementById("kansikuva").addEventListener("change", () => {
@@ -251,7 +255,7 @@ document.getElementById("kansikuva").addEventListener("change", () => {
 });
 
 /* ==========================================================
-    RAPUT + HUONEISTOT
+    RAPPUTOIMINNOT + HUONEISTOT
 ========================================================== */
 
 function regenerateApartments() {
@@ -267,36 +271,34 @@ function regenerateApartments() {
 }
 
 function renderRappuLista() {
-    const cont = document.getElementById("rappuListaContainer");
-    cont.innerHTML = "";
+    const c = document.getElementById("rappuListaContainer");
+    c.innerHTML = "";
 
     rappuLista.forEach((r, idx) => {
-        const row = document.createElement("div");
-        row.className = "rappu-row";
+        const div = document.createElement("div");
+        div.className = "rappu-row";
 
-        row.innerHTML = `
-            <div style="flex:1;">
-                <strong>${r.rappu}</strong> (${r.alku}–${r.loppu})
-            </div>
+        div.innerHTML = `
+            <div style="flex:1;"><strong>${r.rappu}</strong> (${r.alku}–${r.loppu})</div>
             <button class="btn" style="background:#8e44ad" onclick="editRappu(${idx})">Muokkaa</button>
             <button class="btn" style="background:#c0392b" onclick="deleteRappu(${idx})">Poista</button>
         `;
 
-        cont.appendChild(row);
+        c.appendChild(div);
     });
 }
 
 document.getElementById("btnLisaRappu").addEventListener("click", () => {
-    const rappu = document.getElementById("rappu_nimi").value.trim();
+    const nimi = document.getElementById("rappu_nimi").value.trim();
     const alku = parseInt(document.getElementById("rappu_alku").value);
     const loppu = parseInt(document.getElementById("rappu_loppu").value);
 
-    if (!rappu || isNaN(alku) || isNaN(loppu) || alku > loppu) {
+    if (!nimi || isNaN(alku) || isNaN(loppu) || alku > loppu) {
         alert("Tarkista rappu ja numerot.");
         return;
     }
 
-    rappuLista.push({ rappu, alku, loppu });
+    rappuLista.push({ rappu:nimi, alku, loppu });
     regenerateApartments();
     renderRappuLista();
     saveMetadata();
@@ -305,18 +307,18 @@ document.getElementById("btnLisaRappu").addEventListener("click", () => {
 function editRappu(i) {
     const r = rappuLista[i];
 
-    const nimi = prompt("Rappu:", r.rappu);
-    if (!nimi) return;
+    const n = prompt("Rappu:", r.rappu);
+    if (!n) return;
 
-    const alku = parseInt(prompt("Alku:", r.alku));
-    const loppu = parseInt(prompt("Loppu:", r.loppu));
+    const a = parseInt(prompt("Alku:", r.alku));
+    const l = parseInt(prompt("Loppu:", r.loppu));
 
-    if (isNaN(alku) || isNaN(loppu) || alku > loppu) {
-        alert("Virhe alku/loppu arvoissa.");
+    if (isNaN(a) || isNaN(l) || a > l) {
+        alert("Virhe alku/loppu.");
         return;
     }
 
-    rappuLista[i] = { rappu: nimi.trim(), alku, loppu };
+    rappuLista[i] = { rappu:n.trim(), alku:a, loppu:l };
     regenerateApartments();
     renderRappuLista();
     saveMetadata();
@@ -335,55 +337,55 @@ function deleteRappu(i) {
 ========================================================== */
 
 function createDropdown(osio, tyyppi) {
-    const wrap = document.createElement("div");
-    wrap.style.marginBottom = "20px";
+    const w = document.createElement("div");
+    w.style.marginBottom = "20px";
 
-    wrap.innerHTML = `<label>${tyyppi === "havainnot" ? "Havainnot" : "Toimenpiteet"}</label>`;
+    w.innerHTML = `<label>${tyyppi === "havainnot" ? "Havainnot" : "Toimenpiteet"}</label>`;
 
-    const select = document.createElement("select");
-    select.id = `${osio}_${tyyppi}_select`;
-    wrap.appendChild(select);
+    const sel = document.createElement("select");
+    sel.id = `${osio}_${tyyppi}_select`;
+    w.appendChild(sel);
 
     const opt0 = document.createElement("option");
     opt0.value = "";
     opt0.textContent = "– valitse –";
-    select.appendChild(opt0);
+    sel.appendChild(opt0);
 
     LAUSELISTA[`${osio}_${tyyppi}`].forEach(l => {
         const o = document.createElement("option");
         o.value = l;
         o.textContent = l;
-        select.appendChild(o);
+        sel.appendChild(o);
     });
 
     const muu = document.createElement("input");
     muu.type = "text";
     muu.placeholder = "Muu...";
     muu.style.display = "none";
-    wrap.appendChild(muu);
+    w.appendChild(muu);
 
-    const textarea = document.createElement("textarea");
-    textarea.id = `${osio}_${tyyppi}_textarea`;
-    textarea.style.width = "100%";
-    textarea.style.height = "80px";
-    wrap.appendChild(textarea);
+    const ta = document.createElement("textarea");
+    ta.id = `${osio}_${tyyppi}_textarea`;
+    ta.style.width = "100%";
+    ta.style.height = "80px";
+    w.appendChild(ta);
 
-    select.addEventListener("change", () => {
-        if (select.value === "Muu") {
+    sel.addEventListener("change", () => {
+        if (sel.value === "Muu") {
             muu.style.display = "block";
             return;
         }
-        if (select.value) {
-            textarea.value += (textarea.value ? "\n" : "") + select.value;
+        if (sel.value) {
+            ta.value += (ta.value ? "\n" : "") + sel.value;
             autosave();
         }
-        select.value = "";
+        sel.value = "";
         muu.style.display = "none";
     });
 
     muu.addEventListener("keydown", e => {
         if (e.key === "Enter") {
-            textarea.value += (textarea.value ? "\n" : "") + muu.value;
+            ta.value += (ta.value ? "\n" : "") + muu.value;
             muu.value = "";
             muu.style.display = "none";
             autosave();
@@ -391,9 +393,9 @@ function createDropdown(osio, tyyppi) {
         }
     });
 
-    textarea.addEventListener("input", autosave);
+    ta.addEventListener("input", autosave);
 
-    return wrap;
+    return w;
 }
 
 function buildApartmentForm() {
@@ -401,7 +403,7 @@ function buildApartmentForm() {
     root.innerHTML = "";
 
     const osiot = Object.keys(LAUSELISTA)
-        .map(k => k.replace("_havainnot", "").replace("_toimenpiteet", ""))
+        .map(k=>k.replace("_havainnot","").replace("_toimenpiteet",""))
         .filter((v,i,a)=>a.indexOf(v)===i);
 
     osiot.forEach(osio => {
@@ -410,25 +412,25 @@ function buildApartmentForm() {
         sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
 
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
-        const kuntoSel = document.createElement("select");
-        kuntoSel.id = `${osio}_kuntoluokka`;
+        const ks = document.createElement("select");
+        ks.id = `${osio}_kuntoluokka`;
         ["★","★★","★★★","★★★★"].forEach(t=>{
             let o=document.createElement("option");
             o.value=t;
             o.textContent=t;
-            kuntoSel.appendChild(o);
+            ks.appendChild(o);
         });
-        kuntoSel.addEventListener("change", autosave);
-        sec.appendChild(kuntoSel);
+        ks.addEventListener("change",autosave);
+        sec.appendChild(ks);
 
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
-        const huomDiv=document.createElement("div");
-        huomDiv.innerHTML=`
+        const hu = document.createElement("div");
+        hu.innerHTML = `
             <label><input type="radio" name="${osio}_huomio" value="Kyllä"> Kyllä</label>
             <label><input type="radio" name="${osio}_huomio" value="Ei" checked> Ei</label>
         `;
-        huomDiv.addEventListener("change", autosave);
-        sec.appendChild(huomDiv);
+        hu.addEventListener("change",autosave);
+        sec.appendChild(hu);
 
         sec.appendChild(createDropdown(osio,"havainnot"));
         sec.appendChild(createDropdown(osio,"toimenpiteet"));
@@ -438,7 +440,7 @@ function buildApartmentForm() {
 }
 
 /* ==========================================================
-    HUONEISTON LATAUS
+    HUONEISTON LATAUS (data + kuvat)
 ========================================================== */
 
 async function loadApartment(i) {
@@ -446,7 +448,6 @@ async function loadApartment(i) {
 
     const apt = huoneistoLista[i];
     document.getElementById("currentAptInput").value = apt;
-
     const slug = slugify(apt);
 
     try {
@@ -466,22 +467,18 @@ async function loadApartment(i) {
 
     document.getElementById("kuva1").value = "";
     document.getElementById("kuva2").value = "";
-
     loadImagePreview(slug);
 }
 
 function loadImagePreview(slug) {
 
-    // ❗ MUUTA TÄMÄ OIKEAAN PUBLIC URLIISI
-    const base = `https://pub-${kohdeId}.r2.cloudflarestorage.com/kohteet/${kohdeId}/huoneistot/${slug}`;
-
     const p1 = document.getElementById("preview1");
     const p2 = document.getElementById("preview2");
 
-    p1.src = base + "/kuva1.jpg";
+    p1.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva1.jpg`;
     p1.style.display = "block";
 
-    p2.src = base + "/kuva2.jpg";
+    p2.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva2.jpg`;
     p2.style.display = "block";
 }
 
@@ -530,7 +527,7 @@ function collectApartmentData() {
 
     const fields = root.querySelectorAll("input, textarea, select");
     fields.forEach(el => {
-        if (el.type === "radio") {
+        if (el.type==="radio") {
             if (el.checked) data[el.name] = el.value;
         } else {
             data[el.id] = el.value;
@@ -544,21 +541,21 @@ async function saveApartmentData() {
     if (!kohdeId) return;
     if (huoneistoLista.length === 0) return;
 
-    const aptLabel = huoneistoLista[currentApartmentIndex];
-    const slug = slugify(aptLabel);
+    const apt = huoneistoLista[currentApartmentIndex];
+    const slug = slugify(apt);
 
     const data = collectApartmentData();
-    data.huoneisto = aptLabel;
+    data.huoneisto = apt;
 
     try {
         await fetch(
             "https://massakostis-backend-production-9111.up.railway.app/upload-data",
             {
-                method: "POST",
-                headers: { "Content-Type":"application/json" },
-                body: JSON.stringify({
-                    kohde_id: kohdeId,
-                    huoneisto_slug: slug,
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({
+                    kohde_id:kohdeId,
+                    huoneisto_slug:slug,
                     data
                 })
             }
@@ -572,7 +569,7 @@ async function saveApartmentData() {
 }
 
 /* ==========================================================
-    NAVIGOINTI ← A12 →
+    NAVIGAATIO
 ========================================================== */
 
 document.getElementById("prevApt").addEventListener("click", () => {
@@ -590,9 +587,8 @@ document.getElementById("nextApt").addEventListener("click", () => {
 });
 
 document.getElementById("currentAptInput").addEventListener("change", () => {
-    const input = document.getElementById("currentAptInput").value.trim();
-    const idx = huoneistoLista.indexOf(input);
-
+    const val = document.getElementById("currentAptInput").value;
+    const idx = huoneistoLista.indexOf(val);
     if (idx !== -1) {
         currentApartmentIndex = idx;
         loadApartment(idx);
@@ -606,8 +602,8 @@ document.getElementById("currentAptInput").addEventListener("change", () => {
 function previewSelectedImage(fileInputId, previewId) {
     const input = document.getElementById(fileInputId);
     const preview = document.getElementById(previewId);
-
     const file = input.files[0];
+
     if (!file) {
         preview.style.display = "none";
         preview.src = "";
@@ -621,12 +617,12 @@ function previewSelectedImage(fileInputId, previewId) {
 async function uploadApartmentImage(index) {
 
     if (!kohdeId) {
-        alert("Täytä perustiedot ensin.");
+        alert("Täytä ensin perustiedot.");
         return;
     }
 
-    const aptLabel = huoneistoLista[currentApartmentIndex];
-    const slug = slugify(aptLabel);
+    const apt = huoneistoLista[currentApartmentIndex];
+    const slug = slugify(apt);
 
     const input = document.getElementById(`kuva${index}`);
     const file = input.files[0];
@@ -641,7 +637,7 @@ async function uploadApartmentImage(index) {
     try {
         await fetch(
             "https://massakostis-backend-production-9111.up.railway.app/upload-image",
-            { method: "POST", body: form }
+            { method:"POST", body:form }
         );
 
         showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
@@ -652,12 +648,12 @@ async function uploadApartmentImage(index) {
 }
 
 document.getElementById("kuva1").addEventListener("change", () => {
-    previewSelectedImage("kuva1", "preview1");
+    previewSelectedImage("kuva1","preview1");
     uploadApartmentImage(1);
 });
 
 document.getElementById("kuva2").addEventListener("change", () => {
-    previewSelectedImage("kuva2", "preview2");
+    previewSelectedImage("kuva2","preview2");
     uploadApartmentImage(2);
 });
 
