@@ -664,3 +664,25 @@ document.getElementById("kuva2").addEventListener("change", () => {
 window.addEventListener("load", () => {
     haeKohteet();
 });
+document.getElementById("btnCreatePdf").addEventListener("click", async () => {
+    if (!kohdeId) {
+        alert("Ei kohdetta ladattuna.");
+        return;
+    }
+
+    const res = await fetch(
+        `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+        { method: "POST" }
+    );
+
+    const data = await res.json();
+
+    if (data.url) {
+        alert("PDF-raportti luotu!");
+        // Valinta A = tallennus R2:een, ei automaattista avausta
+        window.open(data.url, "_blank");
+    } else {
+        alert("Virhe PDF:n luonnissa.");
+    }
+});
+``
