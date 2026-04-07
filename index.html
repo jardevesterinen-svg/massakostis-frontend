@@ -235,69 +235,25 @@
 <section class="materials-section">
 <h3>Pintarakenteiden materiaalit</h3>
     
-  <!-- Lattian pintamateriaali -->
-  <div class="field-group">
-    <label><strong>Lattian pintamateriaali</strong></label><br>
-    <label><input type="radio" name="materiaalit_lattia_valinta" value="Laatta"> Laatta</label><br>
-    <label><input type="radio" name="materiaalit_lattia_valinta" value="Muovimatto"> Muovimatto</label><br>
-    <label><input type="radio" name="materiaalit_lattia_valinta" value="Epoksi"> Epoksi</label><br>
-    <label><input type="radio" name="materiaalit_lattia_valinta" value="Muu" onchange="toggleMuu('materiaalit_lattia')"> Muu</label>
-    <input type="text"
-           id="materiaalit_lattia_muu"
-           name="materiaalit_lattia_muu"
-           placeholder="Mikä muu?"
-           style="display:none;" />
-  </div>
 
-  <!-- Seinien pintamateriaali -->
-  <div class="field-group">
-    <label><strong>Seinien pintamateriaali</strong></label><br>
-    <label><input type="radio" name="materiaalit_seinat_valinta" value="Laatta"> Laatta</label><br>
-    <label><input type="radio" name="materiaalit_seinat_valinta" value="Muovitapetti"> Muovitapetti</label><br>
-    <label><input type="radio" name="materiaalit_seinat_valinta" value="Maali"> Maali</label><br>
-    <label><input type="radio" name="materiaalit_seinat_valinta" value="Pelti"> Pelti</label><br>
-    <label><input type="radio" name="materiaalit_seinat_valinta" value="Muu" onchange="toggleMuu('materiaalit_seinat')"> Muu</label>
-    <input type="text"
-           id="materiaalit_seinat_muu"
-           name="materiaalit_seinat_muu"
-           placeholder="Mikä muu?"
-           style="display:none;" />
-  </div>
+<label>Lattiapäällyste</label>
+<select id="lattia" onchange="toggleLattiaMuu()">
+    <option value="Laatta">Laatta</option>
+    <option value="Muovimatto">Muovimatto</option>
+    <option value="Laminaatti">Laminaatti</option>
+    <option value="Vinyyli">Vinyyli</option>
+    <option value="Epoksi">Epoksi</option>
+    <option value="Muu">Muu (mikä?)</option>
+</select>
 
-  <!-- Katon pintamateriaali -->
-  <div class="field-group">
-    <label><strong>Katon pintamateriaali</strong></label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Betoni"> Betoni</label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Kipsilevy"> Kipsilevy</label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Paneeli"> Paneeli</label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Pelti"> Pelti</label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Maali"> Maali</label><br>
-    <label><input type="radio" name="materiaalit_katto_valinta" value="Muu" onchange="toggleMuu('materiaalit_katto')"> Muu</label>
-    <input type="text"
-           id="materiaalit_katto_muu"
-           name="materiaalit_katto_muu"
-           placeholder="Mikä muu?"
-           style="display:none;" />
-  </div>
+<!-- Tämä kenttä näkyy vain, jos käyttäjä valitsee “Muu” -->
+<input 
+    type="text" 
+    id="lattia_muu" 
+    placeholder="Mikä lattiapäällyste?" 
+    style="display:none; margin-top:5px;"
+>
 
-  <!-- Vesiputket -->
-  <div class="field-group">
-    <label><strong>Vesiputket</strong></label><br>
-    <label><input type="checkbox" name="materiaalit_vesiputket" value="Pintavetoina"> Pintavetoina</label><br>
-    <label><input type="checkbox" name="materiaalit_vesiputket" value="Uppoasennuksena"> Uppoasennuksena</label><br>
-    <label><input type="checkbox" name="materiaalit_vesiputket" value="Kupari"> Kupari</label><br>
-    <label><input type="checkbox" name="materiaalit_vesiputket" value="Muovi"> Muovi</label>
-  </div>
-
-  <!-- Lämpöputket -->
-  <div class="field-group">
-    <label><strong>Lämpöputket</strong></label><br>
-    <label><input type="checkbox" name="materiaalit_lampoputket" value="Pintavetoina"> Pintavetoina</label><br>
-    <label><input type="checkbox" name="materiaalit_lampoputket" value="Uppoasennuksena"> Uppoasennuksena</label><br>
-    <label><input type="checkbox" name="materiaalit_lampoputket" value="Teräs"> Teräs</label><br>
-    <label><input type="checkbox" name="materiaalit_lampoputket" value="Kupari"> Kupari</label>
-  </div>
-</section>
             
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
@@ -327,24 +283,10 @@
     <!--                   App.js sisällytys                       -->
     <!-- ========================================================= -->
     <script src="app.js"></script>
-<script>
-function toggleMuu(prefix) {
-  const muuField = document.getElementById(prefix + '_muu');
-  const radios = document.getElementsByName(prefix + '_valinta');
-  let show = false;
 
-  radios.forEach(r => {
-    if (r.checked && r.value === 'Muu') {
-      show = true;
-    }
-  });
+  <!-- Ei voitu tarkastaa -->
+  <div class="ei-tarkastettu">
 
-  if (muuField) {
-    muuField.style.display = show ? 'block' : 'none';
-    if (!show) muuField.value = '';
-  }
-}
-</script>
 
 </body>
 </html>
