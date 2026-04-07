@@ -236,21 +236,20 @@
 <h3>Pintarakenteiden materiaalit</h3>
     
 
-<label>Lattiapäällyste</label>
-<select id="lattia" onchange="toggleLattiaMuu()">
-    <option value="Laatta">Laatta</option>
-    <option value="Muovimatto">Muovimatto</option>
-    <option value="Laminaatti">Laminaatti</option>
-    <option value="Vinyyli">Vinyyli</option>
-    <option value="Epoksi">Epoksi</option>
-    <option value="Muu">Muu (mikä?)</option>
-</select>
+<h3>Lattiapäällyste</h3>
+<div class="checkbox-group" id="lattia_group">
+    <label><input type="checkbox" value="Laatta"> Laatta</label>
+    <label><input type="checkbox" value="Muovimatto"> Muovimatto</label>
+    <label><input type="checkbox" value="Laminaatti"> Laminaatti</label>
+    <label><input type="checkbox" value="Vinyyli"> Vinyyli</label>
+    <label><input type="checkbox" value="Epoksi"> Epoksi</label>
+    <label><input type="checkbox" value="Muu" onchange="toggleLattiaMuu()"> Muu</label>
+</div>
 
-<!-- Tämä kenttä näkyy vain, jos käyttäjä valitsee “Muu” -->
 <input 
     type="text" 
     id="lattia_muu" 
-    placeholder="Mikä lattiapäällyste?" 
+    placeholder="Mikä muu lattiapäällyste?" 
     style="display:none; margin-top:5px;"
 >
 
