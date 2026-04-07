@@ -324,6 +324,26 @@
     <!--                   App.js sisällytys                       -->
     <!-- ========================================================= -->
     <script src="app.js"></script>
+<script>
+function toggleMuu(prefix) {
+  const muuField = document.getElementById(prefix + '_muu');
+  const radios = document.getElementsByName(prefix + '_valinta');
+  let show = false;
 
+  radios.forEach(r => {
+    if (r.checked && r.value === 'Muu') {
+      show = true;
+    }
+  });
+
+  if (muuField) {
+    muuField.style.display = show ? 'block' : 'none';
+    if (!show) muuField.value = '';
+  }
+}
+</script>
+
+</body>
+</html>
 </body>
 </html>
