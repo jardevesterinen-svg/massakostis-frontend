@@ -252,7 +252,19 @@
     placeholder="Mikä muu lattiapäällyste?" 
     style="display:none; margin-top:5px;"
 >
+<h3>Katto</h3>
+<div class="checkbox-group" id="katto_group">
+    <label><input type="checkbox" value="Maalattu"> Maalattu</label>
+    <label><input type="checkbox" value="Paneeli"> Paneeli</label>
+    <label><input type="checkbox" value="Muu" onchange="toggleKattoMuu()"> Muu</label>
+</div>
 
+<input 
+    type="text" 
+    id="katto_muu" 
+    placeholder="Mikä muu kattopinta?" 
+    style="display:none; margin-top:5px;"
+>
             
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
@@ -285,7 +297,22 @@
 
   <!-- Ei voitu tarkastaa -->
   <div class="ei-tarkastettu">
+<script>
+function toggleLattiaMuu() {
+    const muu = document.querySelector('#lattia_group input[value="Muu"]').checked;
+    document.getElementById("lattia_muu").style.display = muu ? "block" : "none";
+}
 
+function toggleSeinaMuu() {
+    const muu = document.querySelector('#seina_group input[value="Muu"]').checked;
+    document.getElementById("seina_muu").style.display = muu ? "block" : "none";
+}
+
+function toggleKattoMuu() {
+    const muu = document.querySelector('#katto_group input[value="Muu"]').checked;
+    document.getElementById("katto_muu").style.display = muu ? "block" : "none";
+}
+</script>
 
 </body>
 </html>
