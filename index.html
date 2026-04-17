@@ -269,8 +269,10 @@
 >
 <h3>KATON PINTAMATERIAALI</h3>
 <div class="checkbox-group" id="katto_group">
-    <label><input type="checkbox" value="Maalattu"> Maalattu</label>
+    <label><input type="checkbox" value="Betoni"> Betoni</label>
     <label><input type="checkbox" value="Paneeli"> Paneeli</label>
+    <label><input type="checkbox" value="Kipsilevy"> Kipsilevy</label>
+    <label><input type="checkbox" value="Pelti"> Pelti</label>
     <label><input type="checkbox" value="Muu" onchange="toggleKattoMuu()"> Muu</label>
 </div>
 >
@@ -279,7 +281,15 @@
     id="katto_muu" 
     placeholder="Mikä muu kattopinta?" 
     style="display:none; margin-top:5px;"
-<br>            
+>   
+<h3>VESIPUTKET</h3>
+<div class="checkbox-group" id="vesiputki_group">
+    <label><input type="checkbox" value="Uppoasennuksena"> Uppo</label>
+    <label><input type="checkbox" value="Pintavetoina"> Pinta</label>
+    <label><input type="checkbox" value="Kupari"> Kupari</label>
+    <label><input type="checkbox" value="Muovi"> Muovi</label>
+
+</div>
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
 
