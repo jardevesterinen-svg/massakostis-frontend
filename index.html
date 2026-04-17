@@ -236,7 +236,7 @@
 <h3>PINTARAKENTEIDEN MATERIAALIT</h3>
     
 
-<h3>LATTIAPÄÄLLYSTE</h3>
+<h3>LATTIAN PINTAMATERIAALI</h3>
 <div class="checkbox-group" id="lattia_group">
     <label><input type="checkbox" value="Laatta"> Laatta</label>
     <label><input type="checkbox" value="Muovimatto"> Muovimatto</label>
@@ -251,8 +251,23 @@
     id="lattia_muu" 
     placeholder="Mikä muu lattiapäällyste?" 
     style="display:none; margin-top:5px;"
+
+    <h3>SEINIEN PINTAMATERIAALI</h3>
+<div class="checkbox-group" id="seinä_group">
+    <label><input type="checkbox" value="Laatta"> Laatta</label>
+    <label><input type="checkbox" value="Muovitapetti"> Muovimatto</label>
+    <label><input type="checkbox" value="Pelti"> Laminaatti</label>
+    <label><input type="checkbox" value="Maali"> Vinyyli</label>
+    <label><input type="checkbox" value="Muu" onchange="toggleSeinäMuu()"> Muu</label>
+</div>
+
+<input 
+    type="text" 
+    id="seinä_muu" 
+    placeholder="Mikä muu seinäpäällyste?" 
+    style="display:none; margin-top:5px;"
 >
-<h3>KATTO</h3>
+<h3>KATON PINTAMATERIAALI</h3>
 <div class="checkbox-group" id="katto_group">
     <label><input type="checkbox" value="Maalattu"> Maalattu</label>
     <label><input type="checkbox" value="Paneeli"> Paneeli</label>
