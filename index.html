@@ -251,8 +251,8 @@
     id="lattia_muu" 
     placeholder="Mikä muu lattiapäällyste?" 
     style="display:none; margin-top:5px;"
-
-    <h3>SEINIEN PINTAMATERIAALI</h3>
+>
+<h3>SEINIEN PINTAMATERIAALI</h3>
 <div class="checkbox-group" id="seinä_group">
     <label><input type="checkbox" value="Laatta"> Laatta</label>
     <label><input type="checkbox" value="Muovitapetti"> Muovimatto</label>
@@ -318,7 +318,7 @@ function toggleLattiaMuu() {
     document.getElementById("lattia_muu").style.display = muu ? "block" : "none";
 }
 
-function toggleSeinaMuu() {
+function toggleSeinäMuu() {
     const muu = document.querySelector('#seina_group input[value="Muu"]').checked;
     document.getElementById("seina_muu").style.display = muu ? "block" : "none";
 }
