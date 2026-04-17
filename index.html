@@ -253,12 +253,12 @@
     style="display:none; margin-top:5px;"
 >
 <h3>SEINIEN PINTAMATERIAALI</h3>
-<div class="checkbox-group" id="seinä_group">
+<div class="checkbox-group" id="seina_group">
     <label><input type="checkbox" value="Laatta"> Laatta</label>
     <label><input type="checkbox" value="Muovitapetti"> Muovimatto</label>
     <label><input type="checkbox" value="Pelti"> Laminaatti</label>
     <label><input type="checkbox" value="Maali"> Vinyyli</label>
-    <label><input type="checkbox" value="Muu" onchange="toggleSeinäMuu()"> Muu</label>
+    <label><input type="checkbox" value="Muu" onchange="toggleSeinaMuu()"> Muu</label>
 </div>
 
 <input 
@@ -273,7 +273,7 @@
     <label><input type="checkbox" value="Paneeli"> Paneeli</label>
     <label><input type="checkbox" value="Muu" onchange="toggleKattoMuu()"> Muu</label>
 </div>
-
+>
 <input 
     type="text" 
     id="katto_muu" 
@@ -318,7 +318,7 @@ function toggleLattiaMuu() {
     document.getElementById("lattia_muu").style.display = muu ? "block" : "none";
 }
 
-function toggleSeinäMuu() {
+function toggleSeinaMuu() {
     const muu = document.querySelector('#seina_group input[value="Muu"]').checked;
     document.getElementById("seina_muu").style.display = muu ? "block" : "none";
 }
