@@ -256,37 +256,25 @@
 <!-- LATTIA -->
 <!-- ==================== -->
 <h3>LATTIAN PINTAMATERIAALI</h3>
-<div class="radio-group" id="materiaalit_lattia">
+<div class="option-row" id="materiaalit_lattia">
   <label>
-    <input type="radio"
-           name="materiaalit_lattia_valinta"
-           value="Laatta"
-           onchange="toggleMuu('materiaalit_lattia')">
-    Laatta
-  </label><br>
+    <input type="radio" name="materiaalit_lattia_valinta" value="Laatta"
+           onchange="toggleMuu('materiaalit_lattia')"> Laatta
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_lattia_valinta"
-           value="Muovimatto"
-           onchange="toggleMuu('materiaalit_lattia')">
-    Muovimatto
-  </label><br>
+    <input type="radio" name="materiaalit_lattia_valinta" value="Muovimatto"
+           onchange="toggleMuu('materiaalit_lattia')"> Muovimatto
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_lattia_valinta"
-           value="Epoksi"
-           onchange="toggleMuu('materiaalit_lattia')">
-    Epoksi
-  </label><br>
+    <input type="radio" name="materiaalit_lattia_valinta" value="Epoksi"
+           onchange="toggleMuu('materiaalit_lattia')"> Epoksi
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_lattia_valinta"
-           value="Muu"
-           onchange="toggleMuu('materiaalit_lattia')">
-    Muu
+    <input type="radio" name="materiaalit_lattia_valinta" value="Muu"
+           onchange="toggleMuu('materiaalit_lattia')"> Muu
   </label>
 </div>
 
@@ -302,45 +290,30 @@
 <!-- SEINÄT -->
 <!-- ==================== -->
 <h3>SEINIEN PINTAMATERIAALI</h3>
-<div class="radio-group" id="materiaalit_seinat">
+<div class="option-row" id="materiaalit_seinat">
   <label>
-    <input type="radio"
-           name="materiaalit_seinat_valinta"
-           value="Laatta"
-           onchange="toggleMuu('materiaalit_seinat')">
-    Laatta
-  </label><br>
+    <input type="radio" name="materiaalit_seinat_valinta" value="Laatta"
+           onchange="toggleMuu('materiaalit_seinat')"> Laatta
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_seinat_valinta"
-           value="Muovitapetti"
-           onchange="toggleMuu('materiaalit_seinat')">
-    Muovitapetti
-  </label><br>
+    <input type="radio" name="materiaalit_seinat_valinta" value="Muovitapetti"
+           onchange="toggleMuu('materiaalit_seinat')"> Muovitapetti
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_seinat_valinta"
-           value="Maali"
-           onchange="toggleMuu('materiaalit_seinat')">
-    Maali
-  </label><br>
+    <input type="radio" name="materiaalit_seinat_valinta" value="Maali"
+           onchange="toggleMuu('materiaalit_seinat')"> Maali
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_seinat_valinta"
-           value="Pelti"
-           onchange="toggleMuu('materiaalit_seinat')">
-    Pelti
-  </label><br>
+    <input type="radio" name="materiaalit_seinat_valinta" value="Pelti"
+           onchange="toggleMuu('materiaalit_seinat')"> Pelti
+  </label>
 
   <label>
-    <input type="radio"
-           name="materiaalit_seinat_valinta"
-           value="Muu"
-           onchange="toggleMuu('materiaalit_seinat')">
-    Muu
+    <input type="radio" name="materiaalit_seinat_valinta" value="Muu"
+           onchange="toggleMuu('materiaalit_seinat')"> Muu
   </label>
 </div>
 
@@ -356,133 +329,9 @@
 <!-- KATTO -->
 <!-- ==================== -->
 <h3>KATON PINTAMATERIAALI</h3>
-<div class="radio-group" id="materiaalit_katto">
+<div class="option-row" id="materiaalit_katto">
   <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Betoni"
-           onchange="toggleMuu('materiaalit_katto')">
-    Betoni
-  </label><br>
 
-  <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Kipsilevy"
-           onchange="toggleMuu('materiaalit_katto')">
-    Kipsilevy
-  </label><br>
-
-  <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Paneeli"
-           onchange="toggleMuu('materiaalit_katto')">
-    Paneeli
-  </label><br>
-
-  <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Pelti"
-           onchange="toggleMuu('materiaalit_katto')">
-    Pelti
-  </label><br>
-
-  <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Maali"
-           onchange="toggleMuu('materiaalit_katto')">
-    Maali
-  </label><br>
-
-  <label>
-    <input type="radio"
-           name="materiaalit_katto_valinta"
-           value="Muu"
-           onchange="toggleMuu('materiaalit_katto')">
-    Muu
-  </label>
-</div>
-
-<input
-  type="text"
-  id="materiaalit_katto_muu"
-  name="materiaalit_katto_muu"
-  placeholder="Mikä muu kattopinta?"
-  style="display:none; margin-top:5px;"
->
-
-<!-- ==================== -->
-<!-- VESIPUTKET -->
-<!-- ==================== -->
-<h3>VESIPUTKET</h3>
-<div class="checkbox-group">
-  <label>
-    <input type="checkbox"
-           name="materiaalit_vesiputket"
-           value="Uppoasennuksena">
-    Uppoasennuksena
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_vesiputket"
-           value="Pintavetoina">
-    Pintavetoina
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_vesiputket"
-           value="Kupari">
-    Kupari
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_vesiputket"
-           value="Muovi">
-    Muovi
-  </label>
-</div>
-
-<!-- ==================== -->
-<!-- LÄMPÖPUTKET -->
-<!-- ==================== -->
-<h3>LÄMPÖPUTKET</h3>
-<div class="checkbox-group">
-  <label>
-    <input type="checkbox"
-           name="materiaalit_lampoputket"
-           value="Uppoasennuksena">
-    Uppoasennuksena
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_lampoputket"
-           value="Pintavetoina">
-    Pintavetoina
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_lampoputket"
-           value="Teräs">
-    Teräs
-  </label><br>
-
-  <label>
-    <input type="checkbox"
-           name="materiaalit_lampoputket"
-           value="Kupari">
-    Kupari
-  </label>
-</div>
-
-<br>    
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
 
