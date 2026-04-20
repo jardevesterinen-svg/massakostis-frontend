@@ -43,4 +43,15 @@ button:hover {
 textarea {
     resize: vertical;
 }
-``
+
+.option-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.option-row label {
+    white-space: nowrap;
+}
