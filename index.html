@@ -249,72 +249,239 @@
             <img id="preview2" 
                  style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
         </div>
+
 <h3>PINTARAKENTEIDEN MATERIAALIT</h3>
-    
 
+<!-- ==================== -->
+<!-- LATTIA -->
+<!-- ==================== -->
 <h3>LATTIAN PINTAMATERIAALI</h3>
-<div class="checkbox-group" id="lattia_group">
-    <label><input type="checkbox" value="Laatta"> Laatta</label>
-    <label><input type="checkbox" value="Muovimatto"> Muovimatto</label>
-    <label><input type="checkbox" value="Laminaatti"> Laminaatti</label>
-    <label><input type="checkbox" value="Vinyyli"> Vinyyli</label>
-    <label><input type="checkbox" value="Epoksi"> Epoksi</label>
-    <label><input type="checkbox" value="Muu" onchange="toggleLattiaMuu()"> Muu</label>
+<div class="radio-group" id="materiaalit_lattia">
+  <label>
+    <input type="radio"
+           name="materiaalit_lattia_valinta"
+           value="Laatta"
+           onchange="toggleMuu('materiaalit_lattia')">
+    Laatta
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_lattia_valinta"
+           value="Muovimatto"
+           onchange="toggleMuu('materiaalit_lattia')">
+    Muovimatto
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_lattia_valinta"
+           value="Epoksi"
+           onchange="toggleMuu('materiaalit_lattia')">
+    Epoksi
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_lattia_valinta"
+           value="Muu"
+           onchange="toggleMuu('materiaalit_lattia')">
+    Muu
+  </label>
 </div>
 
-<input 
-    type="text" 
-    id="lattia_muu" 
-    placeholder="Mikä muu lattiapäällyste?" 
-    style="display:none; margin-top:5px;"
+<input
+  type="text"
+  id="materiaalit_lattia_muu"
+  name="materiaalit_lattia_muu"
+  placeholder="Mikä muu lattiapäällyste?"
+  style="display:none; margin-top:5px;"
 >
+
+<!-- ==================== -->
+<!-- SEINÄT -->
+<!-- ==================== -->
 <h3>SEINIEN PINTAMATERIAALI</h3>
-<div class="checkbox-group" id="seina_group">
-    <label><input type="checkbox" value="Laatta"> Laatta</label>
-    <label><input type="checkbox" value="Muovitapetti"> Muovimatto</label>
-    <label><input type="checkbox" value="Pelti"> Laminaatti</label>
-    <label><input type="checkbox" value="Maali"> Vinyyli</label>
-    <label><input type="checkbox" value="Muu" onchange="toggleSeinaMuu()"> Muu</label>
+<div class="radio-group" id="materiaalit_seinat">
+  <label>
+    <input type="radio"
+           name="materiaalit_seinat_valinta"
+           value="Laatta"
+           onchange="toggleMuu('materiaalit_seinat')">
+    Laatta
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_seinat_valinta"
+           value="Muovitapetti"
+           onchange="toggleMuu('materiaalit_seinat')">
+    Muovitapetti
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_seinat_valinta"
+           value="Maali"
+           onchange="toggleMuu('materiaalit_seinat')">
+    Maali
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_seinat_valinta"
+           value="Pelti"
+           onchange="toggleMuu('materiaalit_seinat')">
+    Pelti
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_seinat_valinta"
+           value="Muu"
+           onchange="toggleMuu('materiaalit_seinat')">
+    Muu
+  </label>
 </div>
 
-<input 
-    type="text" 
-    id="seina_muu" 
-    placeholder="Mikä muu seinäpäällyste?" 
-    style="display:none; margin-top:5px;"
+<input
+  type="text"
+  id="materiaalit_seinat_muu"
+  name="materiaalit_seinat_muu"
+  placeholder="Mikä muu seinäpäällyste?"
+  style="display:none; margin-top:5px;"
 >
+
+<!-- ==================== -->
+<!-- KATTO -->
+<!-- ==================== -->
 <h3>KATON PINTAMATERIAALI</h3>
-<div class="checkbox-group" id="katto_group">
-    <label><input type="checkbox" value="Betoni"> Betoni</label>
-    <label><input type="checkbox" value="Paneeli"> Paneeli</label>
-    <label><input type="checkbox" value="Kipsilevy"> Kipsilevy</label>
-    <label><input type="checkbox" value="Pelti"> Pelti</label>
-    <label><input type="checkbox" value="Muu" onchange="toggleKattoMuu()"> Muu</label>
+<div class="radio-group" id="materiaalit_katto">
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Betoni"
+           onchange="toggleMuu('materiaalit_katto')">
+    Betoni
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Kipsilevy"
+           onchange="toggleMuu('materiaalit_katto')">
+    Kipsilevy
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Paneeli"
+           onchange="toggleMuu('materiaalit_katto')">
+    Paneeli
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Pelti"
+           onchange="toggleMuu('materiaalit_katto')">
+    Pelti
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Maali"
+           onchange="toggleMuu('materiaalit_katto')">
+    Maali
+  </label><br>
+
+  <label>
+    <input type="radio"
+           name="materiaalit_katto_valinta"
+           value="Muu"
+           onchange="toggleMuu('materiaalit_katto')">
+    Muu
+  </label>
 </div>
 
-<input 
-    type="text" 
-    id="katto_muu" 
-    placeholder="Mikä muu kattopinta?" 
-    style="display:none; margin-top:5px;"
->   
+<input
+  type="text"
+  id="materiaalit_katto_muu"
+  name="materiaalit_katto_muu"
+  placeholder="Mikä muu kattopinta?"
+  style="display:none; margin-top:5px;"
+>
+
+<!-- ==================== -->
+<!-- VESIPUTKET -->
+<!-- ==================== -->
 <h3>VESIPUTKET</h3>
-<div class="checkbox-group" id="vesiputki_group">
-    <label><input type="checkbox" value="Uppoasennuksena"> Uppo</label>
-    <label><input type="checkbox" value="Pintavetoina"> Pinta</label>
-    <label><input type="checkbox" value="Kupari"> Kupari</label>
-    <label><input type="checkbox" value="Muovi"> Muovi</label>
+<div class="checkbox-group">
+  <label>
+    <input type="checkbox"
+           name="materiaalit_vesiputket"
+           value="Uppoasennuksena">
+    Uppoasennuksena
+  </label><br>
 
+  <label>
+    <input type="checkbox"
+           name="materiaalit_vesiputket"
+           value="Pintavetoina">
+    Pintavetoina
+  </label><br>
+
+  <label>
+    <input type="checkbox"
+           name="materiaalit_vesiputket"
+           value="Kupari">
+    Kupari
+  </label><br>
+
+  <label>
+    <input type="checkbox"
+           name="materiaalit_vesiputket"
+           value="Muovi">
+    Muovi
+  </label>
 </div>
 
+<!-- ==================== -->
+<!-- LÄMPÖPUTKET -->
+<!-- ==================== -->
 <h3>LÄMPÖPUTKET</h3>
-<div class="checkbox-group" id="lampoputki_group">
-    <label><input type="checkbox" value="Uppoasennuksena"> Uppo</label>
-    <label><input type="checkbox" value="Pintavetoina"> Pinta</label>
-    <label><input type="checkbox" value="Teräs"> Teräs</label>
-    <label><input type="checkbox" value="Kupari"> Muovi</label>
+<div class="checkbox-group">
+  <label>
+    <input type="checkbox"
+           name="materiaalit_lampoputket"
+           value="Uppoasennuksena">
+    Uppoasennuksena
+  </label><br>
 
+  <label>
+    <input type="checkbox"
+           name="materiaalit_lampoputket"
+           value="Pintavetoina">
+    Pintavetoina
+  </label><br>
+
+  <label>
+    <input type="checkbox"
+           name="materiaalit_lampoputket"
+           value="Teräs">
+    Teräs
+  </label><br>
+
+  <label>
+    <input type="checkbox"
+           name="materiaalit_lampoputket"
+           value="Kupari">
+    Kupari
+  </label>
 </div>
+
 <br>    
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
