@@ -331,6 +331,97 @@
 <h3>KATON PINTAMATERIAALI</h3>
 <div class="option-row" id="materiaalit_katto">
   <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Betoni"
+           onchange="toggleMuu('materiaalit_katto')"> Betoni
+  </label>
+
+  <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Kipsilevy"
+           onchange="toggleMuu('materiaalit_katto')"> Kipsilevy
+  </label>
+
+  <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Paneeli"
+           onchange="toggleMuu('materiaalit_katto')"> Paneeli
+  </label>
+
+  <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Pelti"
+           onchange="toggleMuu('materiaalit_katto')"> Pelti
+  </label>
+
+  <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Maali"
+           onchange="toggleMuu('materiaalit_katto')"> Maali
+  </label>
+
+  <label>
+    <input type="radio" name="materiaalit_katto_valinta" value="Muu"
+           onchange="toggleMuu('materiaalit_katto')"> Muu
+  </label>
+</div>
+
+<input
+  type="text"
+  id="materiaalit_katto_muu"
+  name="materiaalit_katto_muu"
+  placeholder="Mikä muu kattopinta?"
+  style="display:none; margin-top:5px;"
+>
+
+<!-- ==================== -->
+<!-- VESIPUTKET -->
+<!-- ==================== -->
+<h3>VESIPUTKET</h3>
+<div class="option-row">
+  <label>
+    <input type="checkbox" name="materiaalit_vesiputket" value="Uppoasennuksena">
+    Uppoasennuksena
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_vesiputket" value="Pintavetoina">
+    Pintavetoina
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_vesiputket" value="Kupari">
+    Kupari
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_vesiputket" value="Muovi">
+    Muovi
+  </label>
+</div>
+
+<!-- ==================== -->
+<!-- LÄMPÖPUTKET -->
+<!-- ==================== -->
+<h3>LÄMPÖPUTKET</h3>
+<div class="option-row">
+  <label>
+    <input type="checkbox" name="materiaalit_lampoputket" value="Uppoasennuksena">
+    Uppoasennuksena
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_lampoputket" value="Pintavetoina">
+    Pintavetoina
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_lampoputket" value="Teräs">
+    Teräs
+  </label>
+
+  <label>
+    <input type="checkbox" name="materiaalit_lampoputket" value="Kupari">
+    Kupari
+  </label>
+</div>
+
+<br>
 
 <!-- ✅ Dynaaminen kartoituslomake -->
 <div id="dynaamiset_osiot"></div>
