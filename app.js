@@ -42,7 +42,16 @@ function showStatus(msg, id = "status") {
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
+function bindMaterialAutosave() {
+    const materialFields = document.querySelectorAll(
+        'input[name^="materiaalit_"], textarea[name^="materiaalit_"]'
+    );
 
+    materialFields.forEach(el => {
+        el.addEventListener("change", autosave);
+        el.addEventListener("input", autosave);
+    });
+}
 /* ==========================================================
     TABIT
 ========================================================== */
@@ -66,6 +75,7 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
     document.getElementById("tabKartoitus").classList.add("active");
 
     buildApartmentForm();
+    bindMaterialAutosave(); 
     loadApartment(currentApartmentIndex);
 });
 
