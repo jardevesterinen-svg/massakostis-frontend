@@ -437,19 +437,23 @@
   <!-- Ei voitu tarkastaa -->
   <div class="ei-tarkastettu">
 <script>
-function toggleLattiaMuu() {
-    const muu = document.querySelector('#lattia_group input[value="Muu"]').checked;
-    document.getElementById("lattia_muu").style.display = muu ? "block" : "none";
-}
+function toggleMuu(prefix) {
+    const muuField = document.getElementById(prefix + "_muu");
+    const radios = document.querySelectorAll(
+        `#${prefix} input[type="radio"]`
+    );
 
-function toggleSeinaMuu() {
-    const muu = document.querySelector('#seina_group input[value="Muu"]').checked;
-    document.getElementById("seina_muu").style.display = muu ? "block" : "none";
-}
+    let show = false;
+    radios.forEach(r => {
+        if (r.checked && r.value === "Muu") show = true;
+    });
 
-function toggleKattoMuu() {
-    const muu = document.querySelector('#katto_group input[value="Muu"]').checked;
-    document.getElementById("katto_muu").style.display = muu ? "block" : "none";
+    if (muuField) {
+        muuField.style.display = show ? "block" : "none";
+        if (!show) muuField.value = "";
+    }
+
+    autosave(); // ✅ TÄRKEÄ
 }
 </script>
 
