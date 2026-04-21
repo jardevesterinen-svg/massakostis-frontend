@@ -661,10 +661,6 @@ async function saveApartmentData() {
         showStatus("Ei yhteyttä – tallennetaan myöhemmin", "status_kartoitus");
     }
 }
-function autosave() {
-    console.log("AUTOSAVE FIRED");
-    saveApartmentData();
-}
 
 /* ==========================================================
     NAVIGAATIO
