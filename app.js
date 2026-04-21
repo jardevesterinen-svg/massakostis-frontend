@@ -550,6 +550,16 @@ function clearApartmentForm() {
         } else {
             el.value = "";
         }
+ 
+    // ===== NOLLAA MATERIAALIT =====
+    document.querySelectorAll(
+        'input[name^="materiaalit_"]'
+    ).forEach(el => el.checked = false);
+
+    document.getElementById("materiaalit_lattia_muu").value = "";
+    document.getElementById("materiaalit_seinat_muu").value = "";
+    document.getElementById("materiaalit_katto_muu").value = "";
+ 
     });
 
     document.getElementById("preview1").style.display = "none";
