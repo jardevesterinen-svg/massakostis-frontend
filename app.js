@@ -553,20 +553,60 @@ function autosave() {
 }
 
 function collectApartmentData() {
-    const root = document.getElementById("dynaamiset_osiot");
+
     const data = {};
 
-    const fields = root.querySelectorAll("input, textarea, select");
-    fields.forEach(el => {
-        if (el.type==="radio") {
+    // 1️⃣ Dynaamiset tarkastuskohteet (entinen logiikka)
+    const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
+    const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
+        "input, textarea, select"
+    );
+
+    dynaamisetKentat.forEach(el => {
+        if (el.type === "radio") {
             if (el.checked) data[el.name] = el.value;
-        } else {
+        }
+        else if (el.type === "checkbox") {
+            if (!data[el.name]) data[el.name] = [];
+            if (el.checked) data[el.name].push(el.value);
+        }
+        else {
             data[el.id] = el.value;
         }
     });
 
+    // 2️⃣ MATERIAALIT (ULKOPUOLELLA dynaamisia osioita)
+    data["materiaalit_lattia_valinta"] =
+        document.querySelector('input[name="materiaalit_lattia_valinta"]:checked')?.value || "";
+
+    data["materiaalit_lattia_muu"] =
+        document.getElementById("materiaalit_lattia_muu")?.value || "";
+
+    data["materiaalit_seinat_valinta"] =
+        document.querySelector('input[name="materiaalit_seinat_valinta"]:checked')?.value || "";
+
+    data["materiaalit_seinat_muu"] =
+        document.getElementById("materiaalit_seinat_muu")?.value || "";
+
+    data["materiaalit_katto_valinta"] =
+        document.querySelector('input[name="materiaalit_katto_valinta"]:checked')?.value || "";
+
+    data["materiaalit_katto_muu"] =
+        document.getElementById("materiaalit_katto_muu")?.value || "";
+
+    data["materiaalit_vesiputket"] =
+        [...document.querySelectorAll('input[name="materiaalit_vesiputket"]:checked')]
+            .map(e => e.value)
+            .join(", ");
+
+    data["materiaalit_lampoputket"] =
+        [...document.querySelectorAll('input[name="materiaalit_lampoputket"]:checked')]
+            .map(e => e.value)
+            .join(", ");
+
     return data;
 }
+
 
 async function saveApartmentData() {
     if (!kohdeId) return;
