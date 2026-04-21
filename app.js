@@ -438,6 +438,37 @@ function buildApartmentForm() {
         root.appendChild(sec);
     });
 }
+// ===== MATERIAALIT =====
+
+// Yksittäiset radio‑valinnat
+data["materiaalit_lattia_valinta"] =
+  document.querySelector('input[name="materiaalit_lattia_valinta"]:checked')?.value || "";
+
+data["materiaalit_lattia_muu"] =
+  document.getElementById("lattia_muu")?.value || "";
+
+data["materiaalit_seinat_valinta"] =
+  document.querySelector('input[name="materiaalit_seinat_valinta"]:checked')?.value || "";
+
+data["materiaalit_seinat_muu"] =
+  document.getElementById("seina_muu")?.value || "";
+
+data["materiaalit_katto_valinta"] =
+  document.querySelector('input[name="materiaalit_katto_valinta"]:checked')?.value || "";
+
+data["materiaalit_katto_muu"] =
+  document.getElementById("katto_muu")?.value || "";
+
+// Monivalinnat (checkbox)
+data["materiaalit_vesiputket"] =
+  [...document.querySelectorAll('input[name="materiaalit_vesiputket"]:checked')]
+    .map(e => e.value)
+    .join(", ");
+
+data["materiaalit_lampoputket"] =
+  [...document.querySelectorAll('input[name="materiaalit_lampoputket"]:checked')]
+    .map(e => e.value)
+    .join(", ");
 
 /* ==========================================================
     HUONEISTON LATAUS (data + kuvat)
@@ -685,4 +716,3 @@ document.getElementById("btnCreatePdf").addEventListener("click", async () => {
         alert("Virhe PDF:n luonnissa.");
     }
 });
-``
