@@ -507,6 +507,36 @@ function fillApartmentForm(data) {
             el.value = data[el.id];
         }
     });
+
+    // ===== MATERIAALIT =====
+    if (data.materiaalit_lattia_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_lattia_valinta"][value="${data.materiaalit_lattia_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_lattia_muu").value = data.materiaalit_lattia_muu || "";
+
+    if (data.materiaalit_seinat_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_seinat_valinta"][value="${data.materiaalit_seinat_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_seinat_muu").value = data.materiaalit_seinat_muu || "";
+
+    if (data.materiaalit_katto_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_katto_valinta"][value="${data.materiaalit_katto_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_katto_muu").value = data.materiaalit_katto_muu || "";
+
+    document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
+        cb.checked = (data.materiaalit_vesiputket || "").includes(cb.value);
+    });
+
+    document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => {
+        cb.checked = (data.materiaalit_lampoputket || "").includes(cb.value);
+    });
 }
 
 function clearApartmentForm() {
