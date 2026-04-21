@@ -14,6 +14,7 @@ let huoneistoLista = [];
 let currentApartmentIndex = 0;
 let LAUSELISTA = {};
 let kaikkiKohteet = [];
+let isLoadingApartment = false;
 
 /* ==========================================================
     LAUSELISTA
@@ -454,6 +455,7 @@ function buildApartmentForm() {
 ========================================================== */
 
 async function loadApartment(i) {
+    isLoadingApartment = true;   // ⛔ estä autosave
     if (!kohdeId || huoneistoLista.length === 0) return;
 
     const apt = huoneistoLista[i];
@@ -478,6 +480,7 @@ async function loadApartment(i) {
     document.getElementById("kuva1").value = "";
     document.getElementById("kuva2").value = "";
     loadImagePreview(slug);
+    isLoadingApartment = false;  // ✅ autosave takaisin päälle
 }
 
 function loadImagePreview(slug) {
@@ -528,6 +531,7 @@ function clearApartmentForm() {
 ========================================================== */
 
 function autosave() {
+ if (isLoadingApartment) return;  // ⛔ EI tallenneta latauksen aikana
     saveApartmentData();
 }
 
