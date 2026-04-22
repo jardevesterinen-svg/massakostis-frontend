@@ -425,7 +425,8 @@ function buildApartmentForm() {
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
         const ks = document.createElement("select");
         ks.id = `${osio}_kuntoluokka`;
-        ======["★","★★","★★★","★★★★"].forEach(t=>{
+        /*======["★","★★","★★★","★★★★"].forEach(t=>{
+        ==*/
         ["1","2","3","4"].forEach(t=>{
             let o=document.createElement("option");
             o.value=t;
