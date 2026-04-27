@@ -440,8 +440,11 @@ function buildApartmentForm() {
             o.textContent = t;
             ks.appendChild(o);
         });
-
-        ks.addEventListener("change",autosave);
+        
+        ks.addEventListener("change", (e) => {
+            if (!e.isTrusted) return;
+            autosave();
+        }
         sec.appendChild(ks);
 
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
