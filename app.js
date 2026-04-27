@@ -35,7 +35,19 @@ function showStatus(msg, id = "status_kartoitus") {
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
+function renderRappuLista() {
+    const c = document.getElementById("rappuListaContainer");
+    if (!c) return;
 
+    c.innerHTML = "";
+
+    rappuLista.forEach((r, idx) => {
+        const div = document.createElement("div");
+        div.className = "rappu-row";
+        div.textContent = `${r.rappu} (${r.alku}–${r.loppu})`;
+        c.appendChild(div);
+    });
+}
 const storageKey = (apt) =>
     `apt_${kohdeId}_${slugify(apt)}`;
 
