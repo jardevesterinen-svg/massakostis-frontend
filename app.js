@@ -1,15 +1,14 @@
 /* ==========================================================
-   ASETUKSET
+    ASETUKSET — PUBLIC R2 URL
 ========================================================== */
 
-const BACKEND_URL = "https://massakostis-backend-production-9111.up.railway.app";
 const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
 
 /* ==========================================================
-   GLOBAALI TILA
+    GLOBAALI TILA
 ========================================================== */
 
-let kohdeId = null;                    // aktiivinen kohde
+let kohdeId = null;
 let rappuLista = [];
 let huoneistoLista = [];
 let currentApartmentIndex = 0;
@@ -18,7 +17,17 @@ let kaikkiKohteet = [];
 let isLoadingApartment = false;
 
 /* ==========================================================
-   APUFUNKTIOT
+    LAUSELISTA
+========================================================== */
+
+async function loadLauseet() {
+    const res = await fetch("lauseet.json");
+    LAUSELISTA = await res.json();
+}
+loadLauseet();
+
+/* ==========================================================
+    APUFUNKTIOT
 ========================================================== */
 
 function slugify(text) {
@@ -29,59 +38,71 @@ function slugify(text) {
         .replace(/^-+|-+$/g, "");
 }
 
-function showStatus(msg, id = "status_kartoitus") {
+function showStatus(msg, id = "status") {
     const el = document.getElementById(id);
-    if (!el) return;
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
-function RappuLista() {
-    const c = document.getElementById("rappuListaContainer");
-    if (!c) return;
+function bindMaterialAutosave() {
+    const materialFields = document.querySelectorAll(
+        'input[name^="materiaalit_"], textarea[name^="materiaalit_"]'
+    );
 
-    c.innerHTML = "";
-
-    rappuLista.forEach((r, idx) => {
-        const div = document.createElement("div");
-        div.className = "rappu-row";
-        div.textContent = `${r.rappu} (${r.alku}–${r.loppu})`;
-        c.appendChild(div);
+    materialFields.forEach(el => {
+        el.addEventListener("change", autosave);
+        el.addEventListener("input", autosave);
     });
 }
-const storageKey = (apt) =>
-    `apt_${kohdeId}_${slugify(apt)}`;
-
 /* ==========================================================
-   LAUSEET
+    TABIT
 ========================================================== */
 
-async function loadLauseet() {
-    const res = await fetch("lauseet.json");
-    LAUSELISTA = await res.json();
-}
-loadLauseet();
+document.getElementById("tabPerustiedot").addEventListener("click", () => {
+    document.getElementById("perustiedotTab").style.display = "block";
+    document.getElementById("kartoitusTab").style.display = "none";
+    document.getElementById("tabPerustiedot").classList.add("active");
+    document.getElementById("tabKartoitus").classList.remove("active");
+});
+
+document.getElementById("tabKartoitus").addEventListener("click", () => {
+    if (!kohdeId) {
+        alert("Täytä ensin perustiedot (kohteen nimi + päivämäärä).");
+        return;
+    }
+
+    document.getElementById("perustiedotTab").style.display = "none";
+    document.getElementById("kartoitusTab").style.display = "block";
+    document.getElementById("tabPerustiedot").classList.remove("active");
+    document.getElementById("tabKartoitus").classList.add("active");
+
+    buildApartmentForm();
+    bindMaterialAutosave(); 
+    loadApartment(currentApartmentIndex);
+});
 
 /* ==========================================================
-   KOHDELISTA (VANHAT + UUDET)
+    KOHTEIDEN HAKU + SUODATUS
 ========================================================== */
 
 async function haeKohteet() {
     try {
-        const res = await fetch(`${BACKEND_URL}/list-kohteet`);
+        const res = await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/list-kohteet"
+        );
         const data = await res.json();
         kaikkiKohteet = data.kohteet;
-        KohdeLista(kaikkiKohteet);
+        renderKohdeLista(kaikkiKohteet);
     } catch (e) {
-        console.error("Virhe kohdehaussa", e);
+        console.error("Virhe kohdehaussa:", e);
     }
 }
 
-function KohdeLista(lista) {
+function renderKohdeLista(lista) {
     const div = document.getElementById("kohdeHakulista");
     div.innerHTML = "";
 
     if (!lista || lista.length === 0) {
-        div.innerHTML = "<em>Ei kohteita</em>";
+        div.innerHTML = "<em>Ei kohteita.</em>";
         return;
     }
 
@@ -90,235 +111,673 @@ function KohdeLista(lista) {
         b.className = "btn";
         b.textContent = id;
         b.style.width = "100%";
-        b.style.marginBottom = "6px";
+        b.style.marginBottom = "5px";
         b.onclick = () => lataaKohde(id);
         div.appendChild(b);
     });
 }
 
-document.getElementById("kohde_haku")?.addEventListener("input", () => {
+document.getElementById("kohde_haku").addEventListener("input", () => {
     const q = document.getElementById("kohde_haku").value.toLowerCase();
-    KohdeLista(
-        kaikkiKohteet.filter(k => k.toLowerCase().includes(q))
-    );
+    const filt = kaikkiKohteet.filter(k => k.toLowerCase().includes(q));
+    renderKohdeLista(filt);
 });
 
 /* ==========================================================
-   KOHDEEN LATAUS
+    KOHDE-ID
+========================================================== */
+
+function updateKohdeId() {
+    const nimi = document.getElementById("kohde_nimi").value.trim();
+    const paiva = document.getElementById("kohde_paiva").value.trim();
+    if (!nimi || !paiva) return null;
+    kohdeId = `${slugify(nimi)}-${paiva}`;
+    return kohdeId;
+}
+
+/* ==========================================================
+    LATAA KOKO KOHDE (metadata + rappu + huoneistot + kansikuva)
 ========================================================== */
 
 async function lataaKohde(id) {
     kohdeId = id;
 
-    const res = await fetch(`${BACKEND_URL}/get-metadata/${id}`);
+    const res = await fetch(
+        `https://massakostis-backend-production-9111.up.railway.app/get-metadata/${id}`
+    );
     const meta = await res.json();
 
-    /* === PERUSTIEDOT === */
-    document.getElementById("kohde_nimi").value = meta.kohde.nimi || "";
-    document.getElementById("kohde_osoite").value = meta.kohde.osoite || "";
-    document.getElementById("kohde_postinumero").value = meta.kohde.postinumero || "";
-    document.getElementById("kohde_postitoimipaikka").value = meta.kohde.postitoimipaikka || "";
-    document.getElementById("kohde_paiva").value = meta.kohde.paiva || "";
-    document.getElementById("kohde_tarkastaja").value = meta.kohde.tarkastaja || "";
+    document.getElementById("kohde_nimi").value = meta.kohde.nimi;
+    document.getElementById("kohde_osoite").value = meta.kohde.osoite;
+    document.getElementById("kohde_postinumero").value = meta.kohde.postinumero;
+    document.getElementById("kohde_postitoimipaikka").value = meta.kohde.postitoimipaikka;
+    document.getElementById("kohde_paiva").value = meta.kohde.paiva;
+    document.getElementById("kohde_tarkastaja").value = meta.kohde.tarkastaja;
 
-    /* === TILAAJA === */
-    Object.entries(meta.tilaaja || {}).forEach(([k, v]) => {
+    Object.entries(meta.tilaaja).forEach(([k, v]) => {
         const f = document.getElementById("tilaaja_" + k);
         if (f) f.value = v;
     });
 
-    /* === RAPUT + HUONEISTOT === */
-    rappuLista = meta.raput || [];
-    huoneistoLista = meta.huoneistot || [];
-    currentApartmentIndex = 0;
+    rappuLista = meta.raput;
+    renderRappuLista();
+    regenerateApartments();
 
-    #renderRappuLista?.();          // jos on olemassa
-    #regenerateApartments?.();      // jos on olemassa
-
-    document.getElementById("huoneistoLista").textContent =
-        huoneistoLista.join(", ");
-
-    /* === KANSIKUVA === */
+    // ✅ Näytä kansikuva
     const kp = document.getElementById("kansiPreview");
     kp.src = `${PUBLIC_URL}/kohteet/${id}/kansikuva.jpg`;
     kp.style.display = "block";
 
-    /* === KARTOITUS === */
-    buildApartmentForm();
-    loadApartment(0);
-
-    /* === NÄYTTÖ === */
-    document.getElementById("perustiedotTab").style.display = "block";
-    document.getElementById("kartoitusTab").style.display = "none";
-
-    alert("Kohde ladattu ✅");
+    alert("Kohde ladattu!");
 }
 
 /* ==========================================================
-   AUTOSAVE – LOCAL FIRST
+    PERUSTIETOJEN TALLENNUS
 ========================================================== */
 
-function autosave() {
-    if (isLoadingApartment) return;
-    saveApartmentDataLocal();
-}
+async function saveMetadata() {
+    const id = updateKohdeId();
+    if (!id) return;
 
-function collectApartmentData() {
-    const data = {};
-    const root = document.getElementById("dynaamiset_osiot");
-
-    root.querySelectorAll("input, textarea, select").forEach(el => {
-        if (el.type === "radio") {
-            if (el.checked) data[el.name] = el.value;
-        } else {
-            data[el.id] = el.value;
-        }
-    });
-
-    data._savedAt = Date.now();
-    return data;
-}
-
-function saveApartmentDataLocal() {
-    if (!kohdeId) return;
-    const apt = huoneistoLista[currentApartmentIndex];
-    if (!apt) return;
-
-    const data = collectApartmentData();
-    data.huoneisto = apt;
-
-    localStorage.setItem(
-        storageKey(apt),
-        JSON.stringify(data)
-    );
-
-    showStatus("Tallennettu paikallisesti 💾");
-}
-
-/* ==========================================================
-   SYNC BACKENDIIN
-========================================================== */
-
-async function syncApartmentToBackend(apt) {
-    const key = storageKey(apt);
-    const raw = localStorage.getItem(key);
-    if (!raw) return;
+    const metadata = {
+        tilaaja: {
+            etunimi: document.getElementById("tilaaja_etunimi").value,
+            sukunimi: document.getElementById("tilaaja_sukunimi").value,
+            yritys: document.getElementById("tilaaja_yritys").value,
+            sahkoposti: document.getElementById("tilaaja_email").value,
+            puhelin: document.getElementById("tilaaja_puhelin").value,
+            osoite: document.getElementById("tilaaja_osoite").value,
+            postinumero: document.getElementById("tilaaja_postinumero").value,
+            postitoimipaikka: document.getElementById("tilaaja_postitoimipaikka").value
+        },
+        kohde: {
+            nimi: document.getElementById("kohde_nimi").value,
+            osoite: document.getElementById("kohde_osoite").value,
+            postinumero: document.getElementById("kohde_postinumero").value,
+            postitoimipaikka: document.getElementById("kohde_postitoimipaikka").value,
+            tarkastaja: document.getElementById("kohde_tarkastaja").value,
+            paiva: document.getElementById("kohde_paiva").value
+        },
+        raput: rappuLista,
+        huoneistot: huoneistoLista
+    };
 
     try {
-        await fetch(`${BACKEND_URL}/upload-data`, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({
-                kohde_id: kohdeId,
-                huoneisto_slug: slugify(apt),
-                data: JSON.parse(raw)
-            })
-        });
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/save-metadata",
+            {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({ kohde_id: kohdeId, metadata })
+            }
+        );
 
-        localStorage.removeItem(key);
-        showStatus("Synkronoitu ☁️");
-
+        showStatus("Tallennettu ✅");
     } catch {
-        // offline → yritetään myöhemmin
+        showStatus("Ei yhteyttä – tallennetaan myöhemmin");
     }
 }
 
 /* ==========================================================
-   HUONEISTON LATAUS
+    KANSIKUVA ESIKATSELU + TALLENNUS
 ========================================================== */
 
-async function loadApartment(index) {
-    isLoadingApartment = true;
+function previewKansikuva() {
+    const input = document.getElementById("kansikuva");
+    const prev = document.getElementById("kansiPreview");
 
-    const apt = huoneistoLista[index];
-    if (!apt) return;
-
-    currentApartmentIndex = index;
-    document.getElementById("currentAptInput").value = apt;
-
-    const local = localStorage.getItem(storageKey(apt));
-    if (local) {
-        fillApartmentForm(JSON.parse(local));
-        isLoadingApartment = false;
+    const file = input.files[0];
+    if (!file) {
+        prev.style.display = "none";
+        prev.src = "";
         return;
     }
 
-    try {
-        const res = await fetch(
-            `${BACKEND_URL}/get-apartment/${kohdeId}/${slugify(apt)}`
-        );
+    prev.src = URL.createObjectURL(file);
+    prev.style.display = "block";
+}
 
-        if (res.status === 200)
-            fillApartmentForm(await res.json());
-        else
-            clearApartmentForm();
-
-    } catch {
-        showStatus("Offline – paikallinen data käytössä");
+async function uploadKansikuva() {
+    if (!kohdeId) {
+        alert("Täytä ensin kohteen nimi ja tarkastuspäivä.");
+        return;
     }
 
-    isLoadingApartment = false;
+    const input = document.getElementById("kansikuva");
+    const file = input.files[0];
+    if (!file) return;
+
+    const form = new FormData();
+    form.append("kohde_id", kohdeId);
+    form.append("file", file);
+
+    await fetch(
+        "https://massakostis-backend-production-9111.up.railway.app/upload-kansikuva",
+        { method: "POST", body: form }
+    );
+
+    showStatus("Kansikuva tallennettu ✅");
+}
+
+document.getElementById("kansikuva").addEventListener("change", () => {
+    updateKohdeId();
+    previewKansikuva();
+    uploadKansikuva();
+});
+
+/* ==========================================================
+    RAPPUTOIMINNOT + HUONEISTOT
+========================================================== */
+
+function regenerateApartments() {
+    huoneistoLista = [];
+    rappuLista.forEach(r => {
+        for (let i = r.alku; i <= r.loppu; i++) {
+            huoneistoLista.push(`${r.rappu}${i}`);
+        }
+    });
+
+    document.getElementById("huoneistoLista").textContent =
+        huoneistoLista.join(", ");
+}
+
+function renderRappuLista() {
+    const c = document.getElementById("rappuListaContainer");
+    c.innerHTML = "";
+
+    rappuLista.forEach((r, idx) => {
+        const div = document.createElement("div");
+        div.className = "rappu-row";
+
+        div.innerHTML = `
+            <div style="flex:1;"><strong>${r.rappu}</strong> (${r.alku}–${r.loppu})</div>
+            <button class="btn" style="background:#8e44ad" onclick="editRappu(${idx})">Muokkaa</button>
+            <button class="btn" style="background:#c0392b" onclick="deleteRappu(${idx})">Poista</button>
+        `;
+
+        c.appendChild(div);
+    });
+}
+
+document.getElementById("btnLisaRappu").addEventListener("click", () => {
+    const nimi = document.getElementById("rappu_nimi").value.trim();
+    const alku = parseInt(document.getElementById("rappu_alku").value);
+    const loppu = parseInt(document.getElementById("rappu_loppu").value);
+
+    if (!nimi || isNaN(alku) || isNaN(loppu) || alku > loppu) {
+        alert("Tarkista rappu ja numerot.");
+        return;
+    }
+
+    rappuLista.push({ rappu:nimi, alku, loppu });
+    regenerateApartments();
+    renderRappuLista();
+    saveMetadata();
+});
+
+function editRappu(i) {
+    const r = rappuLista[i];
+
+    const n = prompt("Rappu:", r.rappu);
+    if (!n) return;
+
+    const a = parseInt(prompt("Alku:", r.alku));
+    const l = parseInt(prompt("Loppu:", r.loppu));
+
+    if (isNaN(a) || isNaN(l) || a > l) {
+        alert("Virhe alku/loppu.");
+        return;
+    }
+
+    rappuLista[i] = { rappu:n.trim(), alku:a, loppu:l };
+    regenerateApartments();
+    renderRappuLista();
+    saveMetadata();
+}
+
+function deleteRappu(i) {
+    if (!confirm("Poistetaanko rappu?")) return;
+    rappuLista.splice(i, 1);
+    regenerateApartments();
+    renderRappuLista();
+    saveMetadata();
+}
+
+/* ==========================================================
+    DYNAAMINEN KARTOITUSLOMAKE
+========================================================== */
+
+function createDropdown(osio, tyyppi) {
+    const w = document.createElement("div");
+    w.style.marginBottom = "20px";
+
+    w.innerHTML = `<label>${tyyppi === "havainnot" ? "Havainnot" : "Toimenpiteet"}</label>`;
+
+    const sel = document.createElement("select");
+    sel.id = `${osio}_${tyyppi}_select`;
+    w.appendChild(sel);
+
+    const opt0 = document.createElement("option");
+    opt0.value = "";
+    opt0.textContent = "– valitse –";
+    sel.appendChild(opt0);
+
+    LAUSELISTA[`${osio}_${tyyppi}`].forEach(l => {
+        const o = document.createElement("option");
+        o.value = l;
+        o.textContent = l;
+        sel.appendChild(o);
+    });
+
+    const muu = document.createElement("input");
+    muu.type = "text";
+    muu.placeholder = "Muu...";
+    muu.style.display = "none";
+    w.appendChild(muu);
+
+    const ta = document.createElement("textarea");
+    ta.id = `${osio}_${tyyppi}_textarea`;
+    ta.style.width = "100%";
+    ta.style.height = "80px";
+    w.appendChild(ta);
+
+    sel.addEventListener("change", () => {
+        if (sel.value === "Muu") {
+            muu.style.display = "block";
+            return;
+        }
+        if (sel.value) {
+            ta.value += (ta.value ? "\n" : "") + sel.value;
+            autosave();
+        }
+        sel.value = "";
+        muu.style.display = "none";
+    });
+
+    muu.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            ta.value += (ta.value ? "\n" : "") + muu.value;
+            muu.value = "";
+            muu.style.display = "none";
+            autosave();
+            e.preventDefault();
+        }
+    });
+
+    ta.addEventListener("input", autosave);
+
+    return w;
+}
+
+function buildApartmentForm() {
+    const root = document.getElementById("dynaamiset_osiot");
+    root.innerHTML = "";
+
+    const osiot = Object.keys(LAUSELISTA)
+        .map(k=>k.replace("_havainnot","").replace("_toimenpiteet",""))
+        .filter((v,i,a)=>a.indexOf(v)===i);
+
+    osiot.forEach(osio => {
+
+        let sec = document.createElement("div");
+        sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
+
+        sec.innerHTML += `<label>Kuntoluokka:</label>`;
+        const ks = document.createElement("select");
+        ks.id = `${osio}_kuntoluokka`;
+        /*======["★","★★","★★★","★★★★"].forEach(t=>{
+        ==*/
+        ["1","2","3","4"].forEach(t=>{
+            let o=document.createElement("option");
+            o.value=t;
+            o.textContent=t;
+            ks.appendChild(o);
+        });
+        ks.addEventListener("change",autosave);
+        sec.appendChild(ks);
+
+        sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
+        const hu = document.createElement("div");
+        hu.innerHTML = `
+            <label><input type="radio" name="${osio}_huomio" value="Kyllä"> Kyllä</label>
+            <label><input type="radio" name="${osio}_huomio" value="Ei" checked> Ei</label>
+        `;
+        hu.addEventListener("change",autosave);
+        sec.appendChild(hu);
+
+        sec.appendChild(createDropdown(osio,"havainnot"));
+        sec.appendChild(createDropdown(osio,"toimenpiteet"));
+
+        root.appendChild(sec);
+    });
+}
+
+/* ==========================================================
+    HUONEISTON LATAUS (data + kuvat)
+========================================================== */
+
+async function loadApartment(i) {
+    isLoadingApartment = true;   // ⛔ estä autosave
+    if (!kohdeId || huoneistoLista.length === 0) return;
+
+    const apt = huoneistoLista[i];
+    document.getElementById("currentAptInput").value = apt;
+    const slug = slugify(apt);
+
+    try {
+        const res = await fetch(
+            `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
+        );
+
+        if (res.status === 404) {
+            clearApartmentForm();
+        } else {
+            fillApartmentForm(await res.json());
+        }
+
+    } catch {
+        showStatus("Ei yhteyttä", "status_kartoitus");
+    }
+
+    document.getElementById("kuva1").value = "";
+    document.getElementById("kuva2").value = "";
+    loadImagePreview(slug);
+    isLoadingApartment = false;  // ✅ autosave takaisin päälle
+}
+
+function loadImagePreview(slug) {
+
+    const p1 = document.getElementById("preview1");
+    const p2 = document.getElementById("preview2");
+
+    p1.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva1.jpg`;
+    p1.style.display = "block";
+
+    p2.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva2.jpg`;
+    p2.style.display = "block";
 }
 
 function fillApartmentForm(data) {
-    const root = document.getElementById("dynaamiset_osiot");
-    root.querySelectorAll("input, textarea, select").forEach(el => {
+    const fields = document.querySelectorAll(
+        "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
+    );
+
+    fields.forEach(el => {
         if (el.type === "radio") {
-            el.checked = data[el.name] === el.value;
+            if (data[el.name] === el.value) el.checked = true;
         } else if (data[el.id] !== undefined) {
             el.value = data[el.id];
         }
     });
-}
 
-function clearApartmentForm() {
-    const root = document.getElementById("dynaamiset_osiot");
-    root.querySelectorAll("input, textarea, select").forEach(el => {
-        if (el.type === "radio") el.checked = false;
-        else el.value = "";
+    // ===== MATERIAALIT =====
+    if (data.materiaalit_lattia_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_lattia_valinta"][value="${data.materiaalit_lattia_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_lattia_muu").value = data.materiaalit_lattia_muu || "";
+
+    if (data.materiaalit_seinat_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_seinat_valinta"][value="${data.materiaalit_seinat_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_seinat_muu").value = data.materiaalit_seinat_muu || "";
+
+    if (data.materiaalit_katto_valinta) {
+        document
+            .querySelector(`input[name="materiaalit_katto_valinta"][value="${data.materiaalit_katto_valinta}"]`)
+            ?.click();
+    }
+    document.getElementById("materiaalit_katto_muu").value = data.materiaalit_katto_muu || "";
+
+    document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
+        cb.checked = (data.materiaalit_vesiputket || "").includes(cb.value);
+    });
+
+    document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => {
+        cb.checked = (data.materiaalit_lampoputket || "").includes(cb.value);
     });
 }
 
+function clearApartmentForm() {
+    const fields = document.querySelectorAll(
+        "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
+    );
+
+    fields.forEach(el => {
+        if (el.type === "radio") {
+            if (el.value === "Ei") el.checked = true;
+        } else {
+            el.value = "";
+        }
+ 
+    // ===== NOLLAA MATERIAALIT =====
+    document.querySelectorAll(
+        'input[name^="materiaalit_"]'
+    ).forEach(el => el.checked = false);
+
+    document.getElementById("materiaalit_lattia_muu").value = "";
+    document.getElementById("materiaalit_seinat_muu").value = "";
+    document.getElementById("materiaalit_katto_muu").value = "";
+ 
+    });
+
+    document.getElementById("preview1").style.display = "none";
+    document.getElementById("preview2").style.display = "none";
+}
+
 /* ==========================================================
-   NAVIGAATIO
+    AUTOSAVE (HUONEISTO)
 ========================================================== */
 
-document.getElementById("prevApt").onclick = async () => {
-    const apt = huoneistoLista[currentApartmentIndex];
-    await syncApartmentToBackend(apt);
-    if (currentApartmentIndex > 0)
-        loadApartment(currentApartmentIndex - 1);
-};
+function autosave() {
+ if (isLoadingApartment) return;  // ⛔ EI tallenneta latauksen aikana
+    saveApartmentData();
+}
 
-document.getElementById("nextApt").onclick = async () => {
-    const apt = huoneistoLista[currentApartmentIndex];
-    await syncApartmentToBackend(apt);
-    if (currentApartmentIndex < huoneistoLista.length - 1)
-        loadApartment(currentApartmentIndex + 1);
-};
+function collectApartmentData() {
 
-window.addEventListener("online", () => {
-    huoneistoLista.forEach(syncApartmentToBackend);
+    const data = {};
+
+    // 1️⃣ Dynaamiset tarkastuskohteet (entinen logiikka)
+    const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
+    const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
+        "input, textarea, select"
+    );
+
+    dynaamisetKentat.forEach(el => {
+        if (el.type === "radio") {
+            if (el.checked) data[el.name] = el.value;
+        }
+        else if (el.type === "checkbox") {
+            if (!data[el.name]) data[el.name] = [];
+            if (el.checked) data[el.name].push(el.value);
+        }
+        else {
+            data[el.id] = el.value;
+        }
+    });
+
+    // 2️⃣ MATERIAALIT (ULKOPUOLELLA dynaamisia osioita)
+    data["materiaalit_lattia_valinta"] =
+        document.querySelector('input[name="materiaalit_lattia_valinta"]:checked')?.value || "";
+
+    data["materiaalit_lattia_muu"] =
+        document.getElementById("materiaalit_lattia_muu")?.value || "";
+
+    data["materiaalit_seinat_valinta"] =
+        document.querySelector('input[name="materiaalit_seinat_valinta"]:checked')?.value || "";
+
+    data["materiaalit_seinat_muu"] =
+        document.getElementById("materiaalit_seinat_muu")?.value || "";
+
+    data["materiaalit_katto_valinta"] =
+        document.querySelector('input[name="materiaalit_katto_valinta"]:checked')?.value || "";
+
+    data["materiaalit_katto_muu"] =
+        document.getElementById("materiaalit_katto_muu")?.value || "";
+
+    data["materiaalit_vesiputket"] =
+        [...document.querySelectorAll('input[name="materiaalit_vesiputket"]:checked')]
+            .map(e => e.value)
+            .join(", ");
+
+    data["materiaalit_lampoputket"] =
+        [...document.querySelectorAll('input[name="materiaalit_lampoputket"]:checked')]
+            .map(e => e.value)
+            .join(", ");
+
+    return data;
+}
+
+
+async function saveApartmentData() {
+    if (!kohdeId) return;
+    if (huoneistoLista.length === 0) return;
+
+    const apt = huoneistoLista[currentApartmentIndex];
+    const slug = slugify(apt);
+
+    const data = collectApartmentData();
+    data.huoneisto = apt;
+
+    try {
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+            {
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({
+                    kohde_id:kohdeId,
+                    huoneisto_slug:slug,
+                    data
+                })
+            }
+        );
+
+        showStatus("Tallennettu ✅", "status_kartoitus");
+
+    } catch {
+        showStatus("Ei yhteyttä – tallennetaan myöhemmin", "status_kartoitus");
+    }
+}
+
+/* ==========================================================
+    NAVIGAATIO
+========================================================== */
+
+document.getElementById("prevApt").addEventListener("click", () => {
+    if (currentApartmentIndex > 0) {
+        currentApartmentIndex--;
+        loadApartment(currentApartmentIndex);
+    }
+});
+
+document.getElementById("nextApt").addEventListener("click", () => {
+    if (currentApartmentIndex < huoneistoLista.length - 1) {
+        currentApartmentIndex++;
+        loadApartment(currentApartmentIndex);
+    }
+});
+
+document.getElementById("currentAptInput").addEventListener("change", () => {
+    const val = document.getElementById("currentAptInput").value;
+    const idx = huoneistoLista.indexOf(val);
+    if (idx !== -1) {
+        currentApartmentIndex = idx;
+        loadApartment(idx);
+    }
 });
 
 /* ==========================================================
-   PDF
+    KUVA1 / KUVA2 ESIKATSELU + TALLENNUS
 ========================================================== */
 
-document.getElementById("btnCreatePdf").onclick = async () => {
-    for (const apt of huoneistoLista)
-        await syncApartmentToBackend(apt);
+function previewSelectedImage(fileInputId, previewId) {
+    const input = document.getElementById(fileInputId);
+    const preview = document.getElementById(previewId);
+    const file = input.files[0];
 
-    const res = await fetch(
-        `${BACKEND_URL}/generate-report/${kohdeId}`,
-        { method: "POST" }
-    );
-    const data = await res.json();
-    if (data.url) window.open(data.url, "_blank");
-};
+    if (!file) {
+        preview.style.display = "none";
+        preview.src = "";
+        return;
+    }
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+}
+
+async function uploadApartmentImage(index) {
+
+    if (!kohdeId) {
+        alert("Täytä ensin perustiedot.");
+        return;
+    }
+
+    const apt = huoneistoLista[currentApartmentIndex];
+    const slug = slugify(apt);
+
+    const input = document.getElementById(`kuva${index}`);
+    const file = input.files[0];
+    if (!file) return;
+
+    const form = new FormData();
+    form.append("kohde_id", kohdeId);
+    form.append("huoneisto_slug", slug);
+    form.append("index", index);
+    form.append("file", file);
+
+    try {
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-image",
+            { method:"POST", body:form }
+        );
+
+        showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
+
+    } catch {
+        showStatus("Kuvan tallennus epäonnistui ❌", "status_kartoitus");
+    }
+}
+
+document.getElementById("kuva1").addEventListener("change", () => {
+    previewSelectedImage("kuva1","preview1");
+    uploadApartmentImage(1);
+});
+
+document.getElementById("kuva2").addEventListener("change", () => {
+    previewSelectedImage("kuva2","preview2");
+    uploadApartmentImage(2);
+});
 
 /* ==========================================================
-   INIT
+    SIVUN LATAUS
 ========================================================== */
 
-window.addEventListener("load", haeKohteet);
+window.addEventListener("load", () => {
+    haeKohteet();
+});
+document.getElementById("btnCreatePdf").addEventListener("click", async () => {
+    if (!kohdeId) {
+        alert("Ei kohdetta ladattuna.");
+        return;
+    }
+
+    const res = await fetch(
+        `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+        { method: "POST" }
+    );
+
+    const data = await res.json();
+
+    if (data.url) {
+        alert("PDF-raportti luotu!");
+        // Valinta A = tallennus R2:een, ei automaattista avausta
+        window.open(data.url, "_blank");
+    } else {
+        alert("Virhe PDF:n luonnissa.");
+    }
+});
