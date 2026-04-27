@@ -35,7 +35,7 @@ function showStatus(msg, id = "status_kartoitus") {
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
-function renderRappuLista() {
+function RappuLista() {
     const c = document.getElementById("rappuListaContainer");
     if (!c) return;
 
@@ -70,13 +70,13 @@ async function haeKohteet() {
         const res = await fetch(`${BACKEND_URL}/list-kohteet`);
         const data = await res.json();
         kaikkiKohteet = data.kohteet;
-        renderKohdeLista(kaikkiKohteet);
+        KohdeLista(kaikkiKohteet);
     } catch (e) {
         console.error("Virhe kohdehaussa", e);
     }
 }
 
-function renderKohdeLista(lista) {
+function KohdeLista(lista) {
     const div = document.getElementById("kohdeHakulista");
     div.innerHTML = "";
 
@@ -98,7 +98,7 @@ function renderKohdeLista(lista) {
 
 document.getElementById("kohde_haku")?.addEventListener("input", () => {
     const q = document.getElementById("kohde_haku").value.toLowerCase();
-    renderKohdeLista(
+    KohdeLista(
         kaikkiKohteet.filter(k => k.toLowerCase().includes(q))
     );
 });
@@ -132,8 +132,8 @@ async function lataaKohde(id) {
     huoneistoLista = meta.huoneistot || [];
     currentApartmentIndex = 0;
 
-    renderRappuLista?.();          // jos on olemassa
-    regenerateApartments?.();      // jos on olemassa
+    #renderRappuLista?.();          // jos on olemassa
+    #regenerateApartments?.();      // jos on olemassa
 
     document.getElementById("huoneistoLista").textContent =
         huoneistoLista.join(", ");
