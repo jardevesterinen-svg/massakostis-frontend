@@ -424,16 +424,22 @@ function buildApartmentForm() {
         sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
 
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
+
         const ks = document.createElement("select");
         ks.id = `${osio}_kuntoluokka`;
-        /*======["★","★★","★★★","★★★★"].forEach(t=>{
-        ==*/
-        ["1","2","3","4"].forEach(t=>{
-            let o=document.createElement("option");
-            o.value=t;
-            o.textContent=t;
+        
+        const empty = document.createElement("option");
+        empty.value = "";
+        empty.textContent = "– valitse –";
+        ks.appendChild(empty);
+        
+        ["1","2","3","4"].forEach(t => {
+            const o = document.createElement("option");
+            o.value = t;
+            o.textContent = t;
             ks.appendChild(o);
         });
+
         ks.addEventListener("change",autosave);
         sec.appendChild(ks);
 
@@ -626,9 +632,12 @@ function collectApartmentData() {
             if (!data[el.name]) data[el.name] = [];
             if (el.checked) data[el.name].push(el.value);
         }
+
         else {
+            if (el.id.endsWith("_kuntoluokka") && el.value === "") return;
             data[el.id] = el.value;
         }
+
     });
 
     // 2️⃣ MATERIAALIT (ULKOPUOLELLA dynaamisia osioita)
