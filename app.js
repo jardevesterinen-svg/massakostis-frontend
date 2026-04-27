@@ -41,6 +41,7 @@ function slugify(text) {
 
 function showStatus(msg, id = "status") {
     const el = document.getElementById(id);
+    if (!el) return;
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
@@ -261,7 +262,7 @@ async function uploadKansikuva() {
 }
 
 document.getElementById("kansikuva").addEventListener("change", () => {
-    updateKohdeId();
+    if (!kohdeId) updateKohdeId();
     previewKansikuva();
     uploadKansikuva();
 });
