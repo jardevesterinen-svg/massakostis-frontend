@@ -572,9 +572,15 @@ function clearApartmentForm() {
     AUTOSAVE (HUONEISTO)
 ========================================================== */
 
+let autosaveTimer = null;
+
 function autosave() {
- if (isLoadingApartment) return;  // ⛔ EI tallenneta latauksen aikana
+  if (isLoadingApartment) return;
+
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
     saveApartmentData();
+  }, 800);
 }
 
 function collectApartmentData() {
