@@ -678,7 +678,7 @@ function collectApartmentData() {
 
 async function saveApartmentData() {
     if (!kohdeId) return;
-    if (.length === 0) return;
+    if (!huoneistoLista || huoneistoLista.length === 0) return;
 
     const apt = huoneistoLista[currentApartmentIndex];
     const slug = slugify(apt);
