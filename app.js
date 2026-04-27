@@ -260,7 +260,7 @@ async function uploadKansikuva() {
     showStatus("Kansikuva tallennettu ✅");
 }
 
-document.getElementById("kansikuva").addEv("change", () => {
+document.getElementById("kansikuva").addEventListener("change", () => {
     updateKohdeId();
     previewKansikuva();
     uploadKansikuva();
