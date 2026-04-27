@@ -118,7 +118,7 @@ function renderKohdeLista(lista) {
     });
 }
 
-document.getElementById("kohde_haku").entListener("input", () => {
+document.getElementById("kohde_haku").addEventListener("input", () => {
     const q = document.getElementById("kohde_haku").value.toLowerCase();
     const filt = kaikkiKohteet.filter(k => k.toLowerCase().includes(q));
     renderKohdeLista(filt);
@@ -260,7 +260,7 @@ async function uploadKansikuva() {
     showStatus("Kansikuva tallennettu ✅");
 }
 
-document.getElementById("kansikuva").addEventListener("change", () => {
+document.getElementById("kansikuva").addEv("change", () => {
     updateKohdeId();
     previewKansikuva();
     uploadKansikuva();
@@ -300,7 +300,7 @@ function renderRappuLista() {
     });
 }
 
-document.getElementById("btnLisaRappu").addEventListener("click", () => {
+document.getElementById("btnLisaRappu").addEv("click", () => {
     const nimi = document.getElementById("rappu_nimi").value.trim();
     const alku = parseInt(document.getElementById("rappu_alku").value);
     const loppu = parseInt(document.getElementById("rappu_loppu").value);
@@ -382,7 +382,7 @@ function createDropdown(osio, tyyppi) {
     ta.style.height = "80px";
     w.appendChild(ta);
 
-    sel.addEventListener("change", () => {
+    sel.addEv("change", () => {
         if (sel.value === "Muu") {
             muu.style.display = "block";
             return;
@@ -395,7 +395,7 @@ function createDropdown(osio, tyyppi) {
         muu.style.display = "none";
     });
 
-    muu.addEventListener("keydown", e => {
+    muu.addEv("keydown", e => {
         if (e.key === "Enter") {
             ta.value += (ta.value ? "\n" : "") + muu.value;
             muu.value = "";
@@ -405,7 +405,7 @@ function createDropdown(osio, tyyppi) {
         }
     });
 
-    ta.addEventListener("input", autosave);
+    ta.addEv("input", autosave);
 
     return w;
 }
@@ -440,7 +440,7 @@ function buildApartmentForm() {
             ks.appendChild(o);
         });
 
-        ks.addEventListener("change",autosave);
+        ks.addEv("change",autosave);
         sec.appendChild(ks);
 
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
@@ -449,7 +449,7 @@ function buildApartmentForm() {
             <label><input type="radio" name="${osio}_huomio" value="Kyllä"> Kyllä</label>
             <label><input type="radio" name="${osio}_huomio" value="Ei" checked> Ei</label>
         `;
-        hu.addEventListener("change",autosave);
+        hu.addEv("change",autosave);
         sec.appendChild(hu);
 
         sec.appendChild(createDropdown(osio,"havainnot"));
@@ -707,21 +707,21 @@ async function saveApartmentData() {
     NAVIGAATIO
 ========================================================== */
 
-document.getElementById("prevApt").addEventListener("click", () => {
+document.getElementById("prevApt").addEv("click", () => {
     if (currentApartmentIndex > 0) {
         currentApartmentIndex--;
         loadApartment(currentApartmentIndex);
     }
 });
 
-document.getElementById("nextApt").addEventListener("click", () => {
+document.getElementById("nextApt").addEv("click", () => {
     if (currentApartmentIndex < huoneistoLista.length - 1) {
         currentApartmentIndex++;
         loadApartment(currentApartmentIndex);
     }
 });
 
-document.getElementById("currentAptInput").addEventListener("change", () => {
+document.getElementById("currentAptInput").addEv("change", () => {
     const val = document.getElementById("currentAptInput").value;
     const idx = huoneistoLista.indexOf(val);
     if (idx !== -1) {
@@ -782,12 +782,12 @@ async function uploadApartmentImage(index) {
     }
 }
 
-document.getElementById("kuva1").addEventListener("change", () => {
+document.getElementById("kuva1").addEv("change", () => {
     previewSelectedImage("kuva1","preview1");
     uploadApartmentImage(1);
 });
 
-document.getElementById("kuva2").addEventListener("change", () => {
+document.getElementById("kuva2").addEv("change", () => {
     previewSelectedImage("kuva2","preview2");
     uploadApartmentImage(2);
 });
@@ -796,10 +796,10 @@ document.getElementById("kuva2").addEventListener("change", () => {
     SIVUN LATAUS
 ========================================================== */
 
-window.addEventListener("load", () => {
+window.addEv("load", () => {
     haeKohteet();
 });
-document.getElementById("btnCreatePdf").addEventListener("click", async () => {
+document.getElementById("btnCreatePdf").addEv("click", async () => {
     if (!kohdeId) {
         alert("Ei kohdetta ladattuna.");
         return;
