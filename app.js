@@ -470,6 +470,8 @@ async function loadApartment(i) {
     const localKey = `offline_${kohdeId}_${apt}`;
     
     if (localStorage.getItem(localKey)) {
+        isLoadingApartment = true;           // ⛔ ESTÄ autosave
+    
         currentApartmentIndex = i;
         document.getElementById("currentAptInput").value = apt;
     
@@ -477,7 +479,7 @@ async function loadApartment(i) {
         fillApartmentForm(local.data);
     
         loadImagePreview(slugify(apt));
-        isLoadingApartment = false;
+        isLoadingApartment = false;          // ✅ SALLI autosave
         return;
     }
 
