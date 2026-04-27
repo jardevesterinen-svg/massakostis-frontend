@@ -15,6 +15,7 @@ let currentApartmentIndex = 0;
 let LAUSELISTA = {};
 let kaikkiKohteet = [];
 let isLoadingApartment = false;
+let offlineQueue = {};
 
 /* ==========================================================
     LAUSELISTA
@@ -117,7 +118,7 @@ function renderKohdeLista(lista) {
     });
 }
 
-document.getElementById("kohde_haku").addEventListener("input", () => {
+document.getElementById("kohde_haku").entListener("input", () => {
     const q = document.getElementById("kohde_haku").value.toLowerCase();
     const filt = kaikkiKohteet.filter(k => k.toLowerCase().includes(q));
     renderKohdeLista(filt);
@@ -457,6 +458,17 @@ function buildApartmentForm() {
 ========================================================== */
 
 async function loadApartment(i) {
+    
+    const apt = huoneistoLista[i];
+    const localKey = `offline_${kohdeId}_${apt}`;
+    
+    if (localStorage.getItem(localKey)) {
+        const local = JSON.parse(localStorage.getItem(localKey));
+        fillApartmentForm(local.data);
+        isLoadingApartment = false;
+        return;
+    }
+
     isLoadingApartment = true;   // ⛔ estä autosave
     if (!kohdeId || huoneistoLista.length === 0) return;
 
@@ -572,9 +584,28 @@ function clearApartmentForm() {
     AUTOSAVE (HUONEISTO)
 ========================================================== */
 
+function saveApartmentDataLocally(kohdeId, huoneisto, data) {
+    const key = `offline_${kohdeId}_${huoneisto}`;
+    localStorage.setItem(key, JSON.stringify({
+        data,
+        ts: Date.now()
+    }));
+}
+
 function autosave() {
- if (isLoadingApartment) return;  // ⛔ EI tallenneta latauksen aikana
-    saveApartmentData();
+    if (isLoadingApartment) return;
+
+    const data = collectApartmentData();
+    const apt = huoneistoLista[currentApartmentIndex];
+    if (!apt || !kohdeId) return;
+
+    // ✅ tallennetaan paikallisesti AINA
+    saveApartmentDataLocally(kohdeId, apt, data);
+
+    // ✅ yritetään tallentaa pilveen jos online
+    if (navigator.onLine) {
+        saveApartmentData();
+    }
 }
 
 function collectApartmentData() {
@@ -781,3 +812,38 @@ document.getElementById("btnCreatePdf").addEventListener("click", async () => {
         alert("Virhe PDF:n luonnissa.");
     }
 });
+
+/* ==========================================================
+    SYNKRONOINTI KUN YHTEYS PALAA
+========================================================== */
+
+async function syncOfflineData() {
+    if (!navigator.onLine) return;
+
+    for (let key of Object.keys(localStorage)) {
+        if (!key.startsWith("offline_")) continue;
+
+        try {
+            const [, kohdeId, apt] = key.split("_");
+            const payload = JSON.parse(localStorage.getItem(key));
+
+            await fetch(
+                "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        kohde_id: kohdeId,
+                        huoneisto_slug: slugify(apt),
+                        data: payload.data
+                    })
+                }
+            );
+
+            localStorage.removeItem(key);
+        } catch {
+            // jätetään jonoon
+        }
+    }
+}
+window.addEventListener("online", syncOfflineData);
