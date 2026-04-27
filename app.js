@@ -707,7 +707,7 @@ async function saveApartmentData() {
     NAVIGAATIO
 ========================================================== */
 
-document.getElementById("prevApt").addEv("click", () => {
+document.getElementById("prevApt").addEventListener("click", () => {
     if (currentApartmentIndex > 0) {
         currentApartmentIndex--;
         loadApartment(currentApartmentIndex);
