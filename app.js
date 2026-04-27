@@ -101,17 +101,45 @@ async function lataaKohde(id) {
     const res = await fetch(`${BACKEND_URL}/get-metadata/${id}`);
     const meta = await res.json();
 
+    /* === PERUSTIEDOT === */
+    document.getElementById("kohde_nimi").value = meta.kohde.nimi || "";
+    document.getElementById("kohde_osoite").value = meta.kohde.osoite || "";
+    document.getElementById("kohde_postinumero").value = meta.kohde.postinumero || "";
+    document.getElementById("kohde_postitoimipaikka").value = meta.kohde.postitoimipaikka || "";
+    document.getElementById("kohde_paiva").value = meta.kohde.paiva || "";
+    document.getElementById("kohde_tarkastaja").value = meta.kohde.tarkastaja || "";
+
+    /* === TILAAJA === */
+    Object.entries(meta.tilaaja || {}).forEach(([k, v]) => {
+        const f = document.getElementById("tilaaja_" + k);
+        if (f) f.value = v;
+    });
+
+    /* === RAPUT + HUONEISTOT === */
     rappuLista = meta.raput || [];
     huoneistoLista = meta.huoneistot || [];
     currentApartmentIndex = 0;
 
-    document.getElementById("kansiPreview").src =
-        `${PUBLIC_URL}/kohteet/${id}/kansikuva.jpg`;
+    renderRappuLista?.();          // jos on olemassa
+    regenerateApartments?.();      // jos on olemassa
 
+    document.getElementById("huoneistoLista").textContent =
+        huoneistoLista.join(", ");
+
+    /* === KANSIKUVA === */
+    const kp = document.getElementById("kansiPreview");
+    kp.src = `${PUBLIC_URL}/kohteet/${id}/kansikuva.jpg`;
+    kp.style.display = "block";
+
+    /* === KARTOITUS === */
     buildApartmentForm();
     loadApartment(0);
 
-    alert("Kohde ladattu");
+    /* === NÄYTTÖ === */
+    document.getElementById("perustiedotTab").style.display = "block";
+    document.getElementById("kartoitusTab").style.display = "none";
+
+    alert("Kohde ladattu ✅");
 }
 
 /* ==========================================================
