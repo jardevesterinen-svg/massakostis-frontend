@@ -300,7 +300,7 @@ function renderRappuLista() {
     });
 }
 
-document.getElementById("btnLisaRappu").addEv("click", () => {
+document.getElementById("btnLisaRappu").addEventListener("click", () => {
     const nimi = document.getElementById("rappu_nimi").value.trim();
     const alku = parseInt(document.getElementById("rappu_alku").value);
     const loppu = parseInt(document.getElementById("rappu_loppu").value);
