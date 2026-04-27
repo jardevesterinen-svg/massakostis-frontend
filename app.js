@@ -637,7 +637,6 @@ function collectApartmentData() {
         }
 
         else {
-            if (el.id.endsWith("_kuntoluokka") && el.value === "") return;
             data[el.id] = el.value;
         }
 
