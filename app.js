@@ -602,11 +602,11 @@ function autosave() {
     if (isLoadingApartment) return;
 
     const data = collectApartmentData();
-    const apt = huoneistoLista[currentApartmentIndex];
+    const currentapt = huoneistoLista[currentApartmentIndex];
     if (!apt || !kohdeId) return;
 
     // ✅ tallennetaan paikallisesti AINA
-    saveApartmentDataLocally(kohdeId, apt, data);
+    saveApartmentDataLocally(kohdeId, currentapt, data);
 
     // ✅ yritetään tallentaa pilveen jos online
     if (navigator.onLine) {
