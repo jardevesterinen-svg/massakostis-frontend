@@ -449,7 +449,7 @@ function buildApartmentForm() {
             <label><input type="radio" name="${osio}_huomio" value="Kyllä"> Kyllä</label>
             <label><input type="radio" name="${osio}_huomio" value="Ei" checked> Ei</label>
         `;
-        hu.addEventListenerv("change",autosave);
+        hu.addEventListener("change",autosave);
         sec.appendChild(hu);
 
         sec.appendChild(createDropdown(osio,"havainnot"));
@@ -469,8 +469,13 @@ async function loadApartment(i) {
     const localKey = `offline_${kohdeId}_${apt}`;
     
     if (localStorage.getItem(localKey)) {
+        currentApartmentIndex = i;
+        document.getElementById("currentAptInput").value = apt;
+    
         const local = JSON.parse(localStorage.getItem(localKey));
         fillApartmentForm(local.data);
+    
+        loadImagePreview(slugify(apt));
         isLoadingApartment = false;
         return;
     }
@@ -602,12 +607,10 @@ function autosave() {
 
     const data = collectApartmentData();
     const currentApt = huoneistoLista[currentApartmentIndex];
-    if (!apt || !kohdeId) return;
+    if (!currentApt || !kohdeId) return;
 
-    // ✅ tallennetaan paikallisesti AINA
     saveApartmentDataLocally(kohdeId, currentApt, data);
 
-    // ✅ yritetään tallentaa pilveen jos online
     if (navigator.onLine) {
         saveApartmentData();
     }
@@ -674,7 +677,7 @@ function collectApartmentData() {
 
 async function saveApartmentData() {
     if (!kohdeId) return;
-    if (huoneistoLista.length === 0) return;
+    if (.length === 0) return;
 
     const apt = huoneistoLista[currentApartmentIndex];
     const slug = slugify(apt);
