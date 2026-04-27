@@ -478,7 +478,6 @@ async function loadApartment(i) {
     isLoadingApartment = true;   // ⛔ estä autosave
     if (!kohdeId || huoneistoLista.length === 0) return;
 
-    const apt = huoneistoLista[i];
     document.getElementById("currentAptInput").value = apt;
     const slug = slugify(apt);
 
@@ -602,11 +601,11 @@ function autosave() {
     if (isLoadingApartment) return;
 
     const data = collectApartmentData();
-    const currentapt = huoneistoLista[currentApartmentIndex];
+    const currentApt = huoneistoLista[currentApartmentIndex];
     if (!apt || !kohdeId) return;
 
     // ✅ tallennetaan paikallisesti AINA
-    saveApartmentDataLocally(kohdeId, currentapt, data);
+    saveApartmentDataLocally(kohdeId, currentApt, data);
 
     // ✅ yritetään tallentaa pilveen jos online
     if (navigator.onLine) {
