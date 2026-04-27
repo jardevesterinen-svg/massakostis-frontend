@@ -9,7 +9,7 @@ const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
    GLOBAALI TILA
 ========================================================== */
 
-let kohdeId = null;
+let kohdeId = null;                    // aktiivinen kohde
 let rappuLista = [];
 let huoneistoLista = [];
 let currentApartmentIndex = 0;
@@ -21,72 +21,138 @@ let isLoadingApartment = false;
    APUFUNKTIOT
 ========================================================== */
 
-const slugify = s =>
-  s.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-const storageKey = (apt) =>
-  `apt_${kohdeId}_${slugify(apt)}`;
+function slugify(text) {
+    return text
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+}
 
 function showStatus(msg, id = "status_kartoitus") {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg;
-  setTimeout(() => el.textContent = "", 2500);
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    setTimeout(() => el.textContent = "", 2500);
 }
+
+const storageKey = (apt) =>
+    `apt_${kohdeId}_${slugify(apt)}`;
 
 /* ==========================================================
    LAUSEET
 ========================================================== */
 
 async function loadLauseet() {
-  const res = await fetch("lauseet.json");
-  LAUSELISTA = await res.json();
+    const res = await fetch("lauseet.json");
+    LAUSELISTA = await res.json();
 }
 loadLauseet();
 
 /* ==========================================================
-   AUTOSAVE (LOCAL ONLY)
+   KOHDELISTA (VANHAT + UUDET)
+========================================================== */
+
+async function haeKohteet() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/list-kohteet`);
+        const data = await res.json();
+        kaikkiKohteet = data.kohteet;
+        renderKohdeLista(kaikkiKohteet);
+    } catch (e) {
+        console.error("Virhe kohdehaussa", e);
+    }
+}
+
+function renderKohdeLista(lista) {
+    const div = document.getElementById("kohdeHakulista");
+    div.innerHTML = "";
+
+    if (!lista || lista.length === 0) {
+        div.innerHTML = "<em>Ei kohteita</em>";
+        return;
+    }
+
+    lista.forEach(id => {
+        const b = document.createElement("button");
+        b.className = "btn";
+        b.textContent = id;
+        b.style.width = "100%";
+        b.style.marginBottom = "6px";
+        b.onclick = () => lataaKohde(id);
+        div.appendChild(b);
+    });
+}
+
+document.getElementById("kohde_haku")?.addEventListener("input", () => {
+    const q = document.getElementById("kohde_haku").value.toLowerCase();
+    renderKohdeLista(
+        kaikkiKohteet.filter(k => k.toLowerCase().includes(q))
+    );
+});
+
+/* ==========================================================
+   KOHDEEN LATAUS
+========================================================== */
+
+async function lataaKohde(id) {
+    kohdeId = id;
+
+    const res = await fetch(`${BACKEND_URL}/get-metadata/${id}`);
+    const meta = await res.json();
+
+    rappuLista = meta.raput || [];
+    huoneistoLista = meta.huoneistot || [];
+    currentApartmentIndex = 0;
+
+    document.getElementById("kansiPreview").src =
+        `${PUBLIC_URL}/kohteet/${id}/kansikuva.jpg`;
+
+    buildApartmentForm();
+    loadApartment(0);
+
+    alert("Kohde ladattu");
+}
+
+/* ==========================================================
+   AUTOSAVE – LOCAL FIRST
 ========================================================== */
 
 function autosave() {
-  if (isLoadingApartment) return;
-  saveApartmentDataLocal();
+    if (isLoadingApartment) return;
+    saveApartmentDataLocal();
 }
 
 function collectApartmentData() {
-  const data = {};
-  const root = document.getElementById("dynaamiset_osiot");
+    const data = {};
+    const root = document.getElementById("dynaamiset_osiot");
 
-  root.querySelectorAll("input, textarea, select").forEach(el => {
-    if (el.type === "radio") {
-      if (el.checked) data[el.name] = el.value;
-    } else {
-      data[el.id] = el.value;
-    }
-  });
+    root.querySelectorAll("input, textarea, select").forEach(el => {
+        if (el.type === "radio") {
+            if (el.checked) data[el.name] = el.value;
+        } else {
+            data[el.id] = el.value;
+        }
+    });
 
-  data._savedAt = Date.now();
-  return data;
+    data._savedAt = Date.now();
+    return data;
 }
 
 function saveApartmentDataLocal() {
-  if (!kohdeId) return;
+    if (!kohdeId) return;
+    const apt = huoneistoLista[currentApartmentIndex];
+    if (!apt) return;
 
-  const apt = huoneistoLista[currentApartmentIndex];
-  if (!apt) return;
+    const data = collectApartmentData();
+    data.huoneisto = apt;
 
-  const data = collectApartmentData();
-  data.huoneisto = apt;
+    localStorage.setItem(
+        storageKey(apt),
+        JSON.stringify(data)
+    );
 
-  localStorage.setItem(
-    storageKey(apt),
-    JSON.stringify(data)
-  );
-
-  showStatus("Tallennettu paikallisesti 💾");
+    showStatus("Tallennettu paikallisesti 💾");
 }
 
 /* ==========================================================
@@ -94,27 +160,27 @@ function saveApartmentDataLocal() {
 ========================================================== */
 
 async function syncApartmentToBackend(apt) {
-  const key = storageKey(apt);
-  const raw = localStorage.getItem(key);
-  if (!raw) return;
+    const key = storageKey(apt);
+    const raw = localStorage.getItem(key);
+    if (!raw) return;
 
-  try {
-    await fetch(`${BACKEND_URL}/upload-data`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        kohde_id: kohdeId,
-        huoneisto_slug: slugify(apt),
-        data: JSON.parse(raw)
-      })
-    });
+    try {
+        await fetch(`${BACKEND_URL}/upload-data`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
+                kohde_id: kohdeId,
+                huoneisto_slug: slugify(apt),
+                data: JSON.parse(raw)
+            })
+        });
 
-    localStorage.removeItem(key);
-    showStatus("Synkronoitu ☁️");
+        localStorage.removeItem(key);
+        showStatus("Synkronoitu ☁️");
 
-  } catch {
-    // Offline – jätetään localStorageen
-  }
+    } catch {
+        // offline → yritetään myöhemmin
+    }
 }
 
 /* ==========================================================
@@ -122,91 +188,55 @@ async function syncApartmentToBackend(apt) {
 ========================================================== */
 
 async function loadApartment(index) {
-  isLoadingApartment = true;
+    isLoadingApartment = true;
 
-  const apt = huoneistoLista[index];
-  if (!apt) return;
+    const apt = huoneistoLista[index];
+    if (!apt) return;
 
-  currentApartmentIndex = index;
-  document.getElementById("currentAptInput").value = apt;
+    currentApartmentIndex = index;
+    document.getElementById("currentAptInput").value = apt;
 
-  const local = localStorage.getItem(storageKey(apt));
-  if (local) {
-    fillApartmentForm(JSON.parse(local));
-    isLoadingApartment = false;
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `${BACKEND_URL}/get-apartment/${kohdeId}/${slugify(apt)}`
-    );
-
-    if (res.status === 200) {
-      fillApartmentForm(await res.json());
-    } else {
-      clearApartmentForm();
+    const local = localStorage.getItem(storageKey(apt));
+    if (local) {
+        fillApartmentForm(JSON.parse(local));
+        isLoadingApartment = false;
+        return;
     }
 
-  } catch {
-    showStatus("Offline – käytetään paikallista dataa");
-  }
+    try {
+        const res = await fetch(
+            `${BACKEND_URL}/get-apartment/${kohdeId}/${slugify(apt)}`
+        );
 
-  isLoadingApartment = false;
+        if (res.status === 200)
+            fillApartmentForm(await res.json());
+        else
+            clearApartmentForm();
+
+    } catch {
+        showStatus("Offline – paikallinen data käytössä");
+    }
+
+    isLoadingApartment = false;
 }
 
 function fillApartmentForm(data) {
-  const root = document.getElementById("dynaamiset_osiot");
-
-  root.querySelectorAll("input, textarea, select").forEach(el => {
-    if (el.type === "radio") {
-      el.checked = data[el.name] === el.value;
-    } else if (data[el.id] !== undefined) {
-      el.value = data[el.id];
-    }
-  });
+    const root = document.getElementById("dynaamiset_osiot");
+    root.querySelectorAll("input, textarea, select").forEach(el => {
+        if (el.type === "radio") {
+            el.checked = data[el.name] === el.value;
+        } else if (data[el.id] !== undefined) {
+            el.value = data[el.id];
+        }
+    });
 }
 
 function clearApartmentForm() {
-  const root = document.getElementById("dynaamiset_osiot");
-
-  root.querySelectorAll("input, textarea, select").forEach(el => {
-    if (el.type === "radio") el.checked = false;
-    else el.value = "";
-  });
-}
-
-/* ==========================================================
-   KARTOITUSLOMAKE
-========================================================== */
-
-function buildApartmentForm() {
-  const root = document.getElementById("dynaamiset_osiot");
-  root.innerHTML = "";
-
-  const osiot = Object.keys(LAUSELISTA)
-    .map(k => k.replace(/_(havainnot|toimenpiteet)/, ""))
-    .filter((v, i, a) => a.indexOf(v) === i);
-
-  osiot.forEach(osio => {
-    const sec = document.createElement("div");
-    sec.innerHTML = `<h3>${osio.replace(/_/g, " ").toUpperCase()}</h3>`;
-
-    const ks = document.createElement("select");
-    ks.id = `${osio}_kuntoluokka`;
-    ["", "1", "2", "3", "4"].forEach(v => {
-      const o = document.createElement("option");
-      o.value = v;
-      o.textContent = v || "–";
-      ks.appendChild(o);
+    const root = document.getElementById("dynaamiset_osiot");
+    root.querySelectorAll("input, textarea, select").forEach(el => {
+        if (el.type === "radio") el.checked = false;
+        else el.value = "";
     });
-    ks.addEventListener("change", autosave);
-
-    sec.appendChild(document.createTextNode("Kuntoluokka:"));
-    sec.appendChild(ks);
-
-    root.appendChild(sec);
-  });
 }
 
 /* ==========================================================
@@ -214,29 +244,21 @@ function buildApartmentForm() {
 ========================================================== */
 
 document.getElementById("prevApt").onclick = async () => {
-  const apt = huoneistoLista[currentApartmentIndex];
-  await syncApartmentToBackend(apt);
-
-  if (currentApartmentIndex > 0) {
-    loadApartment(currentApartmentIndex - 1);
-  }
+    const apt = huoneistoLista[currentApartmentIndex];
+    await syncApartmentToBackend(apt);
+    if (currentApartmentIndex > 0)
+        loadApartment(currentApartmentIndex - 1);
 };
 
 document.getElementById("nextApt").onclick = async () => {
-  const apt = huoneistoLista[currentApartmentIndex];
-  await syncApartmentToBackend(apt);
-
-  if (currentApartmentIndex < huoneistoLista.length - 1) {
-    loadApartment(currentApartmentIndex + 1);
-  }
+    const apt = huoneistoLista[currentApartmentIndex];
+    await syncApartmentToBackend(apt);
+    if (currentApartmentIndex < huoneistoLista.length - 1)
+        loadApartment(currentApartmentIndex + 1);
 };
 
-/* ==========================================================
-   ONLINE-SYNKKAUS
-========================================================== */
-
 window.addEventListener("online", () => {
-  huoneistoLista.forEach(syncApartmentToBackend);
+    huoneistoLista.forEach(syncApartmentToBackend);
 });
 
 /* ==========================================================
@@ -244,15 +266,19 @@ window.addEventListener("online", () => {
 ========================================================== */
 
 document.getElementById("btnCreatePdf").onclick = async () => {
-  for (const apt of huoneistoLista) {
-    await syncApartmentToBackend(apt);
-  }
+    for (const apt of huoneistoLista)
+        await syncApartmentToBackend(apt);
 
-  const res = await fetch(
-    `${BACKEND_URL}/generate-report/${kohdeId}`,
-    { method: "POST" }
-  );
-
-  const data = await res.json();
-  if (data.url) window.open(data.url, "_blank");
+    const res = await fetch(
+        `${BACKEND_URL}/generate-report/${kohdeId}`,
+        { method: "POST" }
+    );
+    const data = await res.json();
+    if (data.url) window.open(data.url, "_blank");
 };
+
+/* ==========================================================
+   INIT
+========================================================== */
+
+window.addEventListener("load", hautaeKohteet = haeKohteet);
