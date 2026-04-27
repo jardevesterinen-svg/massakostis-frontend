@@ -714,7 +714,7 @@ document.getElementById("prevApt").addEventListener("click", () => {
     }
 });
 
-document.getElementById("nextApt").addEv("click", () => {
+document.getElementById("nextApt").addEventListener("click", () => {
     if (currentApartmentIndex < huoneistoLista.length - 1) {
         currentApartmentIndex++;
         loadApartment(currentApartmentIndex);
