@@ -281,4 +281,4 @@ document.getElementById("btnCreatePdf").onclick = async () => {
    INIT
 ========================================================== */
 
-window.addEventListener("load", hautaeKohteet = haeKohteet);
+window.addEventListener("load", haeKohteet);
