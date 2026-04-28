@@ -744,47 +744,59 @@ function collectApartmentData() {
         }
         else {
             data[el.id] = el.value;
-            if (el.id.includes("kuntoluokka")) {  // ✅ Debug
+            if (el.id.includes("kuntoluokka")) {
                 console.log("💾 Tallennetaan kuntoluokka:", el.id, "=", el.value);
             }
         }
     });
 
-    console.log("📦 Kerätyt tiedot:", data);  // ✅ Debug
+    // ✅ LISÄÄ MATERIAALIT
+    
+    // Lattia
+    const lattiaValinta = document.querySelector('input[name="materiaalit_lattia_valinta"]:checked');
+    if (lattiaValinta) {
+        data["materiaalit_lattia_valinta"] = lattiaValinta.value;
+    }
+    const lattiaMuu = document.getElementById("materiaalit_lattia_muu");
+    if (lattiaMuu && lattiaMuu.value) {
+        data["materiaalit_lattia_muu"] = lattiaMuu.value;
+    }
+
+    // Seinät
+    const seinatValinta = document.querySelector('input[name="materiaalit_seinat_valinta"]:checked');
+    if (seinatValinta) {
+        data["materiaalit_seinat_valinta"] = seinatValinta.value;
+    }
+    const seinatMuu = document.getElementById("materiaalit_seinat_muu");
+    if (seinatMuu && seinatMuu.value) {
+        data["materiaalit_seinat_muu"] = seinatMuu.value;
+    }
+
+    // Katto
+    const kattoValinta = document.querySelector('input[name="materiaalit_katto_valinta"]:checked');
+    if (kattoValinta) {
+        data["materiaalit_katto_valinta"] = kattoValinta.value;
+    }
+    const kattoMuu = document.getElementById("materiaalit_katto_muu");
+    if (kattoMuu && kattoMuu.value) {
+        data["materiaalit_katto_muu"] = kattoMuu.value;
+    }
+
+    // Vesiputket (checkboxes)
+    const vesiputketChecked = document.querySelectorAll('input[name="materiaalit_vesiputket"]:checked');
+    if (vesiputketChecked.length > 0) {
+        data["materiaalit_vesiputket"] = Array.from(vesiputketChecked).map(cb => cb.value);
+    }
+
+    // Lämpöputket (checkboxes)
+    const lampoputketChecked = document.querySelectorAll('input[name="materiaalit_lampoputket"]:checked');
+    if (lampoputketChecked.length > 0) {
+        data["materiaalit_lampoputket"] = Array.from(lampoputketChecked).map(cb => cb.value);
+    }
+
+    console.log("📦 Kerätyt tiedot:", data);
     return data;
 }
-
-async function saveApartmentData() {
-    if (!kohdeId) return;
-    if (!huoneistoLista || huoneistoLista.length === 0) return;
-
-    const apt = huoneistoLista[currentApartmentIndex];
-    const slug = slugify(apt);
-
-    const data = collectApartmentData();
-    data.huoneisto = apt;
-
-    try {
-        await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/upload-data",
-            {
-                method:"POST",
-                headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({
-                    kohde_id:kohdeId,
-                    huoneisto_slug:slug,
-                    data
-                })
-            }
-        );
-
-        showStatus("Tallennettu ✅", "status_kartoitus");
-
-    } catch {
-        showStatus("Ei yhteyttä – tallennetaan myöhemmin", "status_kartoitus");
-    }
-}
-
 /* ==========================================================
     NAVIGAATIO
 ========================================================== */
