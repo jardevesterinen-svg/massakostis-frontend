@@ -756,37 +756,51 @@ function previewSelectedImage(fileInputId, previewId) {
     preview.style.display = "block";
 }
 
-async function uploadApartmentImage(index) {
+async function loadApartment(i) {
+    
+    const apt = huoneistoLista[i];
+    const localKey = `offline_${kohdeId}_${apt}`;
+    const slug = slugify(apt);
+    
+    isLoadingApartment = true;
+    
+    if (!kohdeId || huoneistoLista.length === 0) return;
 
-    if (!kohdeId) {
-        alert("Täytä ensin perustiedot.");
+    // ✅ NOLLAA AINA ENSIN
+    clearApartmentForm();
+    
+    document.getElementById("currentAptInput").value = apt;
+    currentApartmentIndex = i;
+
+    // 1️⃣ Tarkista offline-tallennus ensin
+    if (localStorage.getItem(localKey)) {
+        const local = JSON.parse(localStorage.getItem(localKey));
+        fillApartmentForm(local.data);
+        loadImagePreview(slug);
+        isLoadingApartment = false;
         return;
     }
 
-    const apt = huoneistoLista[currentApartmentIndex];
-    const slug = slugify(apt);
-
-    const input = document.getElementById(`kuva${index}`);
-    const file = input.files[0];
-    if (!file) return;
-
-    const form = new FormData();
-    form.append("kohde_id", kohdeId);
-    form.append("huoneisto_slug", slug);
-    form.append("index", index);
-    form.append("file", file);
-
+    // 2️⃣ Yritä noutaa palvelimelta
     try {
-        await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/upload-image",
-            { method:"POST", body:form }
+        const res = await fetch(
+            `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
         );
 
-        showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
+        if (res.status === 200) {
+            fillApartmentForm(await res.json());
+        }
+        // Jos 404 tai muu virhe, jää tyhjäksi (clearApartmentForm tekemisen ansiosta)
 
     } catch {
-        showStatus("Kuvan tallennus epäonnistui ❌", "status_kartoitus");
+        showStatus("Ei yhteyttä", "status_kartoitus");
+        // Jää tyhjäksi
     }
+
+    document.getElementById("kuva1").value = "";
+    document.getElementById("kuva2").value = "";
+    loadImagePreview(slug);
+    isLoadingApartment = false;
 }
 
 document.getElementById("kuva1").addEventListener("change", () => {
