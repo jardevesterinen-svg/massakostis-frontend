@@ -520,20 +520,21 @@ async function loadApartment(i) {
         if (res.status === 200) {
             const data = await res.json();
             console.log("📦 Palvelimen data:", data);
+            isLoadingApartment = false;
             fillApartmentForm(data);
         } else {
             console.log("⚪ Status", res.status, "- lomake jää tyhjäksi");
         }
 
     } catch (err) {
+        isLoadingApartment = false;
         console.log("🔴 Virhe:", err);
         showStatus("Ei yhteyttä", "status_kartoitus");
     }
 
     document.getElementById("kuva1").value = "";
     document.getElementById("kuva2").value = "";
-    loadImagePreview(slug);
-    isLoadingApartment = false;
+    loadImagePreview(slug);    
 }
 
 function loadImagePreview(slug) {
