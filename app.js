@@ -442,7 +442,6 @@ function buildApartmentForm() {
         });
         
         ks.addEventListener("change", (e) => {
-            if (!e.isTrusted) return;
             autosave();
         })
         sec.appendChild(ks);
