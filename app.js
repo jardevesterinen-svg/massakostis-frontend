@@ -427,7 +427,7 @@ function buildApartmentForm() {
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
 
         const ks = document.createElement("select");
-        ks.id = `${osio}_kuntoluokka`;
+        ks.id = `kuntoluokka__${osio}`;
         
         const empty = document.createElement("option");
         empty.value = "";
