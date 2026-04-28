@@ -700,7 +700,38 @@ function saveApartmentDataLocally(kohdeId, huoneisto, data) {
         ts: Date.now()
     }));
 }
+function saveApartmentData() {
+    const currentApt = huoneistoLista[currentApartmentIndex];
+    const data = collectApartmentData();
 
+    if (!currentApt || !kohdeId) {
+        console.log("❌ currentApt tai kohdeId puuttuu");
+        return;
+    }
+
+    console.log("🌐 Lähetetään palvelimelle:", {
+        kohde_id: kohdeId,
+        huoneisto_slug: slugify(currentApt),
+        data: data
+    });
+
+    fetch("/upload-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            kohde_id: kohdeId,
+            huoneisto_slug: slugify(currentApt),
+            data: data
+        })
+    })
+    .then(res => res.json())
+    .then(result => {
+        console.log("✅ Palvelimelle tallennettu:", result);
+    })
+    .catch(err => {
+        console.log("🔴 Virhe palvelimelle tallennuksessa:", err);
+    });
+}
 function autosave() {
     console.log("📞 autosave() kutsuttu");
     if (isLoadingApartment) {
