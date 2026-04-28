@@ -55,3 +55,37 @@ textarea {
 .option-row label {
     white-space: nowrap;
 }
+.pdf-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.92);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-overlay-content {
+    text-align: center;
+    color: #3B404C;
+    font-family: Arial, sans-serif;
+}
+
+.pdf-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #C3D9E8;
+    border-top-color: #2c6bed;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.pdf-text {
+    font-size: 16px;
+    line-height: 1.4;
+}
