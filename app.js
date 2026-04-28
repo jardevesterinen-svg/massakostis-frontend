@@ -1075,19 +1075,29 @@ document.getElementById("btnCreatePdf").addEventListener("click", async () => {
         return;
     }
 
-    const res = await fetch(
-        `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
-        { method: "POST" }
-    );
+    const overlay = document.getElementById("pdfOverlay");
+    overlay.style.display = "flex"; // ✅ näytä overlay
 
-    const data = await res.json();
+    try {
+        const res = await fetch(
+            `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+            { method: "POST" }
+        );
 
-    if (data.url) {
-        alert("PDF-raportti luotu!");
-        // Valinta A = tallennus R2:een, ei automaattista avausta
-        window.open(data.url, "_blank");
-    } else {
-        alert("Virhe PDF:n luonnissa.");
+        if (!res.ok) throw new Error("PDF epäonnistui");
+
+        const data = await res.json();
+        if (data.url) {
+            window.open(data.url, "_blank");
+        } else {
+            alert("Virhe PDF:n luonnissa.");
+        }
+
+    } catch (e) {
+        console.error(e);
+        alert("PDF:n luonti epäonnistui.");
+    } finally {
+        overlay.style.display = "none"; // ✅ piilota overlay
     }
 });
 
