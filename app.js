@@ -451,9 +451,7 @@ function buildApartmentForm() {
         sec.appendChild(ks);
         
         console.log("✅ Select lisätty sec:iin, sec DOM:issa?", document.getElementById("dynaamiset_osiot").contains(ks));  // ← DEBUG
-        });
-        sec.appendChild(ks);
-
+               
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
         const hu = document.createElement("div");
         hu.innerHTML = `
