@@ -470,46 +470,57 @@ async function loadApartment(i) {
     
     const apt = huoneistoLista[i];
     const localKey = `offline_${kohdeId}_${apt}`;
+    const slug = slugify(apt);
     
-    if (localStorage.getItem(localKey)) {
-        isLoadingApartment = true;           // ⛔ ESTÄ autosave
+    console.log("🔵 loadApartment kutsuttu:", apt, "slug:", slug);
     
-        currentApartmentIndex = i;
-        document.getElementById("currentAptInput").value = apt;
+    isLoadingApartment = true;
     
-        const local = JSON.parse(localStorage.getItem(localKey));
-        fillApartmentForm(local.data);
-    
-        loadImagePreview(slugify(apt));
-        isLoadingApartment = false;          // ✅ SALLI autosave
+    if (!kohdeId || huoneistoLista.length === 0) {
+        console.log("❌ kohdeId tai huoneistoLista puuttuu");
         return;
     }
 
-    isLoadingApartment = true;   // ⛔ estä autosave
-    if (!kohdeId || huoneistoLista.length === 0) return;
-
+    clearApartmentForm();
+    console.log("🧹 Lomake tyhjennetty");
+    
     document.getElementById("currentAptInput").value = apt;
-    const slug = slugify(apt);
+    currentApartmentIndex = i;
+
+    if (localStorage.getItem(localKey)) {
+        console.log("💾 Offline-tallennus löytyi!");
+        const local = JSON.parse(localStorage.getItem(localKey));
+        fillApartmentForm(local.data);
+        loadImagePreview(slug);
+        isLoadingApartment = false;
+        return;
+    }
 
     try {
+        console.log("🌐 Noudetaan palvelimelta...");
         const res = await fetch(
             `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
         );
+        
+        console.log("📡 Palvelin vastasi:", res.status);
 
-        if (res.status === 404) {
-            clearApartmentForm();
+        if (res.status === 200) {
+            const data = await res.json();
+            console.log("📦 Palvelimen data:", data);
+            fillApartmentForm(data);
         } else {
-            fillApartmentForm(await res.json());
+            console.log("⚪ Status", res.status, "- lomake jää tyhjäksi");
         }
 
-    } catch {
+    } catch (err) {
+        console.log("🔴 Virhe:", err);
         showStatus("Ei yhteyttä", "status_kartoitus");
     }
 
     document.getElementById("kuva1").value = "";
     document.getElementById("kuva2").value = "";
     loadImagePreview(slug);
-    isLoadingApartment = false;  // ✅ autosave takaisin päälle
+    isLoadingApartment = false;
 }
 
 function loadImagePreview(slug) {
