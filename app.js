@@ -441,9 +441,11 @@ function buildApartmentForm() {
             ks.appendChild(o);
         });
         
-        ks.addEventListener("change", () => {
-            console.log("🔄 Select muuttui:", ks.id, "=", ks.value);
+        ks.addEventListener("change", (e) => {
+            console.log("🔵 Select change -event:", ks.id, "uusi arvo:", ks.value);
+            console.log("🔵 isLoadingApartment:", isLoadingApartment);
             autosave();
+            console.log("🔵 autosave() kutsuttu");
         });
         sec.appendChild(ks);
 
@@ -627,16 +629,28 @@ function saveApartmentDataLocally(kohdeId, huoneisto, data) {
 }
 
 function autosave() {
-    if (isLoadingApartment) return;
+    console.log("📞 autosave() kutsuttu");
+    if (isLoadingApartment) {
+        console.log("⛔ isLoadingApartment = TRUE, palautetaan");
+        return;
+    }
 
     const data = collectApartmentData();
     const currentApt = huoneistoLista[currentApartmentIndex];
-    if (!currentApt || !kohdeId) return;
+    console.log("📦 Kerätään data huoneistolle:", currentApt);
+    if (!currentApt || !kohdeId) {
+        console.log("❌ currentApt tai kohdeId puuttuu");
+        return;
+    }
 
     saveApartmentDataLocally(kohdeId, currentApt, data);
+    console.log("💾 Tallennettu lokaalisti");
 
     if (navigator.onLine) {
+        console.log("🌐 Online - kutsutaan saveApartmentData()");
         saveApartmentData();
+    } else {
+        console.log("📴 Offline - ei palvelimeen tallennusta");
     }
 }
 
