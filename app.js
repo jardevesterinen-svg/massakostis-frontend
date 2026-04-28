@@ -1069,37 +1069,53 @@ document.getElementById("kuva2").addEventListener("change", () => {
 window.addEventListener("load", () => {
     haeKohteet();
 });
-document.getElementById("btnCreatePdf").addEventListener("click", async () => {
-    console.log("PDF button clicked");
-    if (!kohdeId) {
-        alert("Ei kohdetta ladattuna.");
+document.addEventListener("DOMContentLoaded", () => {
+
+    const btn = document.getElementById("btnCreatePdf");
+    if (!btn) {
+        console.error("btnCreatePdf ei löydy DOMista");
         return;
     }
 
-    const overlay = document.getElementById("pdfOverlay");
-    overlay.style.display = "flex"; // ✅ näytä overlay
+    btn.addEventListener("click", async () => {
+        console.log("PDF button clicked");
 
-    try {
-        const res = await fetch(
-            `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
-            { method: "POST" }
-        );
-
-        if (!res.ok) throw new Error("PDF epäonnistui");
-
-        const data = await res.json();
-        if (data.url) {
-            window.open(data.url, "_blank");
-        } else {
-            alert("Virhe PDF:n luonnissa.");
+        const overlay = document.getElementById("pdfOverlay");
+        if (!overlay) {
+            console.error("pdfOverlay ei löydy DOMista");
+            return;
         }
 
-    } catch (e) {
-        console.error(e);
-        alert("PDF:n luonti epäonnistui.");
-    } finally {
-        overlay.style.display = "none"; // ✅ piilota overlay
-    }
+        // ✅ näytä odotusoverlay
+        overlay.style.display = "flex";
+
+        try {
+            const res = await fetch(
+                `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+                { method: "POST" }
+            );
+
+            if (!res.ok) {
+                throw new Error("PDF:n luonti epäonnistui");
+            }
+
+            const data = await res.json();
+
+            if (data.url) {
+                window.open(data.url, "_blank");
+            } else {
+                alert("Virhe PDF:n luonnissa.");
+            }
+
+        } catch (e) {
+            console.error("PDF error:", e);
+            alert("PDF:n luonti epäonnistui.");
+        } finally {
+            // ✅ piilota overlay aina lopuksi
+            overlay.style.display = "none";
+        }
+    });
+
 });
 
 /* ==========================================================
