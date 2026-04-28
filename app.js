@@ -1013,7 +1013,45 @@ async function loadApartment(i) {
     loadImagePreview(slug);
     isLoadingApartment = false;
 }
+async function uploadApartmentImage(index) {
+    if (!kohdeId || !huoneistoLista.length) {
+        alert("Kohde tai huoneisto ei ole valittuna.");
+        return;
+    }
 
+    const apt = huoneistoLista[currentApartmentIndex];
+    if (!apt) return;
+
+    const slug = slugify(apt);
+    const input = document.getElementById(`kuva${index}`);
+    const file = input.files[0];
+    if (!file) return;
+
+    const form = new FormData();
+    form.append("kohde_id", kohdeId);
+    form.append("huoneisto_slug", slug);
+    form.append("index", index.toString());
+    form.append("file", file);
+
+    try {
+        const res = await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-image",
+            {
+                method: "POST",
+                body: form
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
+    } catch (e) {
+        console.error("Kuvan upload epäonnistui:", e);
+        showStatus("Kuvan tallennus epäonnistui ❌", "status_kartoitus");
+    }
+}
 document.getElementById("kuva1").addEventListener("change", () => {
     previewSelectedImage("kuva1","preview1");
     uploadApartmentImage(1);
