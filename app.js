@@ -412,6 +412,10 @@ function createDropdown(osio, tyyppi) {
 }
 
 function buildApartmentForm() {
+    console.log("🔨 buildApartmentForm kutsuttu");
+    console.log("📋 LAUSELISTA:", LAUSELISTA);
+    console.log("📋 LAUSELISTA keys:", Object.keys(LAUSELISTA));
+    
     const root = document.getElementById("dynaamiset_osiot");
     root.innerHTML = "";
 
@@ -419,8 +423,11 @@ function buildApartmentForm() {
         .map(k=>k.replace("_havainnot","").replace("_toimenpiteet",""))
         .filter((v,i,a)=>a.indexOf(v)===i);
 
-    osiot.forEach(osio => {
+    console.log("📋 osiot:", osiot);  // ← DEBUG
 
+    osiot.forEach(osio => {
+        console.log("🔄 Käsitellään osio:", osio);  // ← DEBUG
+        
         let sec = document.createElement("div");
         sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
 
