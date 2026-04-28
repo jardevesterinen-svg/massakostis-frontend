@@ -558,10 +558,12 @@ function fillApartmentForm(data) {
         if (el.type === "radio") {
             if (data[el.name] === el.value) el.checked = true;
         } 
-        else if (el.tagName === "SELECT") {  // ✅ Lisää tämä
+        else if (el.tagName === "SELECT") {
             if (data[el.id] !== undefined) {
                 el.value = data[el.id];
                 console.log("📊 Select palautuu:", el.id, "arvoksi:", el.value);
+                // ✅ Laukaise change-event
+                el.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
         else if (data[el.id] !== undefined) {
