@@ -1078,8 +1078,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btn.addEventListener("click", async () => {
-        console.log("PDF button clicked");
-
+        
         const overlay = document.getElementById("pdfOverlay");
         if (!overlay) {
             console.error("pdfOverlay ei löydy DOMista");
@@ -1088,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ✅ näytä odotusoverlay
         overlay.style.display = "flex";
-
+        await new Promise(requestAnimationFrame);
         try {
             const res = await fetch(
                 `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
