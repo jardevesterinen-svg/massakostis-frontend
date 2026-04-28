@@ -770,21 +770,28 @@ function previewSelectedImage(fileInputId, previewId) {
 async function loadApartment(i) {
     
     const apt = huoneistoLista[i];
+    if (!apt) {
+        console.log("❌ Huoneisto ei ole olemassa indeksillä", i);
+        return;
+    }
+    
     const localKey = `offline_${kohdeId}_${apt}`;
     const slug = slugify(apt);
     
+    console.log("🔵 loadApartment kutsuttu:", apt, "slug:", slug);
+    
     isLoadingApartment = true;
     
-    if (!kohdeId || huoneistoLista.length === 0) return;
+    currentApartmentIndex = i;
+    document.getElementById("currentAptInput").value = apt;
 
     // ✅ NOLLAA AINA ENSIN
     clearApartmentForm();
-    
-    document.getElementById("currentAptInput").value = apt;
-    currentApartmentIndex = i;
+    console.log("🧹 Lomake tyhjennetty");
 
     // 1️⃣ Tarkista offline-tallennus ensin
     if (localStorage.getItem(localKey)) {
+        console.log("💾 Offline-tallennus löytyi!");
         const local = JSON.parse(localStorage.getItem(localKey));
         fillApartmentForm(local.data);
         loadImagePreview(slug);
@@ -794,18 +801,22 @@ async function loadApartment(i) {
 
     // 2️⃣ Yritä noutaa palvelimelta
     try {
+        console.log("🌐 Noudetaan palvelimelta...");
         const res = await fetch(
             `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
         );
+        
+        console.log("📡 Palvelin vastasi:", res.status);
 
         if (res.status === 200) {
-            fillApartmentForm(await res.json());
+            const data = await res.json();
+            console.log("📦 Palvelimen data:", data);
+            fillApartmentForm(data);
         }
-        // Jos 404 tai muu virhe, jää tyhjäksi (clearApartmentForm tekemisen ansiosta)
 
-    } catch {
+    } catch (err) {
+        console.log("🔴 Virhe:", err);
         showStatus("Ei yhteyttä", "status_kartoitus");
-        // Jää tyhjäksi
     }
 
     document.getElementById("kuva1").value = "";
