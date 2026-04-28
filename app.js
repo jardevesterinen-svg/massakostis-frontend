@@ -434,7 +434,7 @@ function buildApartmentForm() {
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
 
         const ks = document.createElement("select");
-        ks.id = `${osio}_kuntoluokka`;
+        ks.id = `kuntoluokka__${osio}`;
         
         console.log("✅ Luotiin select-elementti:", ks.id);  // ← DEBUG
         console.log("✅ Select-elementti DOM:issa?", document.getElementById(ks.id));  // ← DEBUG
