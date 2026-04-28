@@ -588,6 +588,8 @@ function loadImagePreview(slug) {
 }
 
 function fillApartmentForm(data) {
+    console.log("📝 fillApartmentForm() kutsuttu, data:", data);
+    
     const fields = document.querySelectorAll(
         "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
     );
@@ -607,56 +609,55 @@ function fillApartmentForm(data) {
         }
     });
 
-    // ✅ LISÄÄ TÄMÄ - MATERIAALIEN KÄSITTELY
-    
+    // ✅ MATERIAALIEN KÄSITTELY - EI .get() !
+
     // Lattia
-    const lattiaValinta = data.get("materiaalit_lattia_valinta");
-    if (lattiaValinta) {
-        document.querySelector(`input[name="materiaalit_lattia_valinta"][value="${lattiaValinta}"]`).checked = true;
+    if (data["materiaalit_lattia_valinta"]) {
+        const el = document.querySelector(`input[name="materiaalit_lattia_valinta"][value="${data["materiaalit_lattia_valinta"]}"]`);
+        if (el) el.checked = true;
     }
-    if (data.get("materiaalit_lattia_muu")) {
-        document.getElementById("materiaalit_lattia_muu").value = data.get("materiaalit_lattia_muu");
+    if (data["materiaalit_lattia_muu"]) {
+        const muuEl = document.getElementById("materiaalit_lattia_muu");
+        if (muuEl) muuEl.value = data["materiaalit_lattia_muu"];
     }
 
     // Seinät
-    const seinatValinta = data.get("materiaalit_seinat_valinta");
-    if (seinatValinta) {
-        document.querySelector(`input[name="materiaalit_seinat_valinta"][value="${seinatValinta}"]`).checked = true;
+    if (data["materiaalit_seinat_valinta"]) {
+        const el = document.querySelector(`input[name="materiaalit_seinat_valinta"][value="${data["materiaalit_seinat_valinta"]}"]`);
+        if (el) el.checked = true;
     }
-    if (data.get("materiaalit_seinat_muu")) {
-        document.getElementById("materiaalit_seinat_muu").value = data.get("materiaalit_seinat_muu");
+    if (data["materiaalit_seinat_muu"]) {
+        const muuEl = document.getElementById("materiaalit_seinat_muu");
+        if (muuEl) muuEl.value = data["materiaalit_seinat_muu"];
     }
 
     // Katto
-    const kattoValinta = data.get("materiaalit_katto_valinta");
-    if (kattoValinta) {
-        document.querySelector(`input[name="materiaalit_katto_valinta"][value="${kattoValinta}"]`).checked = true;
+    if (data["materiaalit_katto_valinta"]) {
+        const el = document.querySelector(`input[name="materiaalit_katto_valinta"][value="${data["materiaalit_katto_valinta"]}"]`);
+        if (el) el.checked = true;
     }
-    if (data.get("materiaalit_katto_muu")) {
-        document.getElementById("materiaalit_katto_muu").value = data.get("materiaalit_katto_muu");
+    if (data["materiaalit_katto_muu"]) {
+        const muuEl = document.getElementById("materiaalit_katto_muu");
+        if (muuEl) muuEl.value = data["materiaalit_katto_muu"];
     }
 
-    // Vesiputket (checkboxes)
-    document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
-        cb.checked = false;
-    });
-    const vesiputket = data.get("materiaalit_vesiputket");
-    if (vesiputket) {
-        const vals = Array.isArray(vesiputket) ? vesiputket : [vesiputket];
+    // Vesiputket
+    document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => cb.checked = false);
+    if (data["materiaalit_vesiputket"]) {
+        const vals = Array.isArray(data["materiaalit_vesiputket"]) ? data["materiaalit_vesiputket"] : [data["materiaalit_vesiputket"]];
         vals.forEach(val => {
-            document.querySelector(`input[name="materiaalit_vesiputket"][value="${val}"]`).checked = true;
+            const el = document.querySelector(`input[name="materiaalit_vesiputket"][value="${val}"]`);
+            if (el) el.checked = true;
         });
     }
 
-    // Lämpöputket (checkboxes)
-    document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => {
-        cb.checked = false;
-    });
-    const lampoputket = data.get("materiaalit_lampoputket");
-    if (lampoputket) {
-        const vals = Array.isArray(lampoputket) ? lampoputket : [lampoputket];
+    // Lämpöputket
+    document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => cb.checked = false);
+    if (data["materiaalit_lampoputket"]) {
+        const vals = Array.isArray(data["materiaalit_lampoputket"]) ? data["materiaalit_lampoputket"] : [data["materiaalit_lampoputket"]];
         vals.forEach(val => {
-            document.querySelector(`input[name="materiaalit_lampoputket"][value="${val}"]`).checked = true;
+            const el = document.querySelector(`input[name="materiaalit_lampoputket"][value="${val}"]`);
+            if (el) el.checked = true;
         });
     }
 }
