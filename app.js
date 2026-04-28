@@ -412,10 +412,6 @@ function createDropdown(osio, tyyppi) {
 }
 
 function buildApartmentForm() {
-    console.log("🔨 buildApartmentForm kutsuttu");
-    console.log("📋 LAUSELISTA:", LAUSELISTA);
-    console.log("📋 LAUSELISTA keys:", Object.keys(LAUSELISTA));
-    
     const root = document.getElementById("dynaamiset_osiot");
     root.innerHTML = "";
 
@@ -423,21 +419,20 @@ function buildApartmentForm() {
         .map(k=>k.replace("_havainnot","").replace("_toimenpiteet",""))
         .filter((v,i,a)=>a.indexOf(v)===i);
 
-    console.log("📋 osiot:", osiot);  // ← DEBUG
-
     osiot.forEach(osio => {
-        console.log("🔄 Käsitellään osio:", osio);  // ← DEBUG
-        
         let sec = document.createElement("div");
-        sec.innerHTML = `<h3>${osio.replace(/_/g," ").toUpperCase()}</h3>`;
+        
+        // ✅ Käytä appendChild kaikkiin
+        const title = document.createElement("h3");
+        title.textContent = osio.replace(/_/g," ").toUpperCase();
+        sec.appendChild(title);
 
-        sec.innerHTML += `<label>Kuntoluokka:</label>`;
+        const label1 = document.createElement("label");
+        label1.textContent = "Kuntoluokka:";
+        sec.appendChild(label1);
 
         const ks = document.createElement("select");
         ks.id = `kuntoluokka__${osio}`;
-        
-        console.log("✅ Luotiin select-elementti:", ks.id);  // ← DEBUG
-        console.log("✅ Select-elementti DOM:issa?", document.getElementById(ks.id));  // ← DEBUG
         
         const empty = document.createElement("option");
         empty.value = "";
@@ -456,10 +451,12 @@ function buildApartmentForm() {
             autosave();
         });
         sec.appendChild(ks);
-        
-        console.log("✅ Select lisätty sec:iin, sec DOM:issa?", document.getElementById("dynaamiset_osiot").contains(ks));  // ← DEBUG
-               
-        sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
+
+        const div2 = document.createElement("div");
+        div2.style.marginTop = "10px";
+        div2.textContent = "Välittömästi huomiota vaativa:";
+        sec.appendChild(div2);
+
         const hu = document.createElement("div");
         hu.innerHTML = `
             <label><input type="radio" name="${osio}_huomio" value="Kyllä"> Kyllä</label>
