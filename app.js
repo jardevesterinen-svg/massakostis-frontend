@@ -441,9 +441,10 @@ function buildApartmentForm() {
             ks.appendChild(o);
         });
         
-        ks.addEventListener("change", (e) => {
+        ks.addEventListener("change", () => {
+            console.log("🔄 Select muuttui:", ks.id, "=", ks.value);
             autosave();
-        })
+        });
         sec.appendChild(ks);
 
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
