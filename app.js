@@ -46,34 +46,54 @@ function showStatus(msg, id = "status") {
     setTimeout(() => el.textContent = "", 2500);
 }
 function bindMaterialAutosave() {
+    console.log("🔗 bindMaterialAutosave() kutsuttu");
+    
     // Vesiputket
     document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
-        cb.addEventListener("change", autosave);
+        cb.addEventListener("change", () => {
+            console.log("✅ Vesiputki muuttui");
+            autosave();
+        });
     });
 
     // Lämpöputket
     document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => {
-        cb.addEventListener("change", autosave);
+        cb.addEventListener("change", () => {
+            console.log("✅ Lämpöputki muuttui");
+            autosave();
+        });
     });
 
     // Lattia
     document.querySelectorAll('input[name="materiaalit_lattia_valinta"]').forEach(rb => {
-        rb.addEventListener("change", autosave);
+        rb.addEventListener("change", () => {
+            console.log("✅ Lattia muuttui");
+            autosave();
+        });
     });
 
     // Seinät
     document.querySelectorAll('input[name="materiaalit_seinat_valinta"]').forEach(rb => {
-        rb.addEventListener("change", autosave);
+        rb.addEventListener("change", () => {
+            console.log("✅ Seinät muuttuivat");
+            autosave();
+        });
     });
 
     // Katto
     document.querySelectorAll('input[name="materiaalit_katto_valinta"]').forEach(rb => {
-        rb.addEventListener("change", autosave);
+        rb.addEventListener("change", () => {
+            console.log("✅ Katto muuttui");
+            autosave();
+        });
     });
 
     // Muu-kentät
     document.querySelectorAll('input[id*="_muu"]').forEach(field => {
-        field.addEventListener("change", autosave);
+        field.addEventListener("change", () => {
+            console.log("✅ Muu-kenttä muuttui");
+            autosave();
+        });
     });
 }
 /* ==========================================================
