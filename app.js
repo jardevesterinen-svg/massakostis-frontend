@@ -46,13 +46,34 @@ function showStatus(msg, id = "status") {
     setTimeout(() => el.textContent = "", 2500);
 }
 function bindMaterialAutosave() {
-    const materialFields = document.querySelectorAll(
-        'input[name^="materiaalit_"], textarea[name^="materiaalit_"]'
-    );
+    // Vesiputket
+    document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
+        cb.addEventListener("change", autosave);
+    });
 
-    materialFields.forEach(el => {
-        el.addEventListener("change", autosave);
-        el.addEventListener("input", autosave);
+    // Lämpöputket
+    document.querySelectorAll('input[name="materiaalit_lampoputket"]').forEach(cb => {
+        cb.addEventListener("change", autosave);
+    });
+
+    // Lattia
+    document.querySelectorAll('input[name="materiaalit_lattia_valinta"]').forEach(rb => {
+        rb.addEventListener("change", autosave);
+    });
+
+    // Seinät
+    document.querySelectorAll('input[name="materiaalit_seinat_valinta"]').forEach(rb => {
+        rb.addEventListener("change", autosave);
+    });
+
+    // Katto
+    document.querySelectorAll('input[name="materiaalit_katto_valinta"]').forEach(rb => {
+        rb.addEventListener("change", autosave);
+    });
+
+    // Muu-kentät
+    document.querySelectorAll('input[id*="_muu"]').forEach(field => {
+        field.addEventListener("change", autosave);
     });
 }
 /* ==========================================================
