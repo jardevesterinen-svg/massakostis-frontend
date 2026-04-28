@@ -427,7 +427,10 @@ function buildApartmentForm() {
         sec.innerHTML += `<label>Kuntoluokka:</label>`;
 
         const ks = document.createElement("select");
-        ks.id = `kuntoluokka__${osio}`;
+        ks.id = `${osio}_kuntoluokka`;
+        
+        console.log("✅ Luotiin select-elementti:", ks.id);  // ← DEBUG
+        console.log("✅ Select-elementti DOM:issa?", document.getElementById(ks.id));  // ← DEBUG
         
         const empty = document.createElement("option");
         empty.value = "";
@@ -443,9 +446,11 @@ function buildApartmentForm() {
         
         ks.addEventListener("change", (e) => {
             console.log("🔵 Select change -event:", ks.id, "uusi arvo:", ks.value);
-            console.log("🔵 isLoadingApartment:", isLoadingApartment);
             autosave();
-            console.log("🔵 autosave() kutsuttu");
+        });
+        sec.appendChild(ks);
+        
+        console.log("✅ Select lisätty sec:iin, sec DOM:issa?", document.getElementById("dynaamiset_osiot").contains(ks));  // ← DEBUG
         });
         sec.appendChild(ks);
 
