@@ -543,7 +543,14 @@ function fillApartmentForm(data) {
     fields.forEach(el => {
         if (el.type === "radio") {
             if (data[el.name] === el.value) el.checked = true;
-        } else if (data[el.id] !== undefined) {
+        } 
+        else if (el.tagName === "SELECT") {  // ✅ Lisää tämä
+            if (data[el.id] !== undefined) {
+                el.value = data[el.id];
+                console.log("📊 Select palautuu:", el.id, "arvoksi:", el.value);
+            }
+        }
+        else if (data[el.id] !== undefined) {
             el.value = data[el.id];
         }
     });
@@ -650,11 +657,13 @@ function collectApartmentData() {
             if (!data[el.name]) data[el.name] = [];
             if (el.checked) data[el.name].push(el.value);
         }
-
+        else if (el.tagName === "SELECT") {  // ✅ Lisää tämä
+            data[el.id] = el.value;
+            console.log("📊 Select tallennusavain:", el.id, "arvo:", el.value);
+        }
         else {
             data[el.id] = el.value;
         }
-
     });
 
     // 2️⃣ MATERIAALIT (ULKOPUOLELLA dynaamisia osioita)
