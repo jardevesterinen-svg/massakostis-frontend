@@ -444,7 +444,7 @@ function buildApartmentForm() {
         ks.addEventListener("change", (e) => {
             if (!e.isTrusted) return;
             autosave();
-        }
+        })
         sec.appendChild(ks);
 
         sec.innerHTML += `<div style="margin-top:10px;">Välittömästi huomiota vaativa:</div>`;
@@ -574,12 +574,12 @@ function clearApartmentForm() {
         "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
     );
 
-    fields.forEach(el => {
-        if (el.type === "radio") {
-            if (el.value === "Ei") el.checked = true;
-        } else {
-            el.value = "";
-        }
+fields.forEach(el => {
+    if (el.type === "radio") {
+        if (el.value === "Ei") el.checked = true;
+    } else {
+        el.value = "";
+    }
  
     // ===== NOLLAA MATERIAALIT =====
     document.querySelectorAll(
