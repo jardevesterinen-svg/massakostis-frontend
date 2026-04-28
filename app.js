@@ -700,6 +700,31 @@ function saveApartmentDataLocally(kohdeId, huoneisto, data) {
         ts: Date.now()
     }));
 }
+async function syncCurrentApartment() {
+    const apt = huoneistoLista[currentApartmentIndex];
+    const key = `offline_${kohdeId}_${apt}`;
+
+    if (!localStorage.getItem(key)) return;
+    if (!navigator.onLine) return;
+
+    const payload = JSON.parse(localStorage.getItem(key));
+
+    await fetch(
+        "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                kohde_id: kohdeId,
+                huoneisto_slug: slugify(apt),
+                data: payload.data
+            })
+        }
+    );
+
+    localStorage.removeItem(key);
+}
+
 function saveApartmentData() {
     const currentApt = huoneistoLista[currentApartmentIndex];
     const data = collectApartmentData();
@@ -828,32 +853,89 @@ function collectApartmentData() {
     console.log("📦 Kerätyt tiedot:", data);
     return data;
 }
-/* ==========================================================
-    NAVIGAATIO
-========================================================== */
+// ==========================================================
+//  HUONEISTON SYNKKAUS ENNEN NAVIGAATIOTA
+// ==========================================================
 
-document.getElementById("prevApt").addEventListener("click", () => {
-    if (currentApartmentIndex > 0) {
-        currentApartmentIndex--;
-        loadApartment(currentApartmentIndex);
+async function syncCurrentApartment() {
+    if (!kohdeId) return;
+    if (!huoneistoLista.length) return;
+
+    const apt = huoneistoLista[currentApartmentIndex];
+    const key = `offline_${kohdeId}_${apt}`;
+
+    if (!localStorage.getItem(key)) return;
+    if (!navigator.onLine) return;
+
+    try {
+        const payload = JSON.parse(localStorage.getItem(key));
+
+        await fetch(
+            "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    kohde_id: kohdeId,
+                    huoneisto_slug: slugify(apt),
+                    data: payload.data
+                })
+            }
+        );
+
+        // Kun backend on synkattu, poistetaan local-cache
+        localStorage.removeItem(key);
+
+    } catch (e) {
+        console.warn("Huoneiston synkkaus epäonnistui:", e);
     }
+}
+
+
+// ==========================================================
+//  NAVIGAATIO: EDELLINEN HUONEISTO
+// ==========================================================
+
+document.getElementById("prevApt").addEventListener("click", async () => {
+    if (currentApartmentIndex <= 0) return;
+
+    await syncCurrentApartment();
+
+    currentApartmentIndex--;
+    loadApartment(currentApartmentIndex);
 });
 
-document.getElementById("nextApt").addEventListener("click", () => {
-    if (currentApartmentIndex < huoneistoLista.length - 1) {
-        currentApartmentIndex++;
-        loadApartment(currentApartmentIndex);
-    }
+
+// ==========================================================
+//  NAVIGAATIO: SEURAAVA HUONEISTO
+// ==========================================================
+
+document.getElementById("nextApt").addEventListener("click", async () => {
+    if (currentApartmentIndex >= huoneistoLista.length - 1) return;
+
+    await syncCurrentApartment();
+
+    currentApartmentIndex++;
+    loadApartment(currentApartmentIndex);
 });
 
-document.getElementById("currentAptInput").addEventListener("change", () => {
+
+// ==========================================================
+//  NAVIGAATIO: SUORA VALINTA INPUTISTA
+// ==========================================================
+
+document.getElementById("currentAptInput").addEventListener("change", async () => {
     const val = document.getElementById("currentAptInput").value;
     const idx = huoneistoLista.indexOf(val);
-    if (idx !== -1) {
-        currentApartmentIndex = idx;
-        loadApartment(idx);
-    }
+
+    if (idx === -1 || idx === currentApartmentIndex) return;
+
+    await syncCurrentApartment();
+
+    currentApartmentIndex = idx;
+    loadApartment(idx);
 });
+
 
 /* ==========================================================
     KUVA1 / KUVA2 ESIKATSELU + TALLENNUS
