@@ -1070,6 +1070,7 @@ window.addEventListener("load", () => {
     haeKohteet();
 });
 document.getElementById("btnCreatePdf").addEventListener("click", async () => {
+    console.log("PDF button clicked");
     if (!kohdeId) {
         alert("Ei kohdetta ladattuna.");
         return;
