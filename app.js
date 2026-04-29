@@ -1083,6 +1083,8 @@ document.addEventListener("click", async (e) => {
 
     // ✅ näytä overlay
     overlay.style.display = "flex";
+    o.style.background = "red";
+    getComputedStyle(document.getElementById("pdfOverlay")).position
     
     // ✅ PAKOTA selain renderöimään overlay
     await new Promise(requestAnimationFrame);
