@@ -1086,10 +1086,7 @@ document.addEventListener("click", async (e) => {
     
     // ✅ NÄYTÄ OVERLAY
     overlay.style.display = "flex";
-    
-    // ✅ TESTIVÄRI (näkyy heti jos toimii)
-    overlay.style.background = "red";
-    
+     
     // ✅ DEBUG
     console.log("OVERLAY POSITION:", getComputedStyle(overlay).position);
     
