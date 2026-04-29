@@ -1079,14 +1079,21 @@ document.addEventListener("click", async (e) => {
     }
 
     const overlay = document.getElementById("pdfOverlay");
-    if (!overlay) return;
-
-    // ✅ näytä overlay
-    overlay.style.display = "flex";
-    o.style.background = "red";
-    getComputedStyle(document.getElementById("pdfOverlay")).position
+    if (!overlay) {
+        console.error("overlay ei löydy");
+        return;
+    }
     
-    // ✅ PAKOTA selain renderöimään overlay
+    // ✅ NÄYTÄ OVERLAY
+    overlay.style.display = "flex";
+    
+    // ✅ TESTIVÄRI (näkyy heti jos toimii)
+    overlay.style.background = "red";
+    
+    // ✅ DEBUG
+    console.log("OVERLAY POSITION:", getComputedStyle(overlay).position);
+    
+    // ✅ anna selaimen piirtää
     await new Promise(requestAnimationFrame);
 
     try {
