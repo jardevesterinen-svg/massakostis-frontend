@@ -87,7 +87,15 @@ function bindMaterialAutosave() {
             autosave();
         });
     });
-
+    
+    // Pintarakenteiden ikä
+    document.querySelectorAll('input[name="pintarakenteiden_ika"]').forEach(rb => {
+        rb.addEventListener("change", () => {
+            console.log("✅ Pintarakenteiden ikä muuttui");
+            autosave();
+        });
+    });
+    
     // Muu-kentät
     document.querySelectorAll('input[id*="_muu"]').forEach(field => {
         field.addEventListener("change", () => {
