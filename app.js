@@ -660,6 +660,14 @@ function fillApartmentForm(data) {
             if (el) el.checked = true;
         });
     }
+    
+    // Pintarakenteiden ikä
+    if (data["pintarakenteiden_ika"]) {
+        const el = document.querySelector(
+            `input[name="pintarakenteiden_ika"][value="${data["pintarakenteiden_ika"]}"]`
+        );
+        if (el) el.checked = true;
+    }
 }
 
 function clearApartmentForm() {
