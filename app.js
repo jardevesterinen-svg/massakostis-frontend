@@ -95,7 +95,15 @@ function bindMaterialAutosave() {
             autosave();
         });
     });
-    
+
+    // Märkätilan käyttöikä autosave
+    document.querySelectorAll('input[name="kayttoika_jaljella"]').forEach(rb => {
+        rb.addEventListener("change", () => {
+            console.log("✅ Käyttöikä muuttui");
+            autosave();
+        });
+    });
+
     // Muu-kentät
     document.querySelectorAll('input[id*="_muu"]').forEach(field => {
         field.addEventListener("change", () => {
@@ -676,6 +684,14 @@ function fillApartmentForm(data) {
         );
         if (el) el.checked = true;
     }
+
+    // ✅ Märkätilan jäljellä oleva käyttöikä
+    if (data["kayttoika_jaljella"]) {
+        const el = document.querySelector(
+            `input[name="kayttoika_jaljella"][value="${data["kayttoika_jaljella"]}"]`
+        );
+        if (el) el.checked = true;
+    }
 }
 
 function clearApartmentForm() {
@@ -866,12 +882,18 @@ function collectApartmentData() {
         data["materiaalit_lampoputket"] = Array.from(lampoputketChecked).map(cb => cb.value);
     }
     
-    // ✅ Pintarakenteiden ikä (radio)
+    // Pintarakenteiden ikä (radio)
     const ikaValinta = document.querySelector('input[name="pintarakenteiden_ika"]:checked');
     if (ikaValinta) {
         data["pintarakenteiden_ika"] = ikaValinta.value;
     }
-
+    
+    // Märkätilan jäljellä oleva käyttöikä
+    const kayttoikaValinta = document.querySelector('input[name="kayttoika_jaljella"]:checked');
+    if (kayttoikaValinta) {
+        data["kayttoika_jaljella"] = kayttoikaValinta.value;
+    }
+    
     console.log("📦 Kerätyt tiedot:", data);
     return data;
 }
