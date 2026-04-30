@@ -849,6 +849,12 @@ function collectApartmentData() {
     if (lampoputketChecked.length > 0) {
         data["materiaalit_lampoputket"] = Array.from(lampoputketChecked).map(cb => cb.value);
     }
+    
+    // ✅ Pintarakenteiden ikä (radio)
+    const ikaValinta = document.querySelector('input[name="pintarakenteiden_ika"]:checked');
+    if (ikaValinta) {
+        data["pintarakenteiden_ika"] = ikaValinta.value;
+    }
 
     console.log("📦 Kerätyt tiedot:", data);
     return data;
