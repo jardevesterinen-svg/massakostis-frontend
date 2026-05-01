@@ -547,6 +547,15 @@ function toggleMuu(prefix) {
 
     autosave(); // ✅ TÄRKEÄ
 }
+function toggleEiTarkastettu(checked) {
+    const form = document.getElementById("dynaamiset_osiot");
+
+    if (checked) {
+        form.classList.add("form-disabled");
+    } else {
+        form.classList.remove("form-disabled");
+    }
+}    
 </script>
 
 </div>
