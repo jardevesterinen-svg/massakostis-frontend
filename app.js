@@ -832,6 +832,10 @@ function collectApartmentData() {
     const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
         "input, textarea, select"
     );
+    const eiTark = document.getElementById("ei_tarkastettu");
+    if (eiTark) {
+        data["ei_tarkastettu"] = eiTark.checked;
+    }
 
     dynaamisetKentat.forEach(el => {
         if (el.type === "radio") {
