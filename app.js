@@ -47,6 +47,16 @@ function showStatus(msg, id = "status") {
 }
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
+    const eiTarkastettu = document.getElementById("ei_tarkastettu");
+
+    if (eiTarkastettu) {
+        eiTarkastettu.addEventListener("change", () => {
+            console.log("✅ Ei tarkastettu toggle");
+            
+            toggleEiTarkastettu(eiTarkastettu.checked);
+            autosave();
+        });
+    }
     
     // Vesiputket
     document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
