@@ -52,6 +52,11 @@ textarea {
     margin-bottom: 6px;
 }
 
+.form-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .option-row label {
     white-space: nowrap;
 }
