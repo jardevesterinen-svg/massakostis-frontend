@@ -615,7 +615,14 @@ function loadImagePreview(slug) {
 
 function fillApartmentForm(data) {
     console.log("📝 fillApartmentForm() kutsuttu, data:", data);
+    // ✅ Ei tarkastettu
+    const eiTark = document.getElementById("ei_tarkastettu");
     
+    if (eiTark) {
+        eiTark.checked = !!data["ei_tarkastettu"];
+        toggleEiTarkastettu(eiTark.checked);
+    }
+
     const fields = document.querySelectorAll(
         "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
     );
