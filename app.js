@@ -790,7 +790,7 @@ function saveApartmentData() {
         data: data
     });
 
-    fetch("/upload-data", {
+    fetch("https://massakostis-backend-production-9111.up.railway.app/upload-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
