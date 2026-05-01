@@ -624,7 +624,8 @@ function fillApartmentForm(data) {
             el.value = data[el.id];
         }
     });
-
+    document.querySelectorAll('input[name="pintarakenteiden_ika"]').forEach(rb => rb.checked = false);
+    document.querySelectorAll('input[name="kayttoika_jaljella"]').forEach(rb => rb.checked = false);
     // ✅ MATERIAALIEN KÄSITTELY - EI .get() !
 
     // Lattia
