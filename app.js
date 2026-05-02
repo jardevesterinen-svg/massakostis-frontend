@@ -892,15 +892,15 @@ function collectApartmentData() {
             }
         });
    
-    const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
-    const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
-        "input, textarea, select"
+    # const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
+    # const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
+    #    "input, textarea, select"
     );
-    const eiTark = document.getElementById("ei_tarkastettu");
-    
-    if (eiTark) {
+    const eiTark = document.querySelector('#ei_tarkastettu');
+
+    if (eiTark !== null) {
         console.log("✅ ei_tarkastettu checked:", eiTark.checked);
-        data["ei_tarkastettu"] = eiTark.checked;
+        data.ei_tarkastettu = eiTark.checked;
     }
 
     dynaamisetKentat.forEach(el => {
