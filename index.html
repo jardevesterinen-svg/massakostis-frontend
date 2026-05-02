@@ -247,7 +247,7 @@
         <div id="huoneistoLista"></div>
 
         <div id="status"></div>
-    </div>
+    
     <button class="btn" id="btnCreatePdf" style="margin-top:20px;">Luo PDF-raportti</button>
     <!-- ========================= -->
     <!--     HUONEISTOT-TABI      -->
@@ -255,7 +255,7 @@
     <div class="content" id="kartoitusTab" style="display:none;">
 
         <!-- ✅ NAVIGOINTI -->
-        <div class="apt-nav">
+    <div class="apt-nav">
             <button id="prevApt">⬅️</button>
             <input type="text" id="currentAptInput" placeholder="A12">
             <button id="nextApt">➡️</button>
@@ -267,11 +267,11 @@
             Ei tarkastettu
       </label>
 
-</div>
+    </div>
 
-<section class="materials-section">
+    <section class="materials-section">
         <!-- ✅ HUONEISTOKUVAT -->
-        <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
+    <div class="section-title">Huoneiston kuvat (1–2 kpl)</div>
 
         <div>
             <input type="file" id="kuva1" accept="image/*">
@@ -287,236 +287,236 @@
                  style="max-width:200px; display:none; margin-top:10px; border:1px solid #ccc; border-radius:4px;">
         </div>
 
-<h3>PINTARAKENTEIDEN MATERIAALIT</h3>
-<!-- ==================== -->
-<!-- IKÄ -->
-<!-- ==================== -->    
-<h3>ARVIOITU PINTARAKENTEIDEN IKÄ</h3>
+    <h3>PINTARAKENTEIDEN MATERIAALIT</h3>
+    <!-- ==================== -->
+    <!-- IKÄ -->
+    <!-- ==================== -->    
+    <h3>ARVIOITU PINTARAKENTEIDEN IKÄ</h3>
 
-<div class="option-row" id="pintarakenteiden_ika">
-
-  <label>
-    <input type="radio" name="pintarakenteiden_ika" value="0–5 vuotta">
-    0–5 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="pintarakenteiden_ika" value="5–10 vuotta">
-    5–10 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="pintarakenteiden_ika" value="10–20 vuotta">
-    10–20 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="pintarakenteiden_ika" value="20–30 vuotta">
-    20–30 vuotta
-  </label>
-
-</div>
-<!-- ==================== -->
-<!-- LATTIA -->
-<!-- ==================== -->
-<h3>LATTIAN PINTAMATERIAALI</h3>
-<div class="option-row" id="materiaalit_lattia">
-  <label>
-    <input type="radio" name="materiaalit_lattia_valinta" value="Laatta"
-           onchange="toggleMuu('materiaalit_lattia')"> Laatta
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_lattia_valinta" value="Muovimatto"
-           onchange="toggleMuu('materiaalit_lattia')"> Muovimatto
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_lattia_valinta" value="Epoksi"
-           onchange="toggleMuu('materiaalit_lattia')"> Epoksi
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_lattia_valinta" value="Muu"
-           onchange="toggleMuu('materiaalit_lattia')"> Muu
-  </label>
-</div>
-
-<input
-  type="text"
-  id="materiaalit_lattia_muu"
-  name="materiaalit_lattia_muu"
-  placeholder="Mikä muu lattiapäällyste?"
-  style="display:none; margin-top:5px;"
->
-
-<!-- ==================== -->
-<!-- SEINÄT -->
-<!-- ==================== -->
-<h3>SEINIEN PINTAMATERIAALI</h3>
-<div class="option-row" id="materiaalit_seinat">
-  <label>
-    <input type="radio" name="materiaalit_seinat_valinta" value="Laatta"
-           onchange="toggleMuu('materiaalit_seinat')"> Laatta
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_seinat_valinta" value="Muovitapetti"
-           onchange="toggleMuu('materiaalit_seinat')"> Muovitapetti
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_seinat_valinta" value="Maali"
-           onchange="toggleMuu('materiaalit_seinat')"> Maali
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_seinat_valinta" value="Pelti"
-           onchange="toggleMuu('materiaalit_seinat')"> Pelti
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_seinat_valinta" value="Muu"
-           onchange="toggleMuu('materiaalit_seinat')"> Muu
-  </label>
-</div>
-
-<input
-  type="text"
-  id="materiaalit_seinat_muu"
-  name="materiaalit_seinat_muu"
-  placeholder="Mikä muu seinäpäällyste?"
-  style="display:none; margin-top:5px;"
->
-
-<!-- ==================== -->
-<!-- KATTO -->
-<!-- ==================== -->
-<h3>KATON PINTAMATERIAALI</h3>
-<div class="option-row" id="materiaalit_katto">
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Betoni"
-           onchange="toggleMuu('materiaalit_katto')"> Betoni
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Kipsilevy"
-           onchange="toggleMuu('materiaalit_katto')"> Kipsilevy
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Paneeli"
-           onchange="toggleMuu('materiaalit_katto')"> Paneeli
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Pelti"
-           onchange="toggleMuu('materiaalit_katto')"> Pelti
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Maali"
-           onchange="toggleMuu('materiaalit_katto')"> Maali
-  </label>
-
-  <label>
-    <input type="radio" name="materiaalit_katto_valinta" value="Muu"
-           onchange="toggleMuu('materiaalit_katto')"> Muu
-  </label>
-</div>
-
-<input
-  type="text"
-  id="materiaalit_katto_muu"
-  name="materiaalit_katto_muu"
-  placeholder="Mikä muu kattopinta?"
-  style="display:none; margin-top:5px;"
->
-
-<!-- ==================== -->
-<!-- VESIPUTKET -->
-<!-- ==================== -->
-<h3>VESIPUTKET</h3>
-<div class="option-row">
-  <label>
-    <input type="checkbox" name="materiaalit_vesiputket" value="Uppoasennuksena">
-    Uppoasennuksena
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_vesiputket" value="Pintavetoina">
-    Pintavetoina
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_vesiputket" value="Kupari">
-    Kupari
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_vesiputket" value="Muovi">
-    Muovi
-  </label>
-</div>
-
-<!-- ==================== -->
-<!-- LÄMPÖPUTKET -->
-<!-- ==================== -->
-<h3>LÄMPÖPUTKET</h3>
-<div class="option-row">
-  <label>
-    <input type="checkbox" name="materiaalit_lampoputket" value="Uppoasennuksena">
-    Uppoasennuksena
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_lampoputket" value="Pintavetoina">
-    Pintavetoina
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_lampoputket" value="Teräs">
-    Teräs
-  </label>
-
-  <label>
-    <input type="checkbox" name="materiaalit_lampoputket" value="Kupari">
-    Kupari
-  </label>
-</div>
-
-<br>
-
-<!-- ✅ Dynaaminen kartoituslomake -->
-<div id="dynaamiset_osiot"></div>
-
-        <div id="status_kartoitus"></div>
+    <div class="option-row" id="pintarakenteiden_ika">
+    
+      <label>
+        <input type="radio" name="pintarakenteiden_ika" value="0–5 vuotta">
+        0–5 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="pintarakenteiden_ika" value="5–10 vuotta">
+        5–10 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="pintarakenteiden_ika" value="10–20 vuotta">
+        10–20 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="pintarakenteiden_ika" value="20–30 vuotta">
+        20–30 vuotta
+      </label>
+    
     </div>
-        
-<h3>MÄRKÄTILAN ARVIOITU JÄLJELLÄ OLEVA KÄYTTÖIKÄ</h3>
-
-<div class="option-row" id="kayttoika_jaljella">
-
-  <label>
-    <input type="radio" name="kayttoika_jaljella" value="> 10 vuotta">
-    > 10 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="kayttoika_jaljella" value="5–10 vuotta">
-    5–10 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="kayttoika_jaljella" value="2–5 vuotta">
-    2–5 vuotta
-  </label>
-
-  <label>
-    <input type="radio" name="kayttoika_jaljella" value="< 2 vuotta">
-    < 2 vuotta
-  </label>
-
+    <!-- ==================== -->
+    <!-- LATTIA -->
+    <!-- ==================== -->
+    <h3>LATTIAN PINTAMATERIAALI</h3>
+    <div class="option-row" id="materiaalit_lattia">
+      <label>
+        <input type="radio" name="materiaalit_lattia_valinta" value="Laatta"
+               onchange="toggleMuu('materiaalit_lattia')"> Laatta
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_lattia_valinta" value="Muovimatto"
+               onchange="toggleMuu('materiaalit_lattia')"> Muovimatto
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_lattia_valinta" value="Epoksi"
+               onchange="toggleMuu('materiaalit_lattia')"> Epoksi
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_lattia_valinta" value="Muu"
+               onchange="toggleMuu('materiaalit_lattia')"> Muu
+      </label>
+    </div>
+    
+    <input
+      type="text"
+      id="materiaalit_lattia_muu"
+      name="materiaalit_lattia_muu"
+      placeholder="Mikä muu lattiapäällyste?"
+      style="display:none; margin-top:5px;"
+    >
+    
+    <!-- ==================== -->
+    <!-- SEINÄT -->
+    <!-- ==================== -->
+    <h3>SEINIEN PINTAMATERIAALI</h3>
+    <div class="option-row" id="materiaalit_seinat">
+      <label>
+        <input type="radio" name="materiaalit_seinat_valinta" value="Laatta"
+               onchange="toggleMuu('materiaalit_seinat')"> Laatta
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_seinat_valinta" value="Muovitapetti"
+               onchange="toggleMuu('materiaalit_seinat')"> Muovitapetti
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_seinat_valinta" value="Maali"
+               onchange="toggleMuu('materiaalit_seinat')"> Maali
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_seinat_valinta" value="Pelti"
+               onchange="toggleMuu('materiaalit_seinat')"> Pelti
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_seinat_valinta" value="Muu"
+               onchange="toggleMuu('materiaalit_seinat')"> Muu
+      </label>
+    </div>
+    
+    <input
+      type="text"
+      id="materiaalit_seinat_muu"
+      name="materiaalit_seinat_muu"
+      placeholder="Mikä muu seinäpäällyste?"
+      style="display:none; margin-top:5px;"
+    >
+    
+    <!-- ==================== -->
+    <!-- KATTO -->
+    <!-- ==================== -->
+    <h3>KATON PINTAMATERIAALI</h3>
+    <div class="option-row" id="materiaalit_katto">
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Betoni"
+               onchange="toggleMuu('materiaalit_katto')"> Betoni
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Kipsilevy"
+               onchange="toggleMuu('materiaalit_katto')"> Kipsilevy
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Paneeli"
+               onchange="toggleMuu('materiaalit_katto')"> Paneeli
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Pelti"
+               onchange="toggleMuu('materiaalit_katto')"> Pelti
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Maali"
+               onchange="toggleMuu('materiaalit_katto')"> Maali
+      </label>
+    
+      <label>
+        <input type="radio" name="materiaalit_katto_valinta" value="Muu"
+               onchange="toggleMuu('materiaalit_katto')"> Muu
+      </label>
+    </div>
+    
+    <input
+      type="text"
+      id="materiaalit_katto_muu"
+      name="materiaalit_katto_muu"
+      placeholder="Mikä muu kattopinta?"
+      style="display:none; margin-top:5px;"
+    >
+    
+    <!-- ==================== -->
+    <!-- VESIPUTKET -->
+    <!-- ==================== -->
+    <h3>VESIPUTKET</h3>
+    <div class="option-row">
+      <label>
+        <input type="checkbox" name="materiaalit_vesiputket" value="Uppoasennuksena">
+        Uppoasennuksena
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_vesiputket" value="Pintavetoina">
+        Pintavetoina
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_vesiputket" value="Kupari">
+        Kupari
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_vesiputket" value="Muovi">
+        Muovi
+      </label>
+    </div>
+    
+    <!-- ==================== -->
+    <!-- LÄMPÖPUTKET -->
+    <!-- ==================== -->
+    <h3>LÄMPÖPUTKET</h3>
+    <div class="option-row">
+      <label>
+        <input type="checkbox" name="materiaalit_lampoputket" value="Uppoasennuksena">
+        Uppoasennuksena
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_lampoputket" value="Pintavetoina">
+        Pintavetoina
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_lampoputket" value="Teräs">
+        Teräs
+      </label>
+    
+      <label>
+        <input type="checkbox" name="materiaalit_lampoputket" value="Kupari">
+        Kupari
+      </label>
+    </div>
+    
+    <br>
+    
+    <!-- ✅ Dynaaminen kartoituslomake -->
+    <div id="dynaamiset_osiot"></div>
+    
+            <div id="status_kartoitus"></div>
+        </div>
+            
+    <h3>MÄRKÄTILAN ARVIOITU JÄLJELLÄ OLEVA KÄYTTÖIKÄ</h3>
+    
+    <div class="option-row" id="kayttoika_jaljella">
+    
+      <label>
+        <input type="radio" name="kayttoika_jaljella" value="> 10 vuotta">
+        > 10 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="kayttoika_jaljella" value="5–10 vuotta">
+        5–10 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="kayttoika_jaljella" value="2–5 vuotta">
+        2–5 vuotta
+      </label>
+    
+      <label>
+        <input type="radio" name="kayttoika_jaljella" value="< 2 vuotta">
+        < 2 vuotta
+      </label>
+    </div>
 </div>
 <div id="pdfOverlay" class="pdf-overlay" style="display:none;">
     <div class="pdf-overlay-content">
