@@ -47,10 +47,10 @@ function showStatus(msg, id = "status") {
 }
 
 function toggleEiTarkastettu(checked) {
-    const form = document.getElementById("dynaamiset_osiot");
+    const form = document.getElementById("kartoitusTab"); // 👈 MUUTOS
 
     if (!form) {
-        console.error("❌ dynaamiset_osiot ei löytynyt!");
+        console.error("❌ kartoitusTab ei löytynyt!");
         return;
     }
 
