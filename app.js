@@ -47,7 +47,7 @@ function showStatus(msg, id = "status") {
 }
 
 function toggleEiTarkastettu(checked) {
-    const form = document.getElementById("kartoitusTab"); // 👈 MUUTOS
+    const form = document.getElementById("kartoitusTab"); // ✅ TÄRKEÄ MUUTOS
 
     if (!form) {
         console.error("❌ kartoitusTab ei löytynyt!");
@@ -60,6 +60,7 @@ function toggleEiTarkastettu(checked) {
         form.classList.remove("form-disabled");
     }
 }
+
 async function generatePDF(kohdeId) {
     const overlay = document.getElementById("pdfOverlay");
 
