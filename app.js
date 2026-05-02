@@ -835,6 +835,21 @@ function autosave() {
 
 function collectApartmentData() {
     const data = {};
+
+    // ✅ KERÄÄ kaikki tavalliset kentät
+    document.querySelectorAll("#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select")
+        .forEach(el => {
+    
+            // ohita radio (käsitellään erikseen)
+            if (el.type === "radio") return;
+    
+            if (el.type === "checkbox") return;
+    
+            if (el.id) {
+                data[el.id] = el.value;
+            }
+        });
+   
     const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
     const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
         "input, textarea, select"
