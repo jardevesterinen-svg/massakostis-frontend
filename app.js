@@ -907,8 +907,7 @@ function collectApartmentData() {
     if (kayttoika) data.kayttoika_jaljella = kayttoika.value;
 
     console.log("📦 Kerätyt tiedot:", data);
-    const eiTark = document.querySelector('#ei_tarkastettu');
-
+    
     if (eiTark !== null) {
         console.log("✅ ei_tarkastettu checked:", eiTark.checked);
         data.ei_tarkastettu = eiTark.checked;
