@@ -974,7 +974,6 @@ function collectApartmentData() {
     
     console.log("📦 Kerätyt tiedot:", data);
 
-}
 // ==========================================================
 //  HUONEISTON SYNKKAUS ENNEN NAVIGAATIOTA
 // ==========================================================
