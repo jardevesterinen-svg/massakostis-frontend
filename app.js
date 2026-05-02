@@ -1167,14 +1167,14 @@ document.getElementById("kuva2").addEventListener("change", () => {
 window.addEventListener("load", () => {
     haeKohteet();
 });
-document.addEventListener("click", async (e) => {
-    if (!(e.target instanceof HTMLElement)) return;
-    if (e.target.id !== "btnCreatePdf") return;
+document.addEventListener("change", (e) => {
+    if (e.target && e.target.id === "ei_tarkastettu") {
+        console.log("✅ Ei tarkastettu toggle");
 
-    if (!kohdeId) {
-        alert("Ei kohdetta ladattuna.");
-        return;
+        toggleEiTarkastettu(e.target.checked);
+        autosave();
     }
+});
 
     const overlay = document.getElementById("pdfOverlay");
     if (!overlay) {
