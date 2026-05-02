@@ -60,6 +60,33 @@ function toggleEiTarkastettu(checked) {
         form.classList.remove("form-disabled");
     }
 }
+async function generatePDF(kohdeId) {
+    const overlay = document.getElementById("pdfOverlay");
+
+    if (!overlay) return;
+
+    overlay.style.display = "flex";
+
+    await new Promise(requestAnimationFrame);
+
+    try {
+        const res = await fetch(
+            `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+            { method: "POST" }
+        );
+
+        const data = await res.json();
+        if (data.url) {
+            window.open(data.url, "_blank");
+        }
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        overlay.style.display = "none";
+    }
+}
+
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
     const eiTarkastettu = document.getElementById("ei_tarkastettu");
@@ -1173,42 +1200,6 @@ document.addEventListener("change", (e) => {
 
         toggleEiTarkastettu(e.target.checked);
         autosave();
-    }
-});
-
-    const overlay = document.getElementById("pdfOverlay");
-    if (!overlay) {
-        console.error("overlay ei löydy");
-        return;
-    }
-    
-    // ✅ NÄYTÄ OVERLAY
-    overlay.style.display = "flex";
-     
-    // ✅ DEBUG
-    console.log("OVERLAY POSITION:", getComputedStyle(overlay).position);
-    
-    // ✅ anna selaimen piirtää
-    await new Promise(requestAnimationFrame);
-
-    try {
-        const res = await fetch(
-            `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
-            { method: "POST" }
-        );
-
-        if (!res.ok) throw new Error("PDF epäonnistui");
-
-        const data = await res.json();
-        if (data.url) {
-            window.open(data.url, "_blank");
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert("PDF:n luonti epäonnistui.");
-    } finally {
-        overlay.style.display = "none";
     }
 });
 
