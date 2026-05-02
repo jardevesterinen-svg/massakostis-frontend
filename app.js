@@ -891,10 +891,7 @@ function collectApartmentData() {
                 data[el.id] = el.value;
             }
         });
-   
-    # const dynaaminenRoot = document.getElementById("dynaamiset_osiot");
-    # const dynaamisetKentat = dynaaminenRoot.querySelectorAll(
-    #    "input, textarea, select"
+
     );
     const eiTark = document.querySelector('#ei_tarkastettu');
 
