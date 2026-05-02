@@ -892,7 +892,7 @@ function collectApartmentData() {
             }
         });
 
-    );
+};
     const eiTark = document.querySelector('#ei_tarkastettu');
 
     if (eiTark !== null) {
