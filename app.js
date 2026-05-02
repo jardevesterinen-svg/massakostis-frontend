@@ -45,6 +45,21 @@ function showStatus(msg, id = "status") {
     el.textContent = msg;
     setTimeout(() => el.textContent = "", 2500);
 }
+
+function toggleEiTarkastettu(checked) {
+    const form = document.getElementById("dynaamiset_osiot");
+
+    if (!form) {
+        console.error("❌ dynaamiset_osiot ei löytynyt!");
+        return;
+    }
+
+    if (checked) {
+        form.classList.add("form-disabled");
+    } else {
+        form.classList.remove("form-disabled");
+    }
+}
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
     const eiTarkastettu = document.getElementById("ei_tarkastettu");
@@ -855,7 +870,9 @@ function collectApartmentData() {
         "input, textarea, select"
     );
     const eiTark = document.getElementById("ei_tarkastettu");
+    
     if (eiTark) {
+        console.log("✅ ei_tarkastettu checked:", eiTark.checked);
         data["ei_tarkastettu"] = eiTark.checked;
     }
 
