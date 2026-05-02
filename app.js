@@ -881,18 +881,34 @@ function collectApartmentData() {
     // ✅ KERÄÄ kaikki tavalliset kentät
     document.querySelectorAll("#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select")
         .forEach(el => {
-    
+
             // ohita radio (käsitellään erikseen)
             if (el.type === "radio") return;
-    
+
             if (el.type === "checkbox") return;
-    
+
             if (el.id) {
                 data[el.id] = el.value;
             }
         });
 
-};
+    // ✅ Ei tarkastettu
+    const eiTark = document.getElementById("ei_tarkastettu");
+    if (eiTark) {
+        console.log("✅ ei_tarkastettu:", eiTark.checked);
+        data.ei_tarkastettu = eiTark.checked;
+    }
+
+    // ✅ Radiot
+    const ika = document.querySelector('input[name="pintarakenteiden_ika"]:checked');
+    if (ika) data.pintarakenteiden_ika = ika.value;
+
+    const kayttoika = document.querySelector('input[name="kayttoika_jaljella"]:checked');
+    if (kayttoika) data.kayttoika_jaljella = kayttoika.value;
+
+    console.log("📦 Kerätyt tiedot:", data);
+    return data;
+}
     const eiTark = document.querySelector('#ei_tarkastettu');
 
     if (eiTark !== null) {
