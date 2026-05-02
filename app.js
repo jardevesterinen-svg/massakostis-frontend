@@ -907,14 +907,16 @@ function collectApartmentData() {
     if (kayttoika) data.kayttoika_jaljella = kayttoika.value;
 
     console.log("📦 Kerätyt tiedot:", data);
-    return data;
-}
     const eiTark = document.querySelector('#ei_tarkastettu');
 
     if (eiTark !== null) {
         console.log("✅ ei_tarkastettu checked:", eiTark.checked);
         data.ei_tarkastettu = eiTark.checked;
     }
+    
+    const dynaamisetKentat = document.querySelectorAll(
+        "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
+    );
 
     dynaamisetKentat.forEach(el => {
         if (el.type === "radio") {
@@ -990,6 +992,9 @@ function collectApartmentData() {
     
     console.log("📦 Kerätyt tiedot:", data);
 
+    return data;
+}
+    
 // ==========================================================
 //  HUONEISTON SYNKKAUS ENNEN NAVIGAATIOTA
 // ==========================================================
