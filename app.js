@@ -973,7 +973,7 @@ function collectApartmentData() {
     }
     
     console.log("📦 Kerätyt tiedot:", data);
-    return data;
+
 }
 // ==========================================================
 //  HUONEISTON SYNKKAUS ENNEN NAVIGAATIOTA
