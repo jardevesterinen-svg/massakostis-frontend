@@ -127,7 +127,17 @@ async function generatePDF(kohdeId) {
         overlay.style.display = "none";
     }
 }
+document.getElementById("btnCreatePdf").addEventListener("click", () => {
+    console.log("📄 PDF nappia painettu");
 
+    if (!kohdeId) {
+        alert("Täytä ensin kohteen tiedot.");
+        return;
+    }
+
+    generatePDF(kohdeId);
+});
+``
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
     const eiTarkastettu = document.getElementById("ei_tarkastettu");
