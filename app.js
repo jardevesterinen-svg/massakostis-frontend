@@ -253,6 +253,14 @@ function bindMaterialAutosave() {
             autosave();
         });
     });
+    
+    document.querySelectorAll('input[name="kokonaiskunto"]').forEach(rb => {
+    rb.addEventListener("change", () => {
+        console.log("✅ kokonaiskunto muuttui");
+        autosave();
+    });
+});
+``
 }
 /* ==========================================================
     TABIT
@@ -856,6 +864,13 @@ function fillApartmentForm(data) {
         );
         if (el) el.checked = true;
     }
+
+    if (data["kokonaiskunto"]) {
+    const el = document.querySelector(
+        `input[name="kokonaiskunto"][value="${data["kokonaiskunto"]}"]`
+    );
+    if (el) el.checked = true;
+}
 }
 
 function clearApartmentForm() {
@@ -887,6 +902,9 @@ fields.forEach(el => {
 
     document.getElementById("preview1").style.display = "none";
     document.getElementById("preview2").style.display = "none";
+
+    document.querySelectorAll('input[name="kokonaiskunto"]')
+    .forEach(rb => rb.checked = false);
 }
 
 /* ==========================================================
@@ -1099,7 +1117,11 @@ function collectApartmentData() {
     if (kayttoikaValinta) {
         data["kayttoika_jaljella"] = kayttoikaValinta.value;
     }
-    
+
+    const kokonais = document.querySelector('input[name="kokonaiskunto"]:checked');
+    if (kokonais) {
+        data.kokonaiskunto = kokonais.value;
+    }
     console.log("📦 Kerätyt tiedot:", data);
 
     return data;
