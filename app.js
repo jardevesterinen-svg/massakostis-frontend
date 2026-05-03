@@ -742,7 +742,13 @@ function fillApartmentForm(data) {
         eiTark.checked = !!data["ei_tarkastettu"];
         toggleEiTarkastettu(eiTark.checked);
     }
-
+    if (data["ei_tarkastettu_syy"]) {
+        const syyEl = document.getElementById("ei_tarkastettu_syy");
+        if (syyEl) {
+            syyEl.value = data["ei_tarkastettu_syy"];
+            syyEl.style.display = "block";
+        }
+    }
     const fields = document.querySelectorAll(
         "#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select"
     );
@@ -843,7 +849,11 @@ fields.forEach(el => {
     } else {
         el.value = "";
     }
- 
+     const syy = document.getElementById("ei_tarkastettu_syy");
+    if (syy) {
+        syy.value = "";
+        syy.style.display = "none";
+    }
     // ===== NOLLAA MATERIAALIT =====
     document.querySelectorAll(
         'input[name^="materiaalit_"]'
