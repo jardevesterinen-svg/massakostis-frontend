@@ -1210,6 +1210,9 @@ document.getElementById("kuva2").addEventListener("change", () => {
 
 window.addEventListener("load", () => {
     haeKohteet();
+        // ✅ UUSI: Rakenna lomake heti kun sivu latautuu
+    buildApartmentForm();
+    bindMaterialAutosave();
 });
 document.addEventListener("change", (e) => {
     if (e.target && e.target.id === "ei_tarkastettu") {
