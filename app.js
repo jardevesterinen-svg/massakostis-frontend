@@ -1306,7 +1306,7 @@ window.addEventListener("load", () => {
     bindMaterialAutosave();
 });
 
-document.addEventListener("change", (e) => {
+document.addEventListener("click", (e) => {
     if (e.target && e.target.id === "ei_tarkastettu") {
         console.log("✅ Ei tarkastettu toggle");
 
