@@ -163,7 +163,14 @@ function bindMaterialAutosave() {
             autosave();
         });
     }
-    
+    const syy = document.getElementById("ei_tarkastettu_syy");
+
+    if (syy) {
+        syy.addEventListener("input", () => {
+            console.log("✅ Ei tarkastettu syy tallennettu");
+            autosave();
+        });
+    }
     // Vesiputket
     document.querySelectorAll('input[name="materiaalit_vesiputket"]').forEach(cb => {
         cb.addEventListener("change", () => {
@@ -948,7 +955,10 @@ function autosave() {
 
 function collectApartmentData() {
     const data = {};
-
+    const syy = document.getElementById("ei_tarkastettu_syy");
+    if (syy && syy.value) {
+        data.ei_tarkastettu_syy = syy.value;
+    }
     // ✅ KERÄÄ kaikki tavalliset kentät
     document.querySelectorAll("#dynaamiset_osiot input, #dynaamiset_osiot textarea, #dynaamiset_osiot select")
         .forEach(el => {
