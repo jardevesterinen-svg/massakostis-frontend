@@ -116,10 +116,8 @@ async function generatePDF(kohdeId) {
     const overlay = document.getElementById("pdfOverlay");
     if (!overlay) return;
 
-    // ✅ AVAA uusi tab heti (tärkein muutos)
-    const newWindow = window.open("", "_blank");
-
     overlay.style.display = "flex";
+
     await new Promise(requestAnimationFrame);
 
     try {
@@ -130,14 +128,13 @@ async function generatePDF(kohdeId) {
 
         const data = await res.json();
 
-        if (data.url && newWindow) {
-            // ✅ Ohjaa avattu ikkuna oikeaan URLiin
-            newWindow.location.href = data.url;
+        if (data.url) {
+            // ✅ mobiiliystävällinen
+            window.location.href = data.url;
         }
 
     } catch (err) {
         console.error(err);
-        if (newWindow) newWindow.close(); // sulje jos virhe
     } finally {
         overlay.style.display = "none";
     }
