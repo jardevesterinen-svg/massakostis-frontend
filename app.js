@@ -25,7 +25,18 @@ async function loadLauseet() {
     const res = await fetch("lauseet.json");
     LAUSELISTA = await res.json();
 }
-loadLauseet();
+window.addEventListener("load", async () => {
+    console.log("🚀 sivu ladattu");
+
+    await loadLauseet();   // ⭐ ODOTETAAN
+    console.log("✅ lauseet ladattu");
+
+    buildApartmentForm();  // ⭐ nyt data on olemassa
+    console.log("✅ formi rakennettu");
+
+    bindMaterialAutosave();
+    haeKohteet();
+});
 
 /* ==========================================================
     APUFUNKTIOT
@@ -551,7 +562,14 @@ function createDropdown(osio, tyyppi) {
 }
 
 function buildApartmentForm() {
+    console.log("🔥 buildApartmentForm() käynnistyi");
     const root = document.getElementById("dynaamiset_osiot");
+    
+    if (!root) {
+        console.log("❌ dynaamiset_osiot EI löydy");
+        return;
+    }
+
     root.innerHTML = "";
 
     const osiot = Object.keys(LAUSELISTA)
