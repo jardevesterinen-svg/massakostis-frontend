@@ -187,8 +187,8 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
     document.getElementById("tabPerustiedot").classList.remove("active");
     document.getElementById("tabKartoitus").classList.add("active");
 
-    buildApartmentForm();
-    bindMaterialAutosave(); 
+   // buildApartmentForm();
+   // bindMaterialAutosave(); 
     loadApartment(currentApartmentIndex);
 });
 
@@ -589,6 +589,11 @@ function buildApartmentForm() {
 async function loadApartment(i) {
     
     const apt = huoneistoLista[i];
+    if (!apt) {
+        console.log("❌ Huoneisto ei ole olemassa indeksillä", i);
+        return;
+    }
+    
     const localKey = `offline_${kohdeId}_${apt}`;
     const slug = slugify(apt);
     
@@ -596,17 +601,14 @@ async function loadApartment(i) {
     
     isLoadingApartment = true;
     
-    if (!kohdeId || huoneistoLista.length === 0) {
-        console.log("❌ kohdeId tai huoneistoLista puuttuu");
-        return;
-    }
+    currentApartmentIndex = i;
+    document.getElementById("currentAptInput").value = apt;
 
+    // ✅ NOLLAA AINA ENSIN
     clearApartmentForm();
     console.log("🧹 Lomake tyhjennetty");
-    
-    document.getElementById("currentAptInput").value = apt;
-    currentApartmentIndex = i;
 
+    // 1️⃣ Tarkista offline-tallennus ensin
     if (localStorage.getItem(localKey)) {
         console.log("💾 Offline-tallennus löytyi!");
         const local = JSON.parse(localStorage.getItem(localKey));
@@ -616,6 +618,7 @@ async function loadApartment(i) {
         return;
     }
 
+    // 2️⃣ Yritä noutaa palvelimelta
     try {
         console.log("🌐 Noudetaan palvelimelta...");
         const res = await fetch(
@@ -627,21 +630,18 @@ async function loadApartment(i) {
         if (res.status === 200) {
             const data = await res.json();
             console.log("📦 Palvelimen data:", data);
-            isLoadingApartment = false;
             fillApartmentForm(data);
-        } else {
-            console.log("⚪ Status", res.status, "- lomake jää tyhjäksi");
         }
 
     } catch (err) {
-        isLoadingApartment = false;
         console.log("🔴 Virhe:", err);
         showStatus("Ei yhteyttä", "status_kartoitus");
     }
 
     document.getElementById("kuva1").value = "";
     document.getElementById("kuva2").value = "";
-    loadImagePreview(slug);    
+    loadImagePreview(slug);
+    isLoadingApartment = false;
 }
 
 function loadImagePreview(slug) {
@@ -1214,6 +1214,7 @@ window.addEventListener("load", () => {
     buildApartmentForm();
     bindMaterialAutosave();
 });
+
 document.addEventListener("change", (e) => {
     if (e.target && e.target.id === "ei_tarkastettu") {
         console.log("✅ Ei tarkastettu toggle");
