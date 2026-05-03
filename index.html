@@ -263,10 +263,25 @@
 
         <!-- ✅ NAVIGOINTI -->
     <div class="apt-nav">
-            <button id="prevApt">⬅️</button>
-            <input type="text" id="currentAptInput" placeholder="A12">
-            <button id="nextApt">➡️</button>
-    </div>    
+        <button id="prevApt">⬅️</button>
+        <input type="text" id="currentAptInput" placeholder="A12">
+        <button id="nextApt">➡️</button>
+    
+        <div class="ei-tarkastettu-wrapper">
+            <label>
+                <input type="checkbox" id="ei_tarkastettu">
+                Ei tarkastettu
+            </label>
+    
+            <!-- ✅ uusi tekstikenttä -->
+            <textarea
+                id="ei_tarkastettu_syy"
+                placeholder="Kirjoita syy miksi huoneistoa ei tarkastettu..."
+                style="display:none; margin-top:5px; width:200px;"
+            ></textarea>
+        </div>
+    </div>   
+    
     <div class="form-wrapper">
        
           <!-- Ei voitu tarkastaa -->
