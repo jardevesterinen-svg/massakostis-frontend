@@ -1295,10 +1295,3 @@ async function syncOfflineData() {
     }
 }
 window.addEventListener("online", syncOfflineData);
-document.addEventListener("DOMContentLoaded", () => {
-    const dynaaminen = document.getElementById("dynaamiset_osiot");
-
-    if (dynaaminen) {
-        dynaaminen.innerHTML = "<h2>Dynaaminen toimii ✅</h2>";
-    }
-});
