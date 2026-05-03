@@ -44,6 +44,17 @@ window.addEventListener("load", async () => {
         alert("Täytä ensin kohteen tiedot.");
         return;
     }
+    const checkbox = document.getElementById("ei_tarkastettu");
+
+    if (checkbox) {
+        console.log("✅ checkbox löytyi loadissa");
+    
+        checkbox.addEventListener("change", function () {
+            console.log("🔥 CHANGE toimii:", this.checked);
+            toggleEiTarkastettu(this.checked);
+            autosave();
+        });
+    }
 
     generatePDF(kohdeId);
     });    
