@@ -134,17 +134,6 @@ function toggleMuu(prefix) {
     }
 }
 
-function toggleEiTarkastettu(checked) {
-    const form = document.getElementById("kartoitusTab");
-
-    if (!form) return;
-
-    if (checked) {
-        form.classList.add("form-disabled");
-    } else {
-        form.classList.remove("form-disabled");
-    }
-}
 async function generatePDF(kohdeId) {
     const overlay = document.getElementById("pdfOverlay");
     if (!overlay) return;
@@ -1328,13 +1317,6 @@ document.getElementById("kuva2").addEventListener("change", () => {
 /* ==========================================================
     SIVUN LATAUS
 ========================================================== */
-
-window.addEventListener("load", () => {
-    haeKohteet();
-        // ✅ UUSI: Rakenna lomake heti kun sivu latautuu
-    buildApartmentForm();
-    bindMaterialAutosave();
-});
 
 document.addEventListener("click", (e) => {
     if (e.target && e.target.id === "ei_tarkastettu") {
