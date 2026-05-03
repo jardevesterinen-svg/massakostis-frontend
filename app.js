@@ -58,7 +58,7 @@ function showStatus(msg, id = "status") {
 }
 
 function toggleEiTarkastettu(checked) {
-    const form = document.getElementById("kartoitusTab"); // ✅ TÄRKEÄ MUUTOS
+    const form = document.querySelector(".form-wrapper");
 
     if (!form) {
         console.error("❌ kartoitusTab ei löytynyt!");
