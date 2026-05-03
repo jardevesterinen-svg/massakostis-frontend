@@ -70,6 +70,7 @@ function showStatus(msg, id = "status") {
 
 function toggleEiTarkastettu(checked) {
     console.log("🔥 toggleEiTarkastettu:", checked);
+    console.log("🔥 toggle:", checked);
     const form = document.querySelector(".form-wrapper");
     const textarea = document.getElementById("ei_tarkastettu_syy");
 
