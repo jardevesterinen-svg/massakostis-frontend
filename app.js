@@ -61,6 +61,35 @@ function toggleEiTarkastettu(checked) {
     }
 }
 
+function toggleMuu(prefix) {
+    const muuField = document.getElementById(prefix + "_muu");
+    const radios = document.querySelectorAll(`#${prefix} input[type="radio"]`);
+
+    let show = false;
+
+    radios.forEach(r => {
+        if (r.checked && r.value === "Muu") {
+            show = true;
+        }
+    });
+
+    if (muuField) {
+        muuField.style.display = show ? "block" : "none";
+        if (!show) muuField.value = "";
+    }
+}
+
+function toggleEiTarkastettu(checked) {
+    const form = document.getElementById("kartoitusTab");
+
+    if (!form) return;
+
+    if (checked) {
+        form.classList.add("form-disabled");
+    } else {
+        form.classList.remove("form-disabled");
+    }
+}
 async function generatePDF(kohdeId) {
     const overlay = document.getElementById("pdfOverlay");
 
@@ -1223,7 +1252,15 @@ document.addEventListener("change", (e) => {
         autosave();
     }
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const checkbox = document.getElementById("ei_tarkastettu");
 
+    if (checkbox) {
+        checkbox.addEventListener("change", function () {
+            toggleEiTarkastettu(this.checked);
+        });
+    }
+});
 /* ==========================================================
     SYNKRONOINTI KUN YHTEYS PALAA
 ========================================================== */
@@ -1258,3 +1295,10 @@ async function syncOfflineData() {
     }
 }
 window.addEventListener("online", syncOfflineData);
+document.addEventListener("DOMContentLoaded", () => {
+    const dynaaminen = document.getElementById("dynaamiset_osiot");
+
+    if (dynaaminen) {
+        dynaaminen.innerHTML = "<h2>Dynaaminen toimii ✅</h2>";
+    }
+});
