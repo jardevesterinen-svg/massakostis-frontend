@@ -70,16 +70,19 @@ function showStatus(msg, id = "status") {
 
 function toggleEiTarkastettu(checked) {
     const form = document.querySelector(".form-wrapper");
+    const textarea = document.getElementById("ei_tarkastettu_syy");
 
-    if (!form) {
-        console.error("❌ kartoitusTab ei löytynyt!");
-        return;
-    }
+    if (!form) return;
 
     if (checked) {
         form.classList.add("form-disabled");
+        if (textarea) textarea.style.display = "block";  // ✅ näytä
     } else {
         form.classList.remove("form-disabled");
+        if (textarea) {
+            textarea.style.display = "none";
+            textarea.value = ""; // ✅ tyhjennä
+        }
     }
 }
 
