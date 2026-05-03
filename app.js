@@ -99,6 +99,23 @@ function toggleEiTarkastettu(checked) {
     }
 }
 
+function bindEiTarkastettu() {
+    const checkbox = document.getElementById("ei_tarkastettu");
+
+    if (!checkbox) {
+        console.log("❌ checkboxia ei vielä DOMissa");
+        return;
+    }
+
+    console.log("✅ checkbox bindattu");
+
+    checkbox.addEventListener("change", function () {
+        console.log("🔥 toimii nyt:", this.checked);
+        toggleEiTarkastettu(this.checked);
+        autosave();
+    });
+}
+
 function toggleMuu(prefix) {
     const muuField = document.getElementById(prefix + "_muu");
     const radios = document.querySelectorAll(`#${prefix} input[type="radio"]`);
@@ -270,8 +287,9 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
     document.getElementById("tabPerustiedot").classList.remove("active");
     document.getElementById("tabKartoitus").classList.add("active");
 
-   buildApartmentForm();
-   bindMaterialAutosave(); 
+    buildApartmentForm();
+    bindMaterialAutosave();
+    bindEiTarkastettu();
     loadApartment(currentApartmentIndex);
 });
 
