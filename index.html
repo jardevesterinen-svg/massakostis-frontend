@@ -538,37 +538,6 @@
     
         <script src="app.js"></script>
       <!-- Ei voitu tarkastaa -->
-  <div class="ei-tarkastettu">
-<script>
-function toggleMuu(prefix) {
-    const muuField = document.getElementById(prefix + "_muu");
-    const radios = document.querySelectorAll(
-        `#${prefix} input[type="radio"]`
-    );
 
-    let show = false;
-    radios.forEach(r => {
-        if (r.checked && r.value === "Muu") show = true;
-    });
-
-    if (muuField) {
-        muuField.style.display = show ? "block" : "none";
-        if (!show) muuField.value = "";
-    }
-
-    autosave(); // ✅ TÄRKEÄ
-}
-function toggleEiTarkastettu(checked) {
-    const form = document.getElementById("dynaamiset_osiot");
-
-    if (checked) {
-        form.classList.add("form-disabled");
-    } else {
-        form.classList.remove("form-disabled");
-    }
-}    
-</script>
-
-</div>
 </body>
 </html>
