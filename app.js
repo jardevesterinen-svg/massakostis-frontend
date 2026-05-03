@@ -227,8 +227,8 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
     document.getElementById("tabPerustiedot").classList.remove("active");
     document.getElementById("tabKartoitus").classList.add("active");
 
-   // buildApartmentForm();
-   // bindMaterialAutosave(); 
+   buildApartmentForm();
+   bindMaterialAutosave(); 
     loadApartment(currentApartmentIndex);
 });
 
