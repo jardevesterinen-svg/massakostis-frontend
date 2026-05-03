@@ -128,9 +128,17 @@ async function generatePDF(kohdeId) {
 
         const data = await res.json();
 
-        if (data.url) {
-            // ✅ mobiiliystävällinen
+        if (!data.url) return;
+
+        // ✅ TARKISTETAAN ONKO MOBIILI
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            // 📱 mobiili → sama välilehti
             window.location.href = data.url;
+        } else {
+            // 💻 desktop → uusi välilehti
+            window.open(data.url, "_blank");
         }
 
     } catch (err) {
