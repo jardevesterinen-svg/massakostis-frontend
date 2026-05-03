@@ -1308,12 +1308,19 @@ window.addEventListener("load", () => {
 
 document.addEventListener("click", (e) => {
     if (e.target && e.target.id === "ei_tarkastettu") {
-        console.log("✅ Ei tarkastettu toggle");
 
-        toggleEiTarkastettu(e.target.checked);
-        autosave();
+        const checked = e.target.checked;
+
+        console.log("✅ checkbox klikattu:", checked);
+
+        // ✅ VIIVE KORJAA BUGI
+        setTimeout(() => {
+            toggleEiTarkastettu(checked);
+            autosave();
+        }, 10);
     }
 });
+
 document.addEventListener("DOMContentLoaded", () => {
     const checkbox = document.getElementById("ei_tarkastettu");
 
