@@ -307,7 +307,7 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
 async function haeKohteet() {
     try {
         const res = await fetch(
-            "${API_URL}/list-kohteet"
+        `${API_URL}/list-kohteet`
         );
         const data = await res.json();
         kaikkiKohteet = data.kohteet;
