@@ -1,4 +1,16 @@
 {
+  "lattian_kosteus_havainnot": [
+    "Kosteutta lattiakaivon ympärillä.",
+    "Kosteutta suihkuvesien roiskealueella.",
+    "Kosteutta kauttaaltaa lattialla.",
+    "Muu"
+  ],
+  "lattian_kosteus_toimenpiteet": [
+    "Laatoitetuissa lattiapinnoissa esiintyy kosteudentunnistimella havainnoitaessa kosteutta tavanomaisesti, mikäli pinnat ovat säännöllisesti roiskevedelle alttiina. Kyseiset kosteushavainnot eivät välttämättä tarkoita rakenteissa olevan kosteusvauriota. Mikäli laatoituksen alla on toimiva kosteuden- tai vedeneriste, saattaa kosteus olla pelkästään laattojen ja eristeen välissä, mikä on laatoitukselle ominaista. Märkätilojen veden- tai kosteudeneristeiden olemassaoloa ja kuntoa ei voida yleensä pintapuolisesti selvittää.",
+    "Lattiapinnoitteiden saneeraus ja kastuneiden rakenteiden koneellinen kuivaus.",
+    "Lattiarakenteen kunto suositellaan selvitettävän rakennetta avaamalla. Rakenteen avaus tulee tehdä niin että rakenteelle muodostuu mahdollisimman vähän vaurioita eikä itse avaus aiheuta rakenteen uusimistarvetta.",
+    "Muu"
+  ],
   "seinien_kosteus_havainnot": [
     "Kosteutta seinien suihkuvesien roiskealueella.",
     "Kosteutta suihkusekoittajan ympärillä.",
@@ -11,7 +23,6 @@
     "Seinärakenteen kunto suositellaan selvitettävän rakennetta avaamalla. Rakenteen avaus tulee tehdä niin että rakenteelle muodostuu mahdollisimman vähän vaurioita eikä itse avaus aiheuta rakenteen uusimistarvetta.",
     "Muu"
   ],
-
   "läpiviennit_havainnot": [
     "Avoimia läpivientejä suihkun roiskevesialueella.",
     "Putkiläpivientejä lattiassa.",
