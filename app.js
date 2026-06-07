@@ -424,7 +424,7 @@ async function saveMetadata() {
 
     try {
         await fetch(
-            "${API_URL}/save-metadata",
+            `${API_URL}/save-metadata`,
             {
                 method: "POST",
                 headers: {"Content-Type":"application/json"},
@@ -472,7 +472,7 @@ async function uploadKansikuva() {
     form.append("file", file);
 
     await fetch(
-        "${API_URL}/upload-kansikuva",
+        `${API_URL}/upload-kansikuva`,
         { method: "POST", body: form }
     );
 
@@ -938,7 +938,7 @@ async function syncCurrentApartment() {
     const payload = JSON.parse(localStorage.getItem(key));
 
     await fetch(
-        "${API_URL}/upload-data",
+        `${API_URL}/upload-data`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -968,7 +968,7 @@ function saveApartmentData() {
         data: data
     });
 
-    fetch("${API_URL}/upload-data", {
+    fetch(`${API_URL}/upload-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1155,7 +1155,7 @@ async function syncCurrentApartment() {
         const payload = JSON.parse(localStorage.getItem(key));
 
         await fetch(
-            "${API_URL}/upload-data",
+            `${API_URL}/upload-data`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -1319,7 +1319,7 @@ async function uploadApartmentImage(index) {
 
     try {
         const res = await fetch(
-            "${API_URL}/upload-image",
+            `${API_URL}/upload-image`,
             {
                 method: "POST",
                 body: form
@@ -1389,7 +1389,7 @@ async function syncOfflineData() {
             const payload = JSON.parse(localStorage.getItem(key));
 
             await fetch(
-                "${API_URL}/upload-data",
+                `${API_URL}/upload-data`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
