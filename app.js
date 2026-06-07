@@ -4,9 +4,7 @@
 
 const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
 
-const isDev =
-  window.location.hostname.includes("pages.dev") &&
-  window.location.hostname !== "massakostis-frontend.pages.dev";
+const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
 const API_URL = isDev
   ? "https://<DEV-BACKEND>.up.railway.app"
