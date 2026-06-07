@@ -6,9 +6,7 @@ const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
 
 const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
-const API_URL = isDev
-  ? "https://massakostis-backend-dev.up.railway.app"
-  : "https://massakostis-backend-production-9111.up.railway.app";
+const API_URL = "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
 console.log("isDev:", isDev);
