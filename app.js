@@ -10,6 +10,10 @@ const API_URL = isDev
   ? "https://massakostis-backend-dev.up.railway.app"
   : "https://massakostis-backend-production-9111.up.railway.app";
 
+console.log("HOST:", window.location.hostname);
+console.log("isDev:", isDev);
+console.log("API_URL:", API_URL);
+
 /* ==========================================================
     GLOBAALI TILA
 ========================================================== */
