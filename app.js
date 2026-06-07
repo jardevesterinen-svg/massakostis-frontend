@@ -4,6 +4,16 @@
 
 const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
 
+const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
+
+const API_URL = isDev
+  ? "https://massakostis-backend-dev.up.railway.app"
+  : "https://massakostis-backend-production-9111.up.railway.app";
+
+console.log("HOST:", window.location.hostname);
+console.log("isDev:", isDev);
+console.log("API_URL:", API_URL);
+
 /* ==========================================================
     GLOBAALI TILA
 ========================================================== */
@@ -144,7 +154,7 @@ async function generatePDF(kohdeId) {
 
     try {
         const res = await fetch(
-            `https://massakostis-backend-production-9111.up.railway.app/generate-report/${kohdeId}`,
+            `${API_URL}/generate-report/${kohdeId}`,
             { method: "POST" }
         );
 
@@ -297,7 +307,7 @@ document.getElementById("tabKartoitus").addEventListener("click", () => {
 async function haeKohteet() {
     try {
         const res = await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/list-kohteet"
+        `${API_URL}/list-kohteet`
         );
         const data = await res.json();
         kaikkiKohteet = data.kohteet;
@@ -353,7 +363,7 @@ async function lataaKohde(id) {
     kohdeId = id;
 
     const res = await fetch(
-        `https://massakostis-backend-production-9111.up.railway.app/get-metadata/${id}`
+        `${API_URL}/get-metadata/${id}`
     );
     const meta = await res.json();
 
@@ -414,7 +424,7 @@ async function saveMetadata() {
 
     try {
         await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/save-metadata",
+            `${API_URL}/save-metadata`,
             {
                 method: "POST",
                 headers: {"Content-Type":"application/json"},
@@ -462,7 +472,7 @@ async function uploadKansikuva() {
     form.append("file", file);
 
     await fetch(
-        "https://massakostis-backend-production-9111.up.railway.app/upload-kansikuva",
+        `${API_URL}/upload-kansikuva`,
         { method: "POST", body: form }
     );
 
@@ -727,7 +737,7 @@ async function loadApartment(i) {
     try {
         console.log("🌐 Noudetaan palvelimelta...");
         const res = await fetch(
-            `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
+            `${API_URL}/get-apartment/${kohdeId}/${slug}`
         );
         
         console.log("📡 Palvelin vastasi:", res.status);
@@ -928,7 +938,7 @@ async function syncCurrentApartment() {
     const payload = JSON.parse(localStorage.getItem(key));
 
     await fetch(
-        "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+        `${API_URL}/upload-data`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -958,7 +968,7 @@ function saveApartmentData() {
         data: data
     });
 
-    fetch("https://massakostis-backend-production-9111.up.railway.app/upload-data", {
+    fetch(`${API_URL}/upload-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1145,7 +1155,7 @@ async function syncCurrentApartment() {
         const payload = JSON.parse(localStorage.getItem(key));
 
         await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+            `${API_URL}/upload-data`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -1266,7 +1276,7 @@ async function loadApartment(i) {
     try {
         console.log("🌐 Noudetaan palvelimelta...");
         const res = await fetch(
-            `https://massakostis-backend-production-9111.up.railway.app/get-apartment/${kohdeId}/${slug}`
+            `${API_URL}/get-apartment/${kohdeId}/${slug}`
         );
         
         console.log("📡 Palvelin vastasi:", res.status);
@@ -1309,7 +1319,7 @@ async function uploadApartmentImage(index) {
 
     try {
         const res = await fetch(
-            "https://massakostis-backend-production-9111.up.railway.app/upload-image",
+            `${API_URL}/upload-image`,
             {
                 method: "POST",
                 body: form
@@ -1379,7 +1389,7 @@ async function syncOfflineData() {
             const payload = JSON.parse(localStorage.getItem(key));
 
             await fetch(
-                "https://massakostis-backend-production-9111.up.railway.app/upload-data",
+                `${API_URL}/upload-data`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
