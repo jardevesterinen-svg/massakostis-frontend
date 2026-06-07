@@ -8,7 +8,7 @@ const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
 const API_URL = isDev
   ? "https://<DEV-BACKEND>.up.railway.app"
-  : "${API_URL}";
+  : "https://massakostis-backend-production-9111.up.railway.app";
 
 /* ==========================================================
     GLOBAALI TILA
