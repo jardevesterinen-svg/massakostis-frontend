@@ -145,5 +145,30 @@
     "Havaitut puutteet lattiakallistuksissa eivät aiheuta toimenpiteitä.",
     "Lattian kallistuksen puutteet saattavat aiheuttaa veden kerääntymistä lattiapinnoille. Lattiat tulee kuivata lastalla aina veden käytön jälkeen. Mikäli vettä kerääntyy alueelle missä vedeneristeissä on puutteita, voi vettä päästä haitallisesti myös rakenteisiin.",
     "Muu"
-  ]
+  ],
+  "erillis-wc_havainnot": [
+    "Bideesuihku vuotaa hanaa käytettäessä.",
+    "Kosteutta wc-istuimen ympärillä",
+    "Wc-istuimen pohjaventtiili vuotaa.",
+    "WC-istuin on huonosti kiinnitetty.",
+    "Käsienpesualtaan hana vuotaa.",
+    "Muu"
+  ],
+  "erillis-wc_toimenpiteet": [
+    "Bideesuihkun korjaaminen.",
+    "WC-istuimen kiinnityksen korjaaminen.",
+    "WC-istuimen pohjaventtiilin korjaaminen.",
+    "Käsienpesualtaan hanan korjaaminen.",
+    "Muu"
+  "sauna_havainnot": [
+    "Kiukaan kiinnitys puutteellinen.",
+    "Kiukaan turvaetäisyys puutteellinen",
+    "Turvakaide puuttuu.",
+    "Muu"
+  ],
+  "sauna_toimenpiteet": [
+    "Kiukaan kiinnityksen korjaaminen.",
+    "Kiukaan turvaetäisyyden kasvaminen.",
+    "Turvakaiteen asennus.",
+    "Muu"    
 }
