@@ -38,7 +38,6 @@
     "Seinän vedeneristyksen läpivientejä tulee välttää roiskeveden vaikutusalueella. Suositellaan tehtävät tarvittavat muutokset seuraavan remontin yhteydessä.",
     "Muu"
   ],
-
   "pinnat_havainnot": [
     "Kopolaattoja lattiassa.",
     "Kopolaattoja seinissä ja lattiassa.",
@@ -88,7 +87,6 @@
     "WC-istuimen pohjaventtiilin korjaaminen.",
     "Muu"
   ],
-
   "ilmanvaihto_havainnot": [
     "Oven ja kynnyksen välissä ei ole riittävää ilmarakoa.",
     "Poistoventtiili on likainen.",
@@ -102,7 +100,6 @@
     "Poistoventtiilin puhdistaminen.",
     "Muu"
   ],
-
   "ovikynnys_havainnot": [
     "Ovikynnys on liian matala.",
     "Ovikynnys on tiivistämättä tai puutteellisesti tiivistetty.",
@@ -115,7 +112,6 @@
     "Ovikynnyksen tiivistäminen.",
     "Muu"
   ],
-
   "lattiakaivo_havainnot": [
     "Kaivo on likainen ja padottaa.",
     "Kaivon ja korokerenkaan liitos silmämääräisesti epätiivis.",
@@ -135,7 +131,6 @@
     "Lattiakaivon vaakaviemärin puhdistaminen.",
     "Muu"
   ],
-
   "lattiakallistukset_havainnot": [
     "Lattian kallistukset ovat puutteellisia kaivon ympäristössä.",
     "Lattian kallistukset ovat silmämääräisesti arvioituna puutteellisia.",
@@ -160,6 +155,7 @@
     "WC-istuimen pohjaventtiilin korjaaminen.",
     "Käsienpesualtaan hanan korjaaminen.",
     "Muu"
+  ],    
   "sauna_havainnot": [
     "Kiukaan kiinnitys puutteellinen.",
     "Kiukaan turvaetäisyys puutteellinen",
@@ -171,4 +167,5 @@
     "Kiukaan turvaetäisyyden kasvaminen.",
     "Turvakaiteen asennus.",
     "Muu"    
+  ],    
 }
