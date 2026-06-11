@@ -520,6 +520,9 @@ async function uploadKansikuva() {
     
     const compressed = await compressImage(file);
     
+    console.log("Original size:", file.size);
+    console.log("Compressed size:", compressed.size);
+
     const form = new FormData();
     form.append("kohde_id", kohdeId);
     form.append("file", compressed, "image.jpg");
