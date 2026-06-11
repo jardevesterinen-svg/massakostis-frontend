@@ -1358,7 +1358,7 @@ async function uploadApartmentImage(index) {
         alert("Kohde tai huoneisto ei ole valittuna.");
         return;
     }
-
+    const compressed = await compressImage(file);
     const apt = huoneistoLista[currentApartmentIndex];
     if (!apt) return;
 
