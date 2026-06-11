@@ -1358,7 +1358,7 @@ async function uploadApartmentImage(index) {
         alert("Kohde tai huoneisto ei ole valittuna.");
         return;
     }
-    const compressed = await compressImage(file);
+   
     const apt = huoneistoLista[currentApartmentIndex];
     if (!apt) return;
 
@@ -1366,6 +1366,11 @@ async function uploadApartmentImage(index) {
     const input = document.getElementById(`kuva${index}`);
     const file = input.files[0];
     if (!file) return;
+    
+    const compressed = await compressImage(file);
+
+    console.log("Original:", file.size);
+    console.log("Compressed:", compressed.size);
 
     const form = new FormData();
     form.append("kohde_id", kohdeId);
