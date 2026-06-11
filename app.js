@@ -45,6 +45,7 @@ window.addEventListener("load", async () => {
     console.log("✅ formi rakennettu");
 
     bindMaterialAutosave();
+    bindMetadataAutosave();
     haeKohteet();
     
     document.getElementById("btnCreatePdf").addEventListener("click", () => {
