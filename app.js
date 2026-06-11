@@ -1368,7 +1368,7 @@ async function uploadApartmentImage(index) {
     form.append("kohde_id", kohdeId);
     form.append("huoneisto_slug", slug);
     form.append("index", index.toString());
-    form.append("file", file);
+    form.append("file", compressed, "image.jpg"); 
 
     try {
         const res = await fetch(
