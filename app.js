@@ -79,13 +79,16 @@ function bindMetadataAutosave() {
         "#perustiedotTab input, #perustiedotTab textarea"
     );
 
+    console.log("🔵 löytyi kenttiä:", fields.length); // 🔥
+
     fields.forEach(el => {
         el.addEventListener("input", () => {
-            console.log("🟢 Metadata muutos:", el.id);
+            console.log("🟢 autosave trigger:", el.id);
             saveMetadata();
         });
     });
 }
+
 
 function slugify(text) {
     return text
