@@ -489,7 +489,7 @@ async function saveMetadata() {
     KANSIKUVA ESIKATSELU + TALLENNUS
 ========================================================== */
 
-function previewKansikuva() {
+async function previewKansikuva() {
     const input = document.getElementById("kansikuva");
     const prev = document.getElementById("kansiPreview");
     
