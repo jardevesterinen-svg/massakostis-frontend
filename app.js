@@ -6,7 +6,9 @@ const PUBLIC_URL = "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev";
 
 const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
-const API_URL = "https://massakostis-backend-production-9111.up.railway.app";
+const API_URL = isDev
+  ? "https://massakostis-backend-dev.up.railway.app"
+  : "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
 console.log("isDev:", isDev);
@@ -43,6 +45,7 @@ window.addEventListener("load", async () => {
     console.log("✅ formi rakennettu");
 
     bindMaterialAutosave();
+    bindMetadataAutosave();
     haeKohteet();
     
     document.getElementById("btnCreatePdf").addEventListener("click", () => {
@@ -63,7 +66,7 @@ window.addEventListener("load", async () => {
             autosave();
         });
     }
-
+    bindMetadataAutosave();
     generatePDF(kohdeId);
     });    
 });
@@ -71,6 +74,22 @@ window.addEventListener("load", async () => {
 /* ==========================================================
     APUFUNKTIOT
 ========================================================== */
+
+function bindMetadataAutosave() {
+    const fields = document.querySelectorAll(
+        "#perustiedotTab input, #perustiedotTab textarea"
+    );
+
+    console.log("🔵 löytyi kenttiä:", fields.length); // 🔥
+
+    fields.forEach(el => {
+        el.addEventListener("input", () => {
+            console.log("🟢 autosave trigger:", el.id);
+            saveMetadata();
+        });
+    });
+}
+
 
 function slugify(text) {
     return text
@@ -176,6 +195,36 @@ async function generatePDF(kohdeId) {
     } finally {
         overlay.style.display = "none";
     }
+}
+
+function compressImage(file, maxWidth = 1600, quality = 0.7) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = e => img.src = e.target.result;
+        reader.readAsDataURL(file);
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+                height = height * (maxWidth / width);
+                width = maxWidth;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(blob => resolve(blob), "image/jpeg", quality);
+        };
+    });
 }
 
 function bindMaterialAutosave() {
@@ -440,11 +489,15 @@ async function saveMetadata() {
     KANSIKUVA ESIKATSELU + TALLENNUS
 ========================================================== */
 
-function previewKansikuva() {
+async function previewKansikuva() {
     const input = document.getElementById("kansikuva");
     const prev = document.getElementById("kansiPreview");
-
+    
     const file = input.files[0];
+    const compressed = await compressImage(file);
+    
+    form.append("file", compressed, "image.jpg");
+
     if (!file) {
         prev.style.display = "none";
         prev.src = "";
@@ -464,10 +517,15 @@ async function uploadKansikuva() {
     const input = document.getElementById("kansikuva");
     const file = input.files[0];
     if (!file) return;
+    
+    const compressed = await compressImage(file);
+    
+    console.log("Original size:", file.size);
+    console.log("Compressed size:", compressed.size);
 
     const form = new FormData();
     form.append("kohde_id", kohdeId);
-    form.append("file", file);
+    form.append("file", compressed, "image.jpg");
 
     await fetch(
         `${API_URL}/upload-kansikuva`,
@@ -1300,7 +1358,7 @@ async function uploadApartmentImage(index) {
         alert("Kohde tai huoneisto ei ole valittuna.");
         return;
     }
-
+   
     const apt = huoneistoLista[currentApartmentIndex];
     if (!apt) return;
 
@@ -1308,12 +1366,17 @@ async function uploadApartmentImage(index) {
     const input = document.getElementById(`kuva${index}`);
     const file = input.files[0];
     if (!file) return;
+    
+    const compressed = await compressImage(file);
+
+    console.log("Original:", file.size);
+    console.log("Compressed:", compressed.size);
 
     const form = new FormData();
     form.append("kohde_id", kohdeId);
     form.append("huoneisto_slug", slug);
     form.append("index", index.toString());
-    form.append("file", file);
+    form.append("file", compressed, "image.jpg"); 
 
     try {
         const res = await fetch(
