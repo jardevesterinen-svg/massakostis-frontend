@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
             autosave();
         });
     }
-
+    bindMetadataAutosave();
     generatePDF(kohdeId);
     });    
 });
@@ -73,6 +73,19 @@ window.addEventListener("load", async () => {
 /* ==========================================================
     APUFUNKTIOT
 ========================================================== */
+
+function bindMetadataAutosave() {
+    const fields = document.querySelectorAll(
+        "#perustiedotTab input, #perustiedotTab textarea"
+    );
+
+    fields.forEach(el => {
+        el.addEventListener("input", () => {
+            console.log("🟢 Metadata muutos:", el.id);
+            saveMetadata();
+        });
+    });
+}
 
 function slugify(text) {
     return text
