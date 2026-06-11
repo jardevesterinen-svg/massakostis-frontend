@@ -226,6 +226,7 @@ function compressImage(file, maxWidth = 1600, quality = 0.7) {
         };
     });
 }
+
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
     const eiTarkastettu = document.getElementById("ei_tarkastettu");
@@ -516,7 +517,9 @@ async function uploadKansikuva() {
     const input = document.getElementById("kansikuva");
     const file = input.files[0];
     if (!file) return;
-
+    
+    const compressed = await compressImage(file);
+    
     const form = new FormData();
     form.append("kohde_id", kohdeId);
     form.append("file", file);
