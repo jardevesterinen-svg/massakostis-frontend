@@ -522,7 +522,7 @@ async function uploadKansikuva() {
     
     const form = new FormData();
     form.append("kohde_id", kohdeId);
-    form.append("file", file);
+    form.append("file", compressed, "image.jpg");
 
     await fetch(
         `${API_URL}/upload-kansikuva`,
