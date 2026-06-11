@@ -197,6 +197,35 @@ async function generatePDF(kohdeId) {
     }
 }
 
+function compressImage(file, maxWidth = 1600, quality = 0.7) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = e => img.src = e.target.result;
+        reader.readAsDataURL(file);
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+                height = height * (maxWidth / width);
+                width = maxWidth;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(blob => resolve(blob), "image/jpeg", quality);
+        };
+    });
+}
 function bindMaterialAutosave() {
     console.log("🔗 bindMaterialAutosave() kutsuttu");
     const eiTarkastettu = document.getElementById("ei_tarkastettu");
@@ -462,8 +491,12 @@ async function saveMetadata() {
 function previewKansikuva() {
     const input = document.getElementById("kansikuva");
     const prev = document.getElementById("kansiPreview");
-
+    
     const file = input.files[0];
+    const compressed = await compressImage(file);
+    
+    form.append("file", compressed, "image.jpg");
+
     if (!file) {
         prev.style.display = "none";
         prev.src = "";
