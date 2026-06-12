@@ -496,9 +496,7 @@ async function previewKansikuva() {
     
     const file = input.files[0];
     const compressed = await compressImage(file);
-    
-    form.append("file", compressed, "image.jpg");
-
+        
     if (!file) {
         prev.style.display = "none";
         prev.src = "";
@@ -757,64 +755,6 @@ function buildApartmentForm() {
 /* ==========================================================
     HUONEISTON LATAUS (data + kuvat)
 ========================================================== */
-
-async function loadApartment(i) {
-    
-    const apt = huoneistoLista[i];
-    if (!apt) {
-        console.log("❌ Huoneisto ei ole olemassa indeksillä", i);
-        return;
-    }
-    
-    const localKey = `offline_${kohdeId}_${apt}`;
-    const slug = slugify(apt);
-    
-    console.log("🔵 loadApartment kutsuttu:", apt, "slug:", slug);
-    
-    isLoadingApartment = true;
-    
-    currentApartmentIndex = i;
-    document.getElementById("currentAptInput").value = apt;
-
-    // ✅ NOLLAA AINA ENSIN
-    clearApartmentForm();
-    console.log("🧹 Lomake tyhjennetty");
-
-    // 1️⃣ Tarkista offline-tallennus ensin
-    if (localStorage.getItem(localKey)) {
-        console.log("💾 Offline-tallennus löytyi!");
-        const local = JSON.parse(localStorage.getItem(localKey));
-        fillApartmentForm(local.data);
-        loadImagePreview(slug);
-        isLoadingApartment = false;
-        return;
-    }
-
-    // 2️⃣ Yritä noutaa palvelimelta
-    try {
-        console.log("🌐 Noudetaan palvelimelta...");
-        const res = await fetch(
-            `${API_URL}/get-apartment/${kohdeId}/${slug}`
-        );
-        
-        console.log("📡 Palvelin vastasi:", res.status);
-
-        if (res.status === 200) {
-            const data = await res.json();
-            console.log("📦 Palvelimen data:", data);
-            fillApartmentForm(data);
-        }
-
-    } catch (err) {
-        console.log("🔴 Virhe:", err);
-        showStatus("Ei yhteyttä", "status_kartoitus");
-    }
-
-    document.getElementById("kuva1").value = "";
-    document.getElementById("kuva2").value = "";
-    loadImagePreview(slug);
-    isLoadingApartment = false;
-}
 
 function loadImagePreview(slug) {
 
