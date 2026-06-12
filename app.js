@@ -9,7 +9,7 @@ const PUBLIC_URL = isDev
   : "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev"
 
 const API_URL = isDev
-  ? "massakostis-backend-dev-development.up.railway.app"
+  ? "https://massakostis-backend-dev-development.up.railway.app"
   : "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
