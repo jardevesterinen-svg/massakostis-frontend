@@ -10,7 +10,7 @@ const PUBLIC_URL = isDev
 const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
 const API_URL = isDev
-  ? "https://massakostis-backend-dev.up.railway.app"
+  ? "massakostis-backend-dev-development.up.railway.app"
   : "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
