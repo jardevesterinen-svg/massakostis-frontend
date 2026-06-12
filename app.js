@@ -177,7 +177,17 @@ async function generatePDF(kohdeId) {
             { method: "POST" }
         );
 
-        const data = await res.json();
+        const text = await res.text();
+        console.log("RAW RESPONSE:", text);
+
+        // testiksi:
+        try {
+            const data = JSON.parse(text);
+            console.log("PARSED:", data);
+        } catch (e) {
+            console.error("JSON VIRHE:", e);
+        }
+
 
         if (!data.url) return;
 
