@@ -177,17 +177,7 @@ async function generatePDF(kohdeId) {
             { method: "POST" }
         );
 
-        const text = await res.text();
-        console.log("RAW RESPONSE:", text);
-
-        // testiksi:
-        try {
-            const data = JSON.parse(text);
-            console.log("PARSED:", data);
-        } catch (e) {
-            console.error("JSON VIRHE:", e);
-        }
-
+        const data = await res.json();
 
         if (!data.url) return;
 
@@ -810,9 +800,8 @@ async function loadApartment(i) {
         
         console.log("📡 Palvelin vastasi:", res.status);
 
-        if (res.status === 200) {            
-            const text = await res.text();
-            console.log("RAW RESPONSE:", text);
+        if (res.status === 200) {
+            const data = await res.json();
             console.log("📦 Palvelimen data:", data);
             fillApartmentForm(data);
         }
