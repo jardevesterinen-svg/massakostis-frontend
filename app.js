@@ -798,8 +798,9 @@ async function loadApartment(i) {
         
         console.log("📡 Palvelin vastasi:", res.status);
 
-        if (res.status === 200) {
-            const data = await res.json();
+        if (res.status === 200) {            
+            const text = await res.text();
+            console.log("RAW RESPONSE:", text);
             console.log("📦 Palvelimen data:", data);
             fillApartmentForm(data);
         }
