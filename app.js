@@ -319,7 +319,6 @@ function bindMaterialAutosave() {
         autosave();
     });
 });
-``
 }
 /* ==========================================================
     TABIT
