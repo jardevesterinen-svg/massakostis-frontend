@@ -2,12 +2,11 @@
     ASETUKSET — PUBLIC R2 URL
 ========================================================== */
 
+const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
+
 const PUBLIC_URL = isDev
   ? "https://pub-b2df8ec4cb9c4142a608f7618ac6ec66.r2.dev"
   : "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev"
-
-
-const isDev = window.location.hostname !== "massakostis-frontend.pages.dev";
 
 const API_URL = isDev
   ? "massakostis-backend-dev-development.up.railway.app"
