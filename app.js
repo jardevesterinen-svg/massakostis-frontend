@@ -10,10 +10,14 @@ const PUBLIC_URL = isDev
 
 const API_URL = isDev
 <<<<<<< HEAD
+<<<<<<< HEAD
   ? "massakostis-backend-dev-development.up.railway.app"
 =======
   ? "https://massakostis-backend-dev-development.up.railway.app"
 >>>>>>> 638c28d79213b98590f36141be3ba55bb2169954
+=======
+  ? "https://massakostis-backend-dev-development.up.railway.app"
+>>>>>>> ee88648d87260abe6ab1f182af34a140aeddb3e4
   : "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
@@ -181,17 +185,7 @@ async function generatePDF(kohdeId) {
             { method: "POST" }
         );
 
-        const text = await res.text();
-        console.log("RAW RESPONSE:", text);
-
-        // testiksi:
-        try {
-            const data = JSON.parse(text);
-            console.log("PARSED:", data);
-        } catch (e) {
-            console.error("JSON VIRHE:", e);
-        }
-
+        const data = await res.json();
 
         if (!data.url) return;
 
@@ -840,9 +834,8 @@ async function loadApartment(i) {
         
         console.log("📡 Palvelin vastasi:", res.status);
 
-        if (res.status === 200) {            
-            const text = await res.text();
-            console.log("RAW RESPONSE:", text);
+        if (res.status === 200) {
+            const data = await res.json();
             console.log("📦 Palvelimen data:", data);
             fillApartmentForm(data);
         }
