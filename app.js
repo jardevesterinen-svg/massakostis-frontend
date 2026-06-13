@@ -588,6 +588,7 @@ function renderRappuLista() {
         div.dataset.index = idx;
 
         div.innerHTML = `
+            <span class="drag-handle">☰</span>
             <div style="flex:1;"><strong>${r.rappu}</strong> (${r.alku}–${r.loppu})</div>
             <button class="btn" style="background:#8e44ad" onclick="editRappu(${idx})">Muokkaa</button>
             <button class="btn" style="background:#c0392b" onclick="deleteRappu(${idx})">Poista</button>
@@ -595,11 +596,13 @@ function renderRappuLista() {
 
         c.appendChild(div);
     });
+   
     new Sortable(c, {
-    animation: 150,
-    onEnd: function () {
-        päivitaRappuJarjestys();
-    }
+        handle: ".drag-handle",   // 👈 kahva
+        animation: 150,
+        fallbackOnBody: true,     // 👈 mobiilivarmempi
+        delay: 100,               // 👈 estää väärät dragit mobiilissa
+        onEnd: päivitaRappuJarjestys
     });
 }
 
