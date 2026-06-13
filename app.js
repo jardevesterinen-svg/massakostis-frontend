@@ -9,7 +9,11 @@ const PUBLIC_URL = isDev
   : "https://pub-9f421e06dc9f4bd49ae0adcf5690c438.r2.dev"
 
 const API_URL = isDev
+<<<<<<< HEAD
   ? "massakostis-backend-dev-development.up.railway.app"
+=======
+  ? "https://massakostis-backend-dev-development.up.railway.app"
+>>>>>>> 638c28d79213b98590f36141be3ba55bb2169954
   : "https://massakostis-backend-production-9111.up.railway.app";
 
 console.log("HOST:", window.location.hostname);
@@ -569,6 +573,25 @@ function regenerateApartments() {
         huoneistoLista.join(", ");
 }
 
+function päivitaRappuJarjestys() {
+
+    const rows = document.querySelectorAll("#rappuListaContainer .rappu-row");
+
+    const uusiLista = [];
+
+    rows.forEach(row => {
+        const index = row.dataset.index;
+        uusiLista.push(rappuLista[index]);
+    });
+
+    rappuLista = uusiLista;
+
+    console.log("✅ uusi rappujärjestys:", rappuLista);
+
+    regenerateApartments();
+    saveMetadata();
+}
+
 function renderRappuLista() {
     const c = document.getElementById("rappuListaContainer");
     c.innerHTML = "";
@@ -576,6 +599,7 @@ function renderRappuLista() {
     rappuLista.forEach((r, idx) => {
         const div = document.createElement("div");
         div.className = "rappu-row";
+        div.dataset.index = idx;
 
         div.innerHTML = `
             <div style="flex:1;"><strong>${r.rappu}</strong> (${r.alku}–${r.loppu})</div>
@@ -585,6 +609,12 @@ function renderRappuLista() {
 
         c.appendChild(div);
     });
+    new Sortable(c, {
+    animation: 150,
+    onEnd: function () {
+        päivitaRappuJarjestys();
+    }
+});
 }
 
 document.getElementById("btnLisaRappu").addEventListener("click", () => {
