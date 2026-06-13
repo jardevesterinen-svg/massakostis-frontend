@@ -21,11 +21,21 @@ label {
     font-weight: bold;
 }
 
-input, select, textarea, button {
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     box-sizing: border-box;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
 }
 
 button {
@@ -50,6 +60,13 @@ textarea {
     gap: 16px;
     margin-top: 8px;
     margin-bottom: 6px;
+}
+
+
+.option-row label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .form-disabled {
