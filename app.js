@@ -565,9 +565,12 @@ function päivitaRappuJarjestys() {
     const uusiLista = [];
 
     rows.forEach(row => {
-        const nimi = row.dataset.rappu;
 
-        const found = rappuLista.find(r => r.rappu === nimi);
+        const id = row.dataset.id;
+
+        const found = rappuLista.find(r => 
+            `${r.rappu}_${r.alku}_${r.loppu}` === id
+        );
 
         if (found) {
             uusiLista.push(found);
@@ -578,10 +581,10 @@ function päivitaRappuJarjestys() {
 
     console.log("✅ uusi rappuLista:", rappuLista);
 
-    // 🔥 tärkeä: päivitä näkymä ja data
     regenerateApartments();
     saveMetadata();
 }
+
 
 function renderRappuLista() {
     const c = document.getElementById("rappuListaContainer");
