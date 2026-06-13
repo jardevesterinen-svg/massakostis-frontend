@@ -494,17 +494,17 @@ async function saveMetadata() {
 async function previewKansikuva() {
     const input = document.getElementById("kansikuva");
     const prev = document.getElementById("kansiPreview");
-    
+
     const file = input.files[0];
-    const compressed = await compressImage(file);
-    
-    form.append("file", compressed, "image.jpg");
 
     if (!file) {
         prev.style.display = "none";
         prev.src = "";
         return;
     }
+
+    // 🔴 tämä siirrettiin tänne
+    const compressed = await compressImage(file);
 
     prev.src = URL.createObjectURL(file);
     prev.style.display = "block";
