@@ -560,20 +560,25 @@ function regenerateApartments() {
 }
 
 function päivitaRappuJarjestys() {
-
     const rows = document.querySelectorAll("#rappuListaContainer .rappu-row");
 
     const uusiLista = [];
 
     rows.forEach(row => {
-        const index = row.dataset.index;
-        uusiLista.push(rappuLista[index]);
+        const nimi = row.dataset.rappu;
+
+        const found = rappuLista.find(r => r.rappu === nimi);
+
+        if (found) {
+            uusiLista.push(found);
+        }
     });
 
     rappuLista = uusiLista;
 
-    console.log("✅ uusi rappujärjestys:", rappuLista);
+    console.log("✅ uusi rappuLista:", rappuLista);
 
+    // 🔥 tärkeä: päivitä näkymä ja data
     regenerateApartments();
     saveMetadata();
 }
@@ -586,6 +591,7 @@ function renderRappuLista() {
         const div = document.createElement("div");
         div.className = "rappu-row";
         div.dataset.index = idx;
+        div.dataset.id = `${r.rappu}_${r.alku}_${r.loppu}`;
 
         div.innerHTML = `
             <span class="drag-handle">☰</span>
