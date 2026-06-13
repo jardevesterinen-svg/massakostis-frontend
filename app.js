@@ -608,7 +608,7 @@ function renderRappuLista() {
     onEnd: function () {
         päivitaRappuJarjestys();
     }
-});
+    });
 }
 
 document.getElementById("btnLisaRappu").addEventListener("click", () => {
