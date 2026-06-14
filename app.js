@@ -29,6 +29,7 @@ let kaikkiKohteet = [];
 let isLoadingApartment = false;
 let offlineQueue = {};
 let bathroomCounts = {};
+let extraBathrooms = [];
 
 /* ==========================================================
     LAUSELISTA
@@ -557,6 +558,7 @@ function regenerateApartments() {
         for (let i = r.alku; i <= r.loppu; i++) {
             huoneistoLista.push(`${r.rappu}${i}`);
         }
+    huoneistoLista = huoneistoLista.concat(extraBathrooms);
     });
 
     document.getElementById("huoneistoLista").textContent =
@@ -882,17 +884,14 @@ document.getElementById("btnAddBathroom").addEventListener("click", () => {
     }
 
     // ✅ lisää uusi
-    huoneistoLista.splice(
-        currentApartmentIndex + 1,
-        0,
-        `${base}-${count}`
-    );
 
-    console.log("✅ lisätty kylpyhuone:", huoneistoLista);
-    console.log("ENNEN regenerate:", huoneistoLista);
+    const newApt = `${base}-${count}`;
+
+    extraBathrooms.push(newApt);
+       
     regenerateApartments();
     saveMetadata();
-    console.log("JÄLKEEN regenerate:", huoneistoLista);
+  
 });
 
 function loadImagePreview(slug) {
