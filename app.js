@@ -858,6 +858,7 @@ async function loadApartment(i) {
     loadImagePreview(slug);
     isLoadingApartment = false;
 }
+console.log("btn löytyy:", document.getElementById("btnAddBathroom"));
 
 document.getElementById("btnAddBathroom").addEventListener("click", () => {
 
