@@ -28,6 +28,7 @@ let LAUSELISTA = {};
 let kaikkiKohteet = [];
 let isLoadingApartment = false;
 let offlineQueue = {};
+let bathroomCounts = {};
 
 /* ==========================================================
     LAUSELISTA
@@ -92,6 +93,9 @@ function bindMetadataAutosave() {
     });
 }
 
+function getBaseName(apt) {
+    return apt.replace(/-\d+$/, "");
+}
 
 function slugify(text) {
     return text
@@ -854,6 +858,41 @@ async function loadApartment(i) {
     loadImagePreview(slug);
     isLoadingApartment = false;
 }
+
+document.getElementById("btnAddBathroom").addEventListener("click", () => {
+
+    const apt = huoneistoLista[currentApartmentIndex];
+    if (!apt) return;
+
+    const base = getBaseName(apt);
+
+    let count = bathroomCounts[base] || 1;
+
+    count++;
+
+    bathroomCounts[base] = count;
+
+    // ✅ jos ensimmäinen lisäys → muuta A6 → A6-1
+    if (count === 2) {
+        const index = huoneistoLista.findIndex(a => a === base);
+        if (index !== -1) {
+            huoneistoLista[index] = base + "-1";
+        }
+    }
+
+    // ✅ lisää uusi
+    huoneistoLista.splice(
+        currentApartmentIndex + 1,
+        0,
+        `${base}-${count}`
+    );
+
+    console.log("✅ lisätty kylpyhuone:", huoneistoLista);
+
+    regenerateApartments();
+    saveMetadata();
+
+});
 
 function loadImagePreview(slug) {
 
