@@ -870,25 +870,19 @@ document.getElementById("btnAddBathroom").addEventListener("click", () => {
     const base = getBaseName(apt);
 
     let count = bathroomCounts[base] || 1;
-
     count++;
 
     bathroomCounts[base] = count;
 
-    // ✅ jos ensimmäinen lisäys → muuta A6 → A6-1
+    // ✅ ensimmäinen lisäys
     if (count === 2) {
-        const index = huoneistoLista.findIndex(a => a === base);
-        if (index !== -1) {
-            huoneistoLista[index] = base + "-1";
-        }
+        extraBathrooms.push(`${base}-1`);
     }
 
-    // ✅ lisää uusi
-
+    // ✅ uusi kylppäri
     const newApt = `${base}-${count}`;
-
     extraBathrooms.push(newApt);
-       
+
     regenerateApartments();
     saveMetadata();
   
