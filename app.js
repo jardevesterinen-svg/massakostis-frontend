@@ -889,10 +889,10 @@ document.getElementById("btnAddBathroom").addEventListener("click", () => {
     );
 
     console.log("✅ lisätty kylpyhuone:", huoneistoLista);
-
+    console.log("ENNEN regenerate:", huoneistoLista);
     regenerateApartments();
     saveMetadata();
-
+    console.log("JÄLKEEN regenerate:", huoneistoLista);
 });
 
 function loadImagePreview(slug) {
