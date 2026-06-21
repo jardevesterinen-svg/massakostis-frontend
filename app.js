@@ -937,7 +937,7 @@ function loadImagePreview(slug) {
     p2.style.display = "block";
 }
 
-async function removeImage(num) {
+aasync function removeImage(num) {
 
     const input = document.getElementById("kuva" + num);
     const preview = document.getElementById("preview" + num);
@@ -947,10 +947,11 @@ async function removeImage(num) {
     preview.style.display = "none";
 
     const filename = `kuva${num}.jpg`;
+    const apt = huoneistoLista[currentApartmentIndex];
 
     console.log("DELETE ->", {
         kohdeId,
-        huoneisto: currentApartment,
+        huoneisto: apt,
         filename
     });
 
@@ -962,7 +963,7 @@ async function removeImage(num) {
             },
             body: JSON.stringify({
                 kohdeId,
-                huoneisto: currentApartment,
+                huoneisto: apt,
                 filename
             })
         });
@@ -970,7 +971,7 @@ async function removeImage(num) {
         console.log("STATUS:", res.status);
 
         if (!res.ok) {
-            console.error("❌ backend vastasi virheellä");
+            console.error("❌ backend virhe");
         } else {
             console.log("✅ poistettu myös R2:sta");
         }
@@ -979,6 +980,7 @@ async function removeImage(num) {
         console.error("❌ backend delete failed", err);
     }
 }
+
 
 function fillApartmentForm(data) {
     console.log("📝 fillApartmentForm() kutsuttu, data:", data);
