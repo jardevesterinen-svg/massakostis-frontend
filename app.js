@@ -946,11 +946,16 @@ async function removeImage(num) {
     preview.src = "";
     preview.style.display = "none";
 
-    // ✅ tiedoston nimi (esim kuva1.jpg)
     const filename = `kuva${num}.jpg`;
 
+    console.log("DELETE ->", {
+        kohdeId,
+        huoneisto: currentApartment,
+        filename
+    });
+
     try {
-        await fetch(`${API_URL}/delete-image`, {
+        const res = await fetch(`${API_URL}/delete-image`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -962,21 +967,17 @@ async function removeImage(num) {
             })
         });
 
-        console.log("✅ poistettu myös R2:sta");
+        console.log("STATUS:", res.status);
+
+        if (!res.ok) {
+            console.error("❌ backend vastasi virheellä");
+        } else {
+            console.log("✅ poistettu myös R2:sta");
+        }
 
     } catch (err) {
         console.error("❌ backend delete failed", err);
     }
-    
-    console.log("DELETE ->", {
-        kohdeId,
-        huoneisto: currentApartment,
-        filename: `kuva${num}.jpg`
-    });
-    
-    const res = await fetch(...);
-    console.log("STATUS:", res.status);
-
 }
 
 function fillApartmentForm(data) {
