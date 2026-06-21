@@ -584,6 +584,7 @@ function regenerateApartments() {
     // ✅ 4. UI päivitys
     document.getElementById("huoneistoLista").textContent =
         huoneistoLista.join(", ");
+    buildApartmentForm();
 }
 
 function päivitaRappuJarjestys() {
