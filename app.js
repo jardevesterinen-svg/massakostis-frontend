@@ -553,14 +553,35 @@ document.getElementById("kansikuva").addEventListener("change", () => {
 ========================================================== */
 
 function regenerateApartments() {
+
     huoneistoLista = [];
+
+    // ✅ 1. rakenna normaali lista
     rappuLista.forEach(r => {
         for (let i = r.alku; i <= r.loppu; i++) {
             huoneistoLista.push(`${r.rappu}${i}`);
         }
-    huoneistoLista = huoneistoLista.concat(extraBathrooms);
     });
 
+    // ✅ 2. lisää extra kylpyhuoneet
+    extraBathrooms.forEach(extra => {
+        const base = getBaseName(extra);
+
+        const index = huoneistoLista.findIndex(a => a === base);
+
+        if (index !== -1) {
+            // lisää heti base-huoneiston jälkeen
+            huoneistoLista.splice(index + 1, 0, extra);
+        } else {
+            // fallback
+            huoneistoLista.push(extra);
+        }
+    });
+
+    // ✅ 3. debug
+    console.log("FINAL LIST:", huoneistoLista);
+
+    // ✅ 4. UI päivitys
     document.getElementById("huoneistoLista").textContent =
         huoneistoLista.join(", ");
 }
