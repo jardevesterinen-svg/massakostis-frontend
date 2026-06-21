@@ -937,6 +937,38 @@ function loadImagePreview(slug) {
     p2.style.display = "block";
 }
 
+async function removeImage(num) {
+
+    const input = document.getElementById("kuva" + num);
+    const preview = document.getElementById("preview" + num);
+
+    input.value = "";
+    preview.src = "";
+    preview.style.display = "none";
+
+    // ✅ tiedoston nimi (esim kuva1.jpg)
+    const filename = `kuva${num}.jpg`;
+
+    try {
+        await fetch(`${API_URL}/delete-image`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                kohdeId,
+                huoneisto: currentApartment,
+                filename
+            })
+        });
+
+        console.log("✅ poistettu myös R2:sta");
+
+    } catch (err) {
+        console.error("❌ backend delete failed", err);
+    }
+}
+
 function fillApartmentForm(data) {
     console.log("📝 fillApartmentForm() kutsuttu, data:", data);
     // ✅ Ei tarkastettu
