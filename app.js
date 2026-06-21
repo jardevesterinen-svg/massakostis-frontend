@@ -562,23 +562,41 @@ function regenerateApartments() {
 
     let baseList = [];
 
+    // ✅ 1. peruslista
     rappuLista.forEach(r => {
         for (let i = r.alku; i <= r.loppu; i++) {
             baseList.push(`${r.rappu}${i}`);
         }
     });
 
-    // ✅ poista ne base huoneistot joissa on extraBathrooms
-    const basesWithExtras = extraBathrooms.map(e => getBaseName(e));
+    // ✅ 2. rakentaa lopullinen lista oikein järjestyksessä
+    let finalList = [];
 
-    baseList = baseList.filter(base => !basesWithExtras.includes(base));
+    baseList.forEach(base => {
 
-    // ✅ lopullinen lista
-    huoneistoLista = baseList.concat(extraBathrooms);
+        // etsi kaikki tähän baseen kuuluvat kylppärit
+        const extras = extraBathrooms
+            .filter(e => getBaseName(e) === base)
+            .sort((a, b) => {
+                const aNum = parseInt(a.split("-")[1]);
+                const bNum = parseInt(b.split("-")[1]);
+                return aNum - bNum;
+            });
 
-    console.log("FINAL LIST:", huoneistoLista);
+        if (extras.length > 0) {
+            // ✅ korvaa A1 → A1-1, A1-2...
+            finalList.push(...extras);
+        } else {
+            finalList.push(base);
+        }
+    });
 
-    buildApartmentForm(); // UI päivitys
+    huoneistoLista = finalList;
+
+    console.log("✅ FINAL LIST:", huoneistoLista);
+
+    // ✅ TÄMÄ TÄRKEÄ (UI päivitys)
+    updateHuoneistoUI();
 }
 
 function päivitaRappuJarjestys() {
@@ -749,6 +767,7 @@ function createDropdown(osio, tyyppi) {
 
 function buildApartmentForm() {
     console.log("🔥 buildApartmentForm() käynnistyi");
+    console.log("BUILD START:", huoneistoLista);
     const root = document.getElementById("dynaamiset_osiot");
     
     if (!root) {
