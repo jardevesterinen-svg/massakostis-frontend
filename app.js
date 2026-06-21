@@ -554,37 +554,25 @@ document.getElementById("kansikuva").addEventListener("change", () => {
 
 function regenerateApartments() {
 
-    huoneistoLista = [];
+    let baseList = [];
 
-    // ✅ 1. rakenna normaali lista
     rappuLista.forEach(r => {
         for (let i = r.alku; i <= r.loppu; i++) {
-            huoneistoLista.push(`${r.rappu}${i}`);
+            baseList.push(`${r.rappu}${i}`);
         }
     });
 
-    // ✅ 2. lisää extra kylpyhuoneet
-    extraBathrooms.forEach(extra => {
-        const base = getBaseName(extra);
+    // ✅ poista ne base huoneistot joissa on extraBathrooms
+    const basesWithExtras = extraBathrooms.map(e => getBaseName(e));
 
-        const index = huoneistoLista.findIndex(a => a === base);
+    baseList = baseList.filter(base => !basesWithExtras.includes(base));
 
-        if (index !== -1) {
-            // lisää heti base-huoneiston jälkeen
-            huoneistoLista.splice(index + 1, 0, extra);
-        } else {
-            // fallback
-            huoneistoLista.push(extra);
-        }
-    });
+    // ✅ lopullinen lista
+    huoneistoLista = baseList.concat(extraBathrooms);
 
-    // ✅ 3. debug
     console.log("FINAL LIST:", huoneistoLista);
 
-    // ✅ 4. UI päivitys
-    document.getElementById("huoneistoLista").textContent =
-        huoneistoLista.join(", ");
-    buildApartmentForm();
+    buildApartmentForm(); // UI päivitys
 }
 
 function päivitaRappuJarjestys() {
@@ -898,6 +886,7 @@ document.getElementById("btnAddBathroom").addEventListener("click", () => {
 
     // ✅ ensimmäinen lisäys
     if (count === 2) {
+        huoneistoLista = huoneistoLista.filter(a => a !== base);
         extraBathrooms.push(`${base}-1`);
     }
 
