@@ -1547,6 +1547,17 @@ async function uploadApartmentImage(index) {
         }
 
         showStatus(`Kuva ${index} tallennettu ✅`, "status_kartoitus");
+        
+        const apt = huoneistoLista[currentApartmentIndex];
+                const slug = slugify(apt);
+
+                const url = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva${index}.jpg`;
+
+                const preview = document.getElementById(`preview${index}`);
+
+                // ✅ pakota uusi lataus (cache-busting)
+                preview.src = url + "?t=" + Date.now();
+
     } catch (e) {
         console.error("Kuvan upload epäonnistui:", e);
         showStatus("Kuvan tallennus epäonnistui ❌", "status_kartoitus");
