@@ -937,7 +937,7 @@ function loadImagePreview(slug) {
     p2.style.display = "block";
 }
 
-aasync function removeImage(num) {
+async function removeImage(num) {
 
     const input = document.getElementById("kuva" + num);
     const preview = document.getElementById("preview" + num);
