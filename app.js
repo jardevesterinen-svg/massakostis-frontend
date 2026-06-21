@@ -434,6 +434,9 @@ async function lataaKohde(id) {
     });
 
     rappuLista = meta.raput;
+    extraBathrooms = meta.extraBathrooms || [];
+    bathroomCounts = meta.bathroomCounts || {};
+
     renderRappuLista();
     regenerateApartments();
 
@@ -474,6 +477,9 @@ async function saveMetadata() {
         },
         raput: rappuLista,
         huoneistot: huoneistoLista
+        extraBathrooms: extraBathrooms,
+        bathroomCounts: bathroomCounts
+
     };
 
     try {
