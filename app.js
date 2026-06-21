@@ -925,16 +925,38 @@ document.getElementById("btnAddBathroom").addEventListener("click", () => {
   
 });
 
-function loadImagePreview(slug) {
+async function loadImagePreview(slug) {
 
     const p1 = document.getElementById("preview1");
     const p2 = document.getElementById("preview2");
 
-    p1.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva1.jpg`;
-    p1.style.display = "block";
+    const ts = Date.now();
 
-    p2.src = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva2.jpg`;
-    p2.style.display = "block";
+    const url1 = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva1.jpg`;
+    const url2 = `${PUBLIC_URL}/kohteet/${kohdeId}/huoneistot/${slug}/kuva2.jpg`;
+
+    // ✅ tyhjennä aina ensin (tärkein!)
+    p1.src = "";
+    p1.style.display = "none";
+
+    p2.src = "";
+    p2.style.display = "none";
+
+    try {
+        const res1 = await fetch(url1, { method: "HEAD" });
+        if (res1.ok) {
+            p1.src = url1 + "?t=" + ts;
+            p1.style.display = "block";
+        }
+    } catch {}
+
+    try {
+        const res2 = await fetch(url2, { method: "HEAD" });
+        if (res2.ok) {
+            p2.src = url2 + "?t=" + ts;
+            p2.style.display = "block";
+        }
+    } catch {}
 }
 
 async function removeImage(num) {
