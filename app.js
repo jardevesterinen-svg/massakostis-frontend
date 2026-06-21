@@ -595,8 +595,9 @@ function regenerateApartments() {
 
     console.log("✅ FINAL LIST:", huoneistoLista);
 
-    // ✅ TÄMÄ TÄRKEÄ (UI päivitys)
-    updateHuoneistoUI();
+    document.getElementById("huoneistoLista").textContent =
+        huoneistoLista.join(", ");
+
 }
 
 function päivitaRappuJarjestys() {
