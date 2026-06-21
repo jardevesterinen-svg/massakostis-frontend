@@ -476,7 +476,7 @@ async function saveMetadata() {
             paiva: document.getElementById("kohde_paiva").value
         },
         raput: rappuLista,
-        huoneistot: huoneistoLista
+        huoneistot: huoneistoLista,
         extraBathrooms: extraBathrooms,
         bathroomCounts: bathroomCounts
 
