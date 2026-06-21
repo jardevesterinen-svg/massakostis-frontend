@@ -967,6 +967,16 @@ async function removeImage(num) {
     } catch (err) {
         console.error("❌ backend delete failed", err);
     }
+    
+    console.log("DELETE ->", {
+        kohdeId,
+        huoneisto: currentApartment,
+        filename: `kuva${num}.jpg`
+    });
+    
+    const res = await fetch(...);
+    console.log("STATUS:", res.status);
+
 }
 
 function fillApartmentForm(data) {
