@@ -169,4 +169,16 @@
     "Turvakaiteen asennus.",
     "Muu"    
   ]
+  "keittiö_havainnot": [
+    "Vuotokaukalo puuttuu.",
+    "Astianpesukoneen poistoputki on puutteellisesti kannakoitu.",
+    "Astianpesukoneen poistoputki on puutteellisesti liitetty viemäröintiin.",
+    "Muu"
+  ],
+  "keittiö_toimenpiteet": [
+    "Vuotokaukalon asennus.",
+    "Astianpesukoneen poistoputken kannakkeen korjaaminen.",
+    "Astianpesukoneen poistoputken liitoksen korjaaminen.",
+    "Muu"    
+  ]
 }
