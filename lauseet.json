@@ -180,5 +180,11 @@
     "Astianpesukoneen poistoputken kannakkeen korjaaminen.",
     "Astianpesukoneen poistoputken liitoksen korjaaminen.",
     "Muu"    
+  ],
+  "muu_havainnot": [
+    "Muu"
+  ],
+  "muu_toimenpiteet": [
+    "Muu"    
   ]
 }
