@@ -317,6 +317,14 @@ function bindMaterialAutosave() {
             autosave();
         });
     });
+
+        // Muut havainnot-kenttä
+    document.querySelectorAll('input[id*="_muukommentti"]').forEach(field => {
+        field.addEventListener("change", () => {
+            console.log("✅ Muut havainnot -kenttä muuttui");
+            autosave();
+        });
+    });
     
     document.querySelectorAll('input[name="kokonaiskunto"]').forEach(rb => {
     rb.addEventListener("change", () => {
@@ -1112,6 +1120,10 @@ function fillApartmentForm(data) {
         );
         if (el) el.checked = true;
     }
+    
+    // ✅ Muut havainnot
+    document.getElementById("muukommentti").value =
+        data.muukommentti || "";
 
     if (data["kokonaiskunto"]) {
     const el = document.querySelector(
@@ -1365,7 +1377,10 @@ function collectApartmentData() {
     if (kayttoikaValinta) {
         data["kayttoika_jaljella"] = kayttoikaValinta.value;
     }
-
+    // Muut havainnot
+    data["muukommentti"] =
+        document.getElementById("muukommentti")?.value || "";
+    
     const kokonais = document.querySelector('input[name="kokonaiskunto"]:checked');
     if (kokonais) {
         data.kokonaiskunto = kokonais.value;
